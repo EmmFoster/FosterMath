@@ -1,606 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Absolute Value Transformation Flash Cards</title>
-<style>
-  :root{
-    --board: #17322c;
-    --board-dark: #102420;
-    --card: #fbf6e9;
-    --card-shadow: rgba(0,0,0,0.35);
-    --ink: #23302c;
-    --ink-soft: #5a655f;
-    --red: #b4453d;
-    --rule: #9fbdd1;
-    --gold: #d59a3c;
-    --chalk: #f1ede0;
-  }
-  *{box-sizing:border-box;}
-  html,body{
-    margin:0;
-    padding:0;
-    height:100%;
-    background:
-      radial-gradient(circle at 20% 15%, rgba(255,255,255,0.03), transparent 40%),
-      radial-gradient(circle at 85% 80%, rgba(255,255,255,0.03), transparent 45%),
-      var(--board);
-    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    color: var(--chalk);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-height:100vh;
-    overflow-x:hidden;
-  }
-  .wrap{
-    width:100%;
-    max-width:900px;
-    padding: 32px 20px 44px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:20px;
-  }
-  .heading{
-    text-align:center;
-  }
-  .heading h1{
-    font-family: Georgia, "Times New Roman", serif;
-    font-weight:600;
-    font-style:italic;
-    font-size:1.7rem;
-    margin:0 0 4px;
-    letter-spacing:0.3px;
-    color:var(--chalk);
-  }
-  .heading p{
-    margin:0;
-    font-size:0.85rem;
-    color:#b9c7c0;
-  }
-  .deck-status{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    font-size:0.8rem;
-    color:#b9c7c0;
-  }
-  .deck-status .count{
-    font-family: Georgia, serif;
-    font-variant-numeric: tabular-nums;
-    letter-spacing:0.5px;
-  }
-
-  .stage{
-    perspective: 1800px;
-    width:100%;
-    max-width:560px;
-  }
-  .card{
-    position:relative;
-    width:100%;
-    min-height:480px;
-    transform-style:preserve-3d;
-    transition:transform .55s cubic-bezier(.2,.8,.2,1);
-    cursor:pointer;
-  }
-  .card.flipped{
-    transform:rotateY(180deg);
-  }
-  .face{
-    position:absolute;
-    inset:0;
-    backface-visibility:hidden;
-    border-radius:6px;
-    background:var(--card);
-    box-shadow: 0 18px 40px var(--card-shadow), 0 2px 0 rgba(0,0,0,0.15);
-    padding:26px 26px 22px;
-    display:flex;
-    flex-direction:column;
-  }
-  .face::before{
-    /* left margin rule, like a real index card */
-    content:"";
-    position:absolute;
-    top:0; bottom:0; left:54px;
-    width:1px;
-    background:var(--red);
-    opacity:0.55;
-  }
-  .face .ruling{
-    position:absolute;
-    left:0; right:0;
-    height:1px;
-    background:var(--rule);
-    opacity:0.35;
-  }
-  .tab{
-    position:absolute;
-    top:14px; right:18px;
-    font-family: Georgia, serif;
-    font-style:italic;
-    font-size:0.75rem;
-    color:var(--ink-soft);
-    letter-spacing:0.5px;
-  }
-
-  .front{
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-  }
-  .front .label{
-    position:absolute;
-    top:16px; left:66px;
-    font-size:0.68rem;
-    text-transform:uppercase;
-    letter-spacing:1.5px;
-    color:var(--ink-soft);
-  }
-  .front-content{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:18px;
-    padding-left:34px;
-  }
-  .front .equation{
-    font-family: "Cambria Math", Georgia, "Times New Roman", serif;
-    font-size:2.05rem;
-    color:var(--ink);
-    letter-spacing:0.3px;
-  }
-  .equation i{ font-style:italic; }
-  .absbar{
-    display:inline-block;
-    transform: scaleY(1.18);
-    margin:0 1px;
-  }
-  .frac{
-    display:inline-flex;
-    flex-direction:column;
-    align-items:center;
-    vertical-align:middle;
-    line-height:1;
-    font-size:0.62em;
-    margin:0 3px;
-    transform:translateY(-0.05em);
-  }
-  .frac .num{
-    border-bottom:1.4px solid currentColor;
-    padding:0 3px 2px;
-  }
-  .frac .den{
-    padding:2px 3px 0;
-  }
-  .prompt-list{
-    counter-reset: step;
-    list-style:none;
-    margin:0;
-    padding:0;
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-    text-align:left;
-    font-size:0.78rem;
-    line-height:1.35;
-    color:var(--ink-soft);
-    max-width:280px;
-  }
-  .prompt-list li{
-    position:relative;
-    padding-left:20px;
-  }
-  .prompt-list li::before{
-    counter-increment:step;
-    content: counter(step) ".";
-    position:absolute;
-    left:0;
-    top:0;
-    color:var(--red);
-    font-weight:700;
-    font-family:Georgia, serif;
-  }
-  .prompt-list i{ font-style:italic; color:var(--ink); }
-  .front .hint{
-    position:absolute;
-    bottom:18px; left:0; right:0;
-    text-align:center;
-    font-size:0.75rem;
-    color:var(--ink-soft);
-    font-style:italic;
-  }
-
-  .back{
-    transform:rotateY(180deg);
-    padding-left:66px;
-    overflow-y:auto;
-  }
-  .back .eq-recap{
-    font-family: "Cambria Math", Georgia, serif;
-    font-size:1.25rem;
-    color:var(--ink);
-    margin-bottom:12px;
-    padding-bottom:10px;
-    border-bottom:1px solid rgba(180,69,61,0.3);
-  }
-  .back .eq-recap i{ font-style:italic; }
-  .back .body{
-    display:flex;
-    gap:18px;
-    flex:1;
-    min-height:0;
-  }
-  .back .notes{
-    flex:1.15;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    min-width:0;
-  }
-  .const-row{
-    display:flex;
-    gap:8px;
-    align-items:flex-start;
-  }
-  .const-letter{
-    font-family: Georgia, serif;
-    font-style:italic;
-    font-weight:700;
-    color:var(--red);
-    font-size:1.05rem;
-    min-width:20px;
-  }
-  .const-text .value{
-    font-family: Georgia, serif;
-    font-size:0.95rem;
-    color:var(--ink);
-    display:block;
-  }
-  .const-text .desc{
-    font-size:0.8rem;
-    color:var(--ink-soft);
-    line-height:1.35;
-  }
-  .facts{
-    margin-top:auto;
-    padding-top:10px;
-    border-top:1px dashed rgba(90,101,95,0.4);
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-  }
-  .vertex-line{
-    font-size:0.85rem;
-    color:var(--ink);
-  }
-  .vertex-line b{ color:var(--red); }
-
-  .graph-col{
-    flex:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-width:0;
-  }
-  .graph-col svg{
-    width:100%;
-    height:auto;
-    max-width:190px;
-  }
-
-  .controls{
-    display:flex;
-    align-items:center;
-    gap:18px;
-  }
-  .nav-btn{
-    background:transparent;
-    border:1.5px solid rgba(241,237,224,0.5);
-    color:var(--chalk);
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    font-size:1.1rem;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:background .15s ease, transform .15s ease;
-  }
-  .nav-btn:hover{ background:rgba(241,237,224,0.12); transform:translateY(-1px); }
-  .nav-btn:active{ transform:translateY(0); }
-  .flip-btn{
-    background:var(--gold);
-    color:#2a2010;
-    border:none;
-    padding:10px 22px;
-    border-radius:20px;
-    font-size:0.82rem;
-    font-weight:600;
-    letter-spacing:0.3px;
-    cursor:pointer;
-    box-shadow:0 4px 10px rgba(0,0,0,0.25);
-  }
-  .flip-btn:hover{ filter:brightness(1.06); }
-
-  @media (max-width:560px){
-    .back .body{ flex-direction:column; }
-    .graph-col svg{ max-width:150px; }
-    .front .equation{ font-size:1.6rem; }
-    .card{ min-height:560px; }
-    .prompt-list{ max-width:230px; font-size:0.74rem; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FosterMath</title>
+  <meta name="description" content="Welcome to FosterMath by M. Foster.">
+  <style>
+    :root {
+      --bg: #f7f5f0;
+      --text: #1f2933;
+      --muted: #5f6b76;
+      --accent: #2f6f5e;
+      --card: #ffffff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14181c;
+        --text: #eef1f3;
+        --muted: #a3adb6;
+        --accent: #6cc3a8;
+        --card: #1d2328;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+    }
+    .card {
+      background: var(--card);
+      max-width: 560px;
+      width: 100%;
+      padding: 48px 36px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+    .wave { font-size: 56px; font-weight: 700; color: var(--accent); margin-bottom: 8px; font-family: Georgia, "Times New Roman", serif; }
+    h1 { font-size: 2.2rem; margin-bottom: 12px; letter-spacing: -0.02em; }
+    p { color: var(--muted); font-size: 1.05rem; margin-bottom: 28px; }
+    .button {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 26px;
+      border-radius: 999px;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .button:hover { opacity: 0.85; }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="heading">
-    <h1>Absolute Value Transformations</h1>
-    <p>y = a|x &minus; h| + k &nbsp;&mdash;&nbsp; 44 cards, organized by which constants are in play &mdash; flip to check a, h, k, the vertex, domain, range, and the graph</p>
-  </div>
-
-  <div class="deck-status">
-    <span class="count" id="counter">1 / 44</span>
-  </div>
-
-  <div class="stage">
-    <div class="card" id="card">
-      <div class="face front">
-        <span class="tab" id="tabFront">No. 01</span>
-        <div class="front-content">
-          <div class="equation" id="eqFront"></div>
-          <ol class="prompt-list">
-            <li>Identify the value of the constants <i>a</i>, <i>h</i>, and <i>k</i>.</li>
-            <li>Describe the transformation caused by each constant.</li>
-            <li>Identify the vertex, the domain, and the range.</li>
-            <li>Graph the function.</li>
-          </ol>
-        </div>
-        <div class="hint">Click the card for the answer</div>
-      </div>
-      <div class="face back">
-        <span class="tab" id="tabBack">No. 01</span>
-        <div class="eq-recap" id="eqBack"></div>
-        <div class="body">
-          <div class="notes" id="notes"></div>
-          <div class="graph-col"><svg id="graph" viewBox="0 0 220 220"></svg></div>
-        </div>
-      </div>
+  <main>
+    <div class="card">
+      <div class="wave">∑</div>
+      <h1>Welcome to FosterMath</h1>
+      <p>Thanks for stopping by! FosterMath is just getting started — check back soon for math resources and more.</p>
+      <a class="button" href="mailto:you@example.com">Get in touch</a>
     </div>
-  </div>
-
-  <div class="controls">
-    <button class="nav-btn" id="prevBtn" title="Previous card">&#8592;</button>
-    <button class="nav-btn" id="shuffleBtn" title="Shuffle deck">&#128256;</button>
-    <button class="flip-btn" id="flipBtn">Flip card</button>
-    <button class="nav-btn" id="nextBtn" title="Next card">&#8594;</button>
-  </div>
-</div>
-
-<script>
-// ---- build the 44-card deck from (a, h, k) tuples ----
-const A1 = 2, A2 = 0.5, A3 = -3, A4 = -0.25; // the four "a" values used throughout
-
-const deckSpec = [
-  ["a alone",       [[A1,0,0],[A2,0,0],[A3,0,0],[A4,0,0]]],
-  ["h alone",       [[1,5,0],[1,-3,0]]],
-  ["k alone",       [[1,0,4],[1,0,-2]]],
-  ["a & h",         [[A1,3,0],[A1,-2,0],[A2,4,0],[A2,-1,0],[A3,1,0],[A3,-5,0],[A4,2,0],[A4,-3,0]]],
-  ["a & k",         [[A1,0,1],[A1,0,-4],[A2,0,3],[A2,0,-2],[A3,0,2],[A3,0,-1],[A4,0,5],[A4,0,-3]]],
-  ["h & k",         [[1,4,3],[1,2,-5],[1,-3,4],[1,-1,-2]]],
-  ["a, h & k",      [
-      [A1,3,1],[A1,3,-4],[A1,-2,5],[A1,-2,-1],
-      [A2,4,2],[A2,4,-3],[A2,-5,1],[A2,-5,-2],
-      [A3,1,4],[A3,1,-2],[A3,-4,3],[A3,-4,-5],
-      [A4,2,5],[A4,2,-1],[A4,-3,2],[A4,-3,-4]
-  ]]
-];
-
-const MAG_TEXT = {2:"2", 0.5:"1/2", 3:"3", 0.25:"1/4"};
-
-function fmt(n){
-  return (Math.round(n*100)/100).toString();
-}
-function magText(absA){
-  return MAG_TEXT[absA] !== undefined ? MAG_TEXT[absA] : fmt(absA);
-}
-function aValueText(a){
-  return `a = ${a<0 ? '\u2212' : ''}${magText(Math.abs(a))}`;
-}
-function aDescription(a){
-  const absA = Math.abs(a);
-  const mt = magText(absA);
-  let phrase = null;
-  if(absA > 1) phrase = `Vertical stretch by a factor of ${mt}`;
-  else if(absA < 1) phrase = `Vertical compression by a factor of ${mt}`;
-  if(a < 0){
-    phrase = phrase ? `${phrase}, and a reflection over the x-axis.` : `Reflection over the x-axis (since |a| = 1, there is no stretch or compression).`;
-  } else if(phrase){
-    phrase += ".";
-  }
-  return phrase;
-}
-function hValueText(h){
-  return `h = ${h<0 ? '\u2212'+fmt(Math.abs(h)) : fmt(h)}`;
-}
-function hDescription(h){
-  return h>0
-    ? `Horizontal shift to the right ${fmt(h)} unit${h===1?'':'s'}.`
-    : `Horizontal shift to the left ${fmt(Math.abs(h))} unit${Math.abs(h)===1?'':'s'}.`;
-}
-function kValueText(k){
-  return `k = ${k<0 ? '\u2212'+fmt(Math.abs(k)) : fmt(k)}`;
-}
-function kDescription(k){
-  return k>0
-    ? `Vertical shift up ${fmt(k)} unit${k===1?'':'s'}.`
-    : `Vertical shift down ${fmt(Math.abs(k))} unit${Math.abs(k)===1?'':'s'}.`;
-}
-function coeffText(a){
-  if(a === 1) return "";
-  if(a === -1) return "\u2212";
-  return (a<0 ? '\u2212' : '') + magText(Math.abs(a));
-}
-const FRAC_MAP = { 0.5:{n:1,d:2}, 0.25:{n:1,d:4}, 0.3333333333333333:{n:1,d:3} };
-function coeffHTML(a){
-  const absA = Math.abs(a);
-  const sign = a < 0 ? '\u2212' : '';
-  if(absA === 1) return sign;
-  if(FRAC_MAP[absA]){
-    const f = FRAC_MAP[absA];
-    return `${sign}<span class="frac"><span class="num">${f.n}</span><span class="den">${f.d}</span></span>`;
-  }
-  return `${sign}${fmt(absA)}`;
-}
-function innerHTML_(h){
-  if(h===0) return `<i>x</i>`;
-  return h>0 ? `<i>x</i> \u2212 ${fmt(h)}` : `<i>x</i> + ${fmt(Math.abs(h))}`;
-}
-function tailHTML(k){
-  if(k===0) return "";
-  return k>0 ? ` + ${fmt(k)}` : ` \u2212 ${fmt(Math.abs(k))}`;
-}
-function buildEq(a,h,k){
-  return `<i>y</i> = ${coeffHTML(a)}<span class="absbar">|</span>${innerHTML_(h)}<span class="absbar">|</span>${tailHTML(k)}`;
-}
-function buildParts(a,h,k){
-  const parts = [];
-  if(a !== 1) parts.push(["a", aValueText(a), aDescription(a)]);
-  if(h !== 0) parts.push(["h", hValueText(h), hDescription(h)]);
-  if(k !== 0) parts.push(["k", kValueText(k), kDescription(k)]);
-  return parts;
-}
-
-let cards = [];
-deckSpec.forEach(([section, tuples]) => {
-  tuples.forEach(([a,h,k]) => {
-    cards.push({ section, a, h, k, eq: buildEq(a,h,k), parts: buildParts(a,h,k) });
-  });
-});
-const orderedCards = cards.slice(); // keep the original, section-grouped order
-
-function shuffle(arr){
-  const a = arr.slice();
-  for(let i = a.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-let idx = 0;
-let flipped = false;
-
-const cardEl = document.getElementById('card');
-const eqFront = document.getElementById('eqFront');
-const eqBack = document.getElementById('eqBack');
-const notesEl = document.getElementById('notes');
-const tabFront = document.getElementById('tabFront');
-const tabBack = document.getElementById('tabBack');
-const counter = document.getElementById('counter');
-const svg = document.getElementById('graph');
-
-function drawGraph(a,h,k){
-  const SZ = 220, C = 110, UNIT = 12, BOUND = 8.3;
-  const toX = x => C + x*UNIT;
-  const toY = y => C - y*UNIT;
-  let parts = [`<defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#23302c"/>
-    </marker>
-  </defs>`];
-
-  for(let i=-8;i<=8;i+=1){
-    const isAxis = i===0;
-    const isMajor = i%3===0;
-    const stroke = isAxis ? "#8a9a92" : (isMajor ? "#c9d6cf" : "#e3ebe6");
-    const w = isAxis ? 1.2 : 0.6;
-    parts.push(`<line x1="${toX(i)}" y1="0" x2="${toX(i)}" y2="${SZ}" stroke="${stroke}" stroke-width="${w}"/>`);
-    parts.push(`<line x1="0" y1="${toY(i)}" x2="${SZ}" y2="${toY(i)}" stroke="${stroke}" stroke-width="${w}"/>`);
-  }
-
-  function clip(x0,y0,slope,dir){
-    let xEdge = dir>0 ? BOUND : -BOUND;
-    let yAtEdge = y0 + slope*(xEdge-x0);
-    if(Math.abs(yAtEdge) <= BOUND){
-      return [xEdge, yAtEdge];
-    } else {
-      let yEdge = yAtEdge>0 ? BOUND : -BOUND;
-      let xAtEdge = slope===0 ? xEdge : x0 + (yEdge-y0)/slope;
-      return [xAtEdge, yEdge];
-    }
-  }
-  const right = clip(h,k,a,1);
-  const left = clip(h,k,-a,-1);
-
-  parts.push(`<line x1="${toX(h)}" y1="${toY(k)}" x2="${toX(right[0])}" y2="${toY(right[1])}" stroke="#23302c" stroke-width="2.4" stroke-linecap="round" marker-end="url(#arrow)"/>`);
-  parts.push(`<line x1="${toX(h)}" y1="${toY(k)}" x2="${toX(left[0])}" y2="${toY(left[1])}" stroke="#23302c" stroke-width="2.4" stroke-linecap="round" marker-end="url(#arrow)"/>`);
-  parts.push(`<circle cx="${toX(h)}" cy="${toY(k)}" r="4.2" fill="#d59a3c" stroke="#23302c" stroke-width="1"/>`);
-
-  svg.innerHTML = parts.join("");
-}
-
-function render(){
-  const c = cards[idx];
-  eqFront.innerHTML = c.eq;
-  eqBack.innerHTML = c.eq;
-  const num = String(idx+1).padStart(2,'0');
-  tabFront.textContent = `No. ${num}`;
-  tabBack.textContent = `No. ${num}`;
-  counter.textContent = `${idx+1} / ${cards.length}`;
-
-  notesEl.innerHTML = (c.parts.length ? c.parts.map(p => `
-    <div class="const-row">
-      <div class="const-letter">${p[0]}</div>
-      <div class="const-text">
-        <span class="value">${p[1]}</span>
-        <span class="desc">${p[2]}</span>
-      </div>
-    </div>
-  `).join("") : `<div class="const-row"><div class="const-text"><span class="desc">This is the parent function &mdash; no transformation.</span></div></div>`)
-    + `<div class="facts">
-    <div class="vertex-line">Vertex: <b>(${fmt(c.h)}, ${fmt(c.k)})</b></div>
-    <div class="vertex-line">Domain: <b>(&minus;&infin;, &infin;)</b></div>
-    <div class="vertex-line">Range: <b>${c.a>0 ? `[${fmt(c.k)}, &infin;)` : `(&minus;&infin;, ${fmt(c.k)}]`}</b></div>
-  </div>`;
-
-  drawGraph(c.a, c.h, c.k);
-
-  cardEl.classList.toggle('flipped', flipped);
-}
-
-function flip(){
-  flipped = !flipped;
-  cardEl.classList.toggle('flipped', flipped);
-}
-
-function go(delta){
-  idx = (idx + delta + cards.length) % cards.length;
-  flipped = false;
-  render();
-}
-
-cardEl.addEventListener('click', flip);
-document.getElementById('flipBtn').addEventListener('click', (e)=>{ e.stopPropagation(); flip(); });
-document.getElementById('prevBtn').addEventListener('click', (e)=>{ e.stopPropagation(); go(-1); });
-document.getElementById('nextBtn').addEventListener('click', (e)=>{ e.stopPropagation(); go(1); });
-document.getElementById('shuffleBtn').addEventListener('click', (e)=>{
-  e.stopPropagation();
-  cards = shuffle(orderedCards);
-  idx = 0;
-  flipped = false;
-  render();
-});
-document.addEventListener('keydown', (e)=>{
-  if(e.key==='ArrowRight') go(1);
-  if(e.key==='ArrowLeft') go(-1);
-  if(e.key===' '){ e.preventDefault(); flip(); }
-});
-
-cards = shuffle(orderedCards);
-render();
-</script>
+  </main>
+  <footer>
+    &copy; <span id="year"></span> M. Foster · FosterMath
+  </footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
