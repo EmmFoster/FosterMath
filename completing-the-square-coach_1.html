@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+<title>Completing the Square Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@500;600;700&display=swap">
+<style>
+:root{
+  --paper:#EEF2EF; --card:#FFFFFF; --ink:#17222C; --muted:#56646E; --line:#D3DCD7;
+  --grid:rgba(27,110,122,.07); --accent:#1B6E7A; --accent-ink:#FFFFFF; --accent-soft:#DDEEEF;
+  --hl:#B86A00; --hl-soft:#FFF1D9; --done:#2F7D4A;
+  --display:"Lexend",system-ui,sans-serif; --body:"Atkinson Hyperlegible",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+    --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+    --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+  --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+  --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.35rem,3.5vw,1.8rem);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);font-size:.95rem;margin:0}
+.picker{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.picker .lbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+.chip{font-family:var(--display);font-weight:600;font-size:1rem;min-width:46px;height:42px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip .tick{color:var(--done);font-size:.85rem}
+.chip[aria-current="true"] .tick{color:var(--accent-ink)}
+button:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+
+.phases{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.phase{display:flex;flex-direction:column;gap:6px;font-size:.74rem;color:var(--muted);line-height:1.25}
+.phase .bar{height:6px;border-radius:3px;background:var(--line)}
+.phase.past .bar{background:var(--accent);opacity:.45}
+.phase.now .bar{background:var(--accent)}
+.phase.now{color:var(--ink);font-weight:700}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,32px);display:flex;flex-direction:column;gap:16px}
+.eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(1.25rem,3vw,1.6rem);margin:0;text-wrap:balance}
+.note{margin:0;max-width:62ch}
+.note b{color:var(--hl)}
+.math{border-radius:12px;padding:22px 16px;min-height:110px;display:flex;align-items:center;justify-content:center;overflow-x:auto;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;font-size:1.25rem}
+.math mjx-container{margin:0!important}
+.math.big{font-size:1.7rem;min-height:150px}
+.ref{font-size:.88rem;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ref .m{font-size:1rem;color:var(--ink)}
+.answer{border:2px solid var(--done);background:transparent}
+.nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-weight:600;font-size:1.05rem;border-radius:12px;padding:12px 22px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);min-width:140px}
+.btn.primary:hover{filter:brightness(1.07)}
+.kbd{font-size:.8rem;color:var(--muted);text-align:center}
+.hlkey{display:inline-block;background:var(--hl-soft);color:var(--hl);border-radius:6px;padding:0 6px;font-weight:700}
+@media (max-width:560px){
+  .phases{grid-template-columns:repeat(3,1fr);row-gap:10px}
+  .math{font-size:1.05rem}
+  .math.big{font-size:1.4rem}
+  .btn{flex:1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .card.enter{animation:rise .22s ease-out}
+  @keyframes rise{from{transform:translateY(6px);opacity:.6}to{transform:none;opacity:1}}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>Completing the Square Coach</h1>
+      <p class="sub">HW 4.5 · Problems 3–12</p>
+    </div>
+    <div class="picker" id="picker" role="group" aria-label="Choose a problem">
+      <span class="lbl">Problem</span>
+    </div>
+  </header>
+
+  <div class="phases" id="phases" aria-hidden="true"></div>
+
+  <main class="card" id="card" aria-live="polite">
+    <div class="eyebrow"><span id="eyebrowL"></span><span id="eyebrowR"></span></div>
+    <h2 id="title"></h2>
+    <p class="note" id="note"></p>
+    <div class="math" id="math"></div>
+    <div class="ref" id="ref"></div>
+  </main>
+
+  <div class="nav">
+    <button class="btn" id="back" type="button">← Back</button>
+    <button class="btn primary" id="next" type="button">Next →</button>
+  </div>
+  <p class="kbd">Tip: you can also use the ← and → arrow keys. <span class="hlkey">Orange</span> marks the number you just added and subtracted.</p>
+</div>
+
+<script>
+window.MathJax = {
+  loader: { load: ['[tex]/color'] },
+  tex: { packages: {'[+]': ['color']} },
+  svg: { fontCache: 'global' },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<script>
+const H = s => "\\color{#D98A14}{" + s.raw[0] + "}";
+const PHASES = ["Set up","Regroup","Factor out a","Complete the square","Factor the trinomial","Square root property"];
+
+// Each step: phase index, title, note (HTML), tex
+const P = {
+ 3:{eq:String.raw`-2x^2 - 6x - 5 = 0`, v:"x", steps:[
+  [0,"Check the x terms",`The <i>x²</i> and <i>x</i> terms are already on the same side, so nothing needs to move.`,String.raw`-2x^2 - 6x - 5 = 0`],
+  [1,"Regroup the x terms inside parentheses",`Put the <i>x²</i> and <i>x</i> terms together. The constant stays outside.`,String.raw`(-2x^2 - 6x) - 5 = 0`],
+  [2,"Factor −2 out of the parentheses",`Divide each term inside by −2: −2x² → x², −6x → 3x.`,String.raw`-2(x^2 + 3x) - 5 = 0`],
+  [3,"Find the number that completes the square",`Half of 3 is 3/2. Square it.`,String.raw`\left(\frac{3}{2}\right)^2 = \frac{9}{4}`],
+  [3,"Add it inside, subtract it outside",`Add <b>9/4</b> inside. It gets multiplied by −2, so subtract <b>−2 · 9/4</b> outside. Subtracting −9/2 is the same as adding 9/2.`,String.raw`-2\left(x^2 + 3x + ${H`\tfrac{9}{4}`}\right) - 5 - ${H`\left(-2\cdot\tfrac{9}{4}\right)`} = 0`],
+  [4,"Factor the perfect square trinomial",`x² + 3x + 9/4 = (x + 3/2)². Constants: −5 + 9/2 = −10/2 + 9/2 = −1/2.`,String.raw`-2\left(x + \frac{3}{2}\right)^2 - \frac{1}{2} = 0`],
+  [5,"Isolate the square",`Add 1/2 to both sides.`,String.raw`-2\left(x + \frac{3}{2}\right)^2 = \frac{1}{2}`],
+  [5,"Divide by −2",`1/2 ÷ (−2) = −1/4. A negative means complex solutions.`,String.raw`\left(x + \frac{3}{2}\right)^2 = -\frac{1}{4}`],
+  [5,"Take the square root of both sides",`Use √−1 = i, and √(1/4) = 1/2.`,String.raw`x + \frac{3}{2} = \pm\sqrt{-\frac{1}{4}} = \pm\frac{i}{2}`],
+  [5,"Solve for x",`Subtract 3/2 from both sides and write over one denominator.`,String.raw`x = -\frac{3}{2} \pm \frac{i}{2}`]
+ ], ans:String.raw`x = \frac{-3 \pm i}{2}`},
+
+ 4:{eq:String.raw`\frac{3}{4}x^2 - \frac{1}{2}x = 2`, v:"x", steps:[
+  [0,"Check the x terms",`The <i>x²</i> and <i>x</i> terms are already on the same side, so nothing needs to move. The constant 2 stays on the right.`,String.raw`\frac{3}{4}x^2 - \frac{1}{2}x = 2`],
+  [1,"Regroup the x terms inside parentheses",`Put the <i>x²</i> and <i>x</i> terms together in parentheses.`,String.raw`\left(\frac{3}{4}x^2 - \frac{1}{2}x\right) = 2`],
+  [2,"Factor 3/4 out of the parentheses",`Divide each term inside by 3/4, which means multiplying by 4/3: (3/4)x² → x², and −(1/2)x · 4/3 = −(2/3)x.`,String.raw`\frac{3}{4}\left(x^2 - \frac{2}{3}x\right) = 2`],
+  [3,"Find the number that completes the square",`Half of −2/3 is −1/3. Square it.`,String.raw`\left(\frac{1}{2}\cdot\left(-\frac{2}{3}\right)\right)^2 = \left(-\frac{1}{3}\right)^2 = \frac{1}{9}`],
+  [3,"Add it inside, subtract it outside",`Add <b>1/9</b> inside. It gets multiplied by 3/4, so subtract <b>3/4 · 1/9 = 1/12</b> outside, on the same side.`,String.raw`\frac{3}{4}\left(x^2 - \frac{2}{3}x + ${H`\tfrac{1}{9}`}\right) - ${H`\tfrac{3}{4}\cdot\tfrac{1}{9}`} = 2`],
+  [4,"Factor the perfect square trinomial",`x² − (2/3)x + 1/9 = (x − 1/3)², and 3/4 · 1/9 = 3/36 = 1/12.`,String.raw`\frac{3}{4}\left(x - \frac{1}{3}\right)^2 - \frac{1}{12} = 2`],
+  [5,"Isolate the square",`Add 1/12 to both sides: 2 + 1/12 = 24/12 + 1/12 = 25/12.`,String.raw`\frac{3}{4}\left(x - \frac{1}{3}\right)^2 = \frac{25}{12}`],
+  [5,"Divide by 3/4",`Dividing by 3/4 is the same as multiplying by 4/3: 25/12 · 4/3 = 100/36 = 25/9.`,String.raw`\left(x - \frac{1}{3}\right)^2 = \frac{25}{9}`],
+  [5,"Take the square root of both sides",`√25 = 5 and √9 = 3. Remember ±.`,String.raw`x - \frac{1}{3} = \pm\frac{5}{3}`],
+  [5,"Solve for x",`Add 1/3 to both sides, then work out each sign.`,String.raw`x = \frac{1}{3} + \frac{5}{3} = \frac{6}{3} \quad\text{or}\quad x = \frac{1}{3} - \frac{5}{3} = -\frac{4}{3}`]
+ ], ans:String.raw`x = 2 \quad\text{or}\quad x = -\frac{4}{3}`},
+
+ 5:{eq:String.raw`b^2 - 13 = 12b`, v:"b", steps:[
+  [0,"Put the b terms on the same side",`<i>b²</i> is on the left and <i>12b</i> is on the right. Subtract <i>12b</i> from both sides so both <i>b</i> terms are on the left. The constant −13 stays where it is.`,String.raw`b^2 - 12b - 13 = 0`],
+  [1,"Regroup the b terms inside parentheses",`Put the <i>b²</i> and <i>b</i> terms together in parentheses. The constant stays outside.`,String.raw`(b^2 - 12b) - 13 = 0`],
+  [2,"Factor the leading coefficient",`The coefficient of <i>b²</i> is 1, so there is nothing to factor out. Move on.`,String.raw`1\,(b^2 - 12b) - 13 = 0`],
+  [3,"Find the number that completes the square",`Take half of the <i>b</i>-coefficient inside the parentheses, then square it.`,String.raw`\left(\frac{-12}{2}\right)^2 = (-6)^2 = 36`],
+  [3,"Add it inside, subtract it outside",`Add <b>36</b> inside the parentheses. To keep the equation balanced, subtract <b>1 · 36 = 36</b> on the same side, outside the parentheses.`,String.raw`(b^2 - 12b + ${H`36`}) - 13 - ${H`36`} = 0`],
+  [4,"Factor the perfect square trinomial",`b² − 12b + 36 = (b − 6)². Combine the constants: −13 − 36 = −49.`,String.raw`(b - 6)^2 - 49 = 0`],
+  [5,"Isolate the square",`Add 49 to both sides.`,String.raw`(b - 6)^2 = 49`],
+  [5,"Take the square root of both sides",`Remember the ± sign: both +7 and −7 square to 49.`,String.raw`b - 6 = \pm\sqrt{49} = \pm 7`],
+  [5,"Solve for b",`Add 6 to both sides, then work out each sign separately.`,String.raw`b = 6 \pm 7 \quad\Rightarrow\quad b = 6+7 \;\text{ or }\; b = 6-7`]
+ ], ans:String.raw`b = 13 \quad\text{or}\quad b = -1`},
+
+ 6:{eq:String.raw`x^2 = -86 + 9x`, v:"x", steps:[
+  [0,"Put the x terms on the same side",`<i>x²</i> is on the left and <i>9x</i> is on the right. Subtract <i>9x</i> from both sides so both <i>x</i> terms are on the left. The constant −86 stays on the right.`,String.raw`x^2 - 9x = -86`],
+  [1,"Regroup the x terms inside parentheses",`Put the <i>x²</i> and <i>x</i> terms together in parentheses.`,String.raw`(x^2 - 9x) = -86`],
+  [2,"Factor the leading coefficient",`The coefficient of <i>x²</i> is 1, so there is nothing to factor out.`,String.raw`1\,(x^2 - 9x) = -86`],
+  [3,"Find the number that completes the square",`Half of −9 is −9/2. Square it.`,String.raw`\left(\frac{-9}{2}\right)^2 = \frac{81}{4}`],
+  [3,"Add it inside, subtract it outside",`Add <b>81/4</b> inside the parentheses and subtract <b>1 · 81/4</b> outside, on the same side, to stay balanced.`,String.raw`\left(x^2 - 9x + ${H`\tfrac{81}{4}`}\right) - ${H`\tfrac{81}{4}`} = -86`],
+  [4,"Factor the perfect square trinomial",`x² − 9x + 81/4 = (x − 9/2)².`,String.raw`\left(x - \frac{9}{2}\right)^2 - \frac{81}{4} = -86`],
+  [5,"Isolate the square",`Add 81/4 to both sides. Write −86 as −344/4: −344/4 + 81/4 = −263/4. A square equal to a negative number means the solutions are complex.`,String.raw`\left(x - \frac{9}{2}\right)^2 = -\frac{263}{4}`],
+  [5,"Take the square root of both sides",`Use √−1 = i, and √4 = 2.`,String.raw`x - \frac{9}{2} = \pm\sqrt{-\frac{263}{4}} = \pm\frac{i\sqrt{263}}{2}`],
+  [5,"Solve for x",`Add 9/2 to both sides and write over one denominator.`,String.raw`x = \frac{9}{2} \pm \frac{i\sqrt{263}}{2}`]
+ ], ans:String.raw`x = \frac{9 \pm i\sqrt{263}}{2}`},
+
+ 7:{eq:String.raw`9m^2 + 18m - 23 = 0`, v:"m", steps:[
+  [0,"Check the m terms",`The <i>m²</i> and <i>m</i> terms are already on the same side, so nothing needs to move.`,String.raw`9m^2 + 18m - 23 = 0`],
+  [1,"Regroup the m terms inside parentheses",`Put the <i>m²</i> and <i>m</i> terms together. The constant stays outside.`,String.raw`(9m^2 + 18m) - 23 = 0`],
+  [2,"Factor 9 out of the parentheses",`Divide each term inside by 9: 9m² → m², 18m → 2m.`,String.raw`9(m^2 + 2m) - 23 = 0`],
+  [3,"Find the number that completes the square",`Half of 2 is 1. Square it.`,String.raw`\left(\frac{2}{2}\right)^2 = 1^2 = 1`],
+  [3,"Add it inside, subtract it outside",`Add <b>1</b> inside. Because everything inside is multiplied by 9, you really added 9 · 1, so subtract <b>9 · 1 = 9</b> outside.`,String.raw`9(m^2 + 2m + ${H`1`}) - 23 - ${H`9\cdot 1`} = 0`],
+  [4,"Factor the perfect square trinomial",`m² + 2m + 1 = (m + 1)². Combine the constants: −23 − 9 = −32.`,String.raw`9(m + 1)^2 - 32 = 0`],
+  [5,"Isolate the square",`Add 32 to both sides.`,String.raw`9(m + 1)^2 = 32`],
+  [5,"Divide by 9",`Divide both sides by 9 so the square is alone.`,String.raw`(m + 1)^2 = \frac{32}{9}`],
+  [5,"Take the square root of both sides",`Remember ±. Simplify: √32 = √16 · √2 = 4√2, and √9 = 3.`,String.raw`m + 1 = \pm\sqrt{\frac{32}{9}} = \pm\frac{4\sqrt{2}}{3}`],
+  [5,"Solve for m",`Subtract 1 from both sides and write over one denominator (−1 = −3/3).`,String.raw`m = -1 \pm \frac{4\sqrt{2}}{3}`]
+ ], ans:String.raw`m = \frac{-3 \pm 4\sqrt{2}}{3}`},
+
+ 8:{eq:String.raw`4m^2 - 8m + 25 = 0`, v:"m", steps:[
+  [0,"Check the m terms",`The <i>m²</i> and <i>m</i> terms are already on the same side, so nothing needs to move.`,String.raw`4m^2 - 8m + 25 = 0`],
+  [1,"Regroup the m terms inside parentheses",`Put the <i>m²</i> and <i>m</i> terms together. The constant stays outside.`,String.raw`(4m^2 - 8m) + 25 = 0`],
+  [2,"Factor 4 out of the parentheses",`Divide each term inside by 4: 4m² → m², −8m → −2m.`,String.raw`4(m^2 - 2m) + 25 = 0`],
+  [3,"Find the number that completes the square",`Half of −2 is −1. Square it.`,String.raw`\left(\frac{-2}{2}\right)^2 = (-1)^2 = 1`],
+  [3,"Add it inside, subtract it outside",`Add <b>1</b> inside. It gets multiplied by 4, so subtract <b>4 · 1 = 4</b> outside.`,String.raw`4(m^2 - 2m + ${H`1`}) + 25 - ${H`4\cdot 1`} = 0`],
+  [4,"Factor the perfect square trinomial",`m² − 2m + 1 = (m − 1)². Combine the constants: 25 − 4 = 21.`,String.raw`4(m - 1)^2 + 21 = 0`],
+  [5,"Isolate the square",`Subtract 21 from both sides.`,String.raw`4(m - 1)^2 = -21`],
+  [5,"Divide by 4",`The square equals a negative number, so the solutions will be complex.`,String.raw`(m - 1)^2 = -\frac{21}{4}`],
+  [5,"Take the square root of both sides",`Use √−1 = i, and √4 = 2.`,String.raw`m - 1 = \pm\sqrt{-\frac{21}{4}} = \pm\frac{i\sqrt{21}}{2}`],
+  [5,"Solve for m",`Add 1 to both sides and write over one denominator (1 = 2/2).`,String.raw`m = 1 \pm \frac{i\sqrt{21}}{2}`]
+ ], ans:String.raw`m = \frac{2 \pm i\sqrt{21}}{2}`},
+
+ 9:{eq:String.raw`-28 = -2a^2 - a`, v:"a", steps:[
+  [0,"Check the a terms",`The <i>a²</i> and <i>a</i> terms are already on the same side, so nothing needs to move. It is easier to read with the <i>a</i> terms on the left, so just switch the two sides.`,String.raw`-2a^2 - a = -28`],
+  [1,"Regroup the a terms inside parentheses",`Put the <i>a²</i> and <i>a</i> terms together in parentheses.`,String.raw`(-2a^2 - a) = -28`],
+  [2,"Factor −2 out of the parentheses",`Divide each term inside by −2: −2a² → a², −a → ½a.`,String.raw`-2\left(a^2 + \frac{1}{2}a\right) = -28`],
+  [3,"Find the number that completes the square",`Half of ½ is ¼. Square it.`,String.raw`\left(\frac{1}{2}\cdot\frac{1}{2}\right)^2 = \left(\frac{1}{4}\right)^2 = \frac{1}{16}`],
+  [3,"Add it inside, subtract it outside",`Add <b>1/16</b> inside. It gets multiplied by −2, so subtract <b>−2 · 1/16</b> outside. Subtracting −2/16 is the same as adding 1/8.`,String.raw`-2\left(a^2 + \frac{1}{2}a + ${H`\tfrac{1}{16}`}\right) - ${H`\left(-2\cdot\tfrac{1}{16}\right)`} = -28`],
+  [4,"Factor the perfect square trinomial",`a² + ½a + 1/16 = (a + ¼)², and −(−2 · 1/16) = +1/8.`,String.raw`-2\left(a + \frac{1}{4}\right)^2 + \frac{1}{8} = -28`],
+  [5,"Isolate the square",`Subtract 1/8 from both sides: −28 − 1/8 = −224/8 − 1/8 = −225/8.`,String.raw`-2\left(a + \frac{1}{4}\right)^2 = -\frac{225}{8}`],
+  [5,"Divide by −2",`−225/8 ÷ (−2) = 225/16.`,String.raw`\left(a + \frac{1}{4}\right)^2 = \frac{225}{16}`],
+  [5,"Take the square root of both sides",`√225 = 15 and √16 = 4. Remember ±.`,String.raw`a + \frac{1}{4} = \pm\frac{15}{4}`],
+  [5,"Solve for a",`Subtract ¼ from both sides, then work out each sign.`,String.raw`a = -\frac{1}{4} + \frac{15}{4} = \frac{14}{4} \quad\text{or}\quad a = -\frac{1}{4} - \frac{15}{4} = -\frac{16}{4}`]
+ ], ans:String.raw`a = \frac{7}{2} \quad\text{or}\quad a = -4`},
+
+ 10:{eq:String.raw`5x = 51 - 4x^2`, v:"x", steps:[
+  [0,"Put the x terms on the same side",`<i>5x</i> is on the left and <i>−4x²</i> is on the right. Add <i>4x²</i> to both sides so both <i>x</i> terms are on the left. The constant 51 stays on the right.`,String.raw`4x^2 + 5x = 51`],
+  [1,"Regroup the x terms inside parentheses",`Put the <i>x²</i> and <i>x</i> terms together in parentheses.`,String.raw`(4x^2 + 5x) = 51`],
+  [2,"Factor 4 out of the parentheses",`Divide each term inside by 4: 4x² → x², 5x → (5/4)x.`,String.raw`4\left(x^2 + \frac{5}{4}x\right) = 51`],
+  [3,"Find the number that completes the square",`Half of 5/4 is 5/8. Square it.`,String.raw`\left(\frac{1}{2}\cdot\frac{5}{4}\right)^2 = \left(\frac{5}{8}\right)^2 = \frac{25}{64}`],
+  [3,"Add it inside, subtract it outside",`Add <b>25/64</b> inside. It gets multiplied by 4, so subtract <b>4 · 25/64 = 25/16</b> outside, on the same side.`,String.raw`4\left(x^2 + \frac{5}{4}x + ${H`\tfrac{25}{64}`}\right) - ${H`4\cdot\tfrac{25}{64}`} = 51`],
+  [4,"Factor the perfect square trinomial",`x² + (5/4)x + 25/64 = (x + 5/8)², and 4 · 25/64 = 25/16.`,String.raw`4\left(x + \frac{5}{8}\right)^2 - \frac{25}{16} = 51`],
+  [5,"Isolate the square",`Add 25/16 to both sides: 51 + 25/16 = 816/16 + 25/16 = 841/16.`,String.raw`4\left(x + \frac{5}{8}\right)^2 = \frac{841}{16}`],
+  [5,"Divide by 4",`841/16 ÷ 4 = 841/64.`,String.raw`\left(x + \frac{5}{8}\right)^2 = \frac{841}{64}`],
+  [5,"Take the square root of both sides",`√841 = 29 and √64 = 8. Remember ±.`,String.raw`x + \frac{5}{8} = \pm\frac{29}{8}`],
+  [5,"Solve for x",`Subtract 5/8 from both sides, then work out each sign.`,String.raw`x = -\frac{5}{8} + \frac{29}{8} = \frac{24}{8} \quad\text{or}\quad x = -\frac{5}{8} - \frac{29}{8} = -\frac{34}{8}`]
+ ], ans:String.raw`x = 3 \quad\text{or}\quad x = -\frac{17}{4}`},
+
+ 11:{eq:String.raw`0 = -8 - 6v^2 - 10v`, v:"v", steps:[
+  [0,"Check the v terms",`The <i>v²</i> and <i>v</i> terms are already on the same side, so nothing needs to move. It is easier to read with them on the left, so switch the two sides and write the terms in order.`,String.raw`-6v^2 - 10v - 8 = 0`],
+  [1,"Regroup the v terms inside parentheses",`Put the <i>v²</i> and <i>v</i> terms together. The constant stays outside.`,String.raw`(-6v^2 - 10v) - 8 = 0`],
+  [2,"Factor −6 out of the parentheses",`Divide each term inside by −6: −6v² → v², −10v → (10/6)v = (5/3)v.`,String.raw`-6\left(v^2 + \frac{5}{3}v\right) - 8 = 0`],
+  [3,"Find the number that completes the square",`Half of 5/3 is 5/6. Square it.`,String.raw`\left(\frac{1}{2}\cdot\frac{5}{3}\right)^2 = \left(\frac{5}{6}\right)^2 = \frac{25}{36}`],
+  [3,"Add it inside, subtract it outside",`Add <b>25/36</b> inside. It gets multiplied by −6, so subtract <b>−6 · 25/36</b> outside. Subtracting −25/6 is the same as adding 25/6.`,String.raw`-6\left(v^2 + \frac{5}{3}v + ${H`\tfrac{25}{36}`}\right) - 8 - ${H`\left(-6\cdot\tfrac{25}{36}\right)`} = 0`],
+  [4,"Factor the perfect square trinomial",`v² + (5/3)v + 25/36 = (v + 5/6)². Constants: −8 + 25/6 = −48/6 + 25/6 = −23/6.`,String.raw`-6\left(v + \frac{5}{6}\right)^2 - \frac{23}{6} = 0`],
+  [5,"Isolate the square",`Add 23/6 to both sides.`,String.raw`-6\left(v + \frac{5}{6}\right)^2 = \frac{23}{6}`],
+  [5,"Divide by −6",`23/6 ÷ (−6) = −23/36. A negative means complex solutions.`,String.raw`\left(v + \frac{5}{6}\right)^2 = -\frac{23}{36}`],
+  [5,"Take the square root of both sides",`Use √−1 = i, and √36 = 6.`,String.raw`v + \frac{5}{6} = \pm\frac{i\sqrt{23}}{6}`],
+  [5,"Solve for v",`Subtract 5/6 from both sides and write over one denominator.`,String.raw`v = -\frac{5}{6} \pm \frac{i\sqrt{23}}{6}`]
+ ], ans:String.raw`v = \frac{-5 \pm i\sqrt{23}}{6}`},
+
+ 12:{eq:String.raw`6 + 20x = -4x^2`, v:"x", steps:[
+  [0,"Put the x terms on the same side",`<i>20x</i> is on the left and <i>−4x²</i> is on the right. Add <i>4x²</i> to both sides so both <i>x</i> terms are on the left, and write the terms in order. The constant 6 stays on the left.`,String.raw`4x^2 + 20x + 6 = 0`],
+  [1,"Regroup the x terms inside parentheses",`Put the <i>x²</i> and <i>x</i> terms together. The constant stays outside.`,String.raw`(4x^2 + 20x) + 6 = 0`],
+  [2,"Factor 4 out of the parentheses",`Divide each term inside by 4: 4x² → x², 20x → 5x.`,String.raw`4(x^2 + 5x) + 6 = 0`],
+  [3,"Find the number that completes the square",`Half of 5 is 5/2. Square it.`,String.raw`\left(\frac{5}{2}\right)^2 = \frac{25}{4}`],
+  [3,"Add it inside, subtract it outside",`Add <b>25/4</b> inside. It gets multiplied by 4, so subtract <b>4 · 25/4 = 25</b> outside.`,String.raw`4\left(x^2 + 5x + ${H`\tfrac{25}{4}`}\right) + 6 - ${H`4\cdot\tfrac{25}{4}`} = 0`],
+  [4,"Factor the perfect square trinomial",`x² + 5x + 25/4 = (x + 5/2)². Combine the constants: 6 − 25 = −19.`,String.raw`4\left(x + \frac{5}{2}\right)^2 - 19 = 0`],
+  [5,"Isolate the square",`Add 19 to both sides.`,String.raw`4\left(x + \frac{5}{2}\right)^2 = 19`],
+  [5,"Divide by 4",`Divide both sides by 4.`,String.raw`\left(x + \frac{5}{2}\right)^2 = \frac{19}{4}`],
+  [5,"Take the square root of both sides",`√4 = 2. 19 has no perfect-square factor, so √19 stays. Remember ±.`,String.raw`x + \frac{5}{2} = \pm\frac{\sqrt{19}}{2}`],
+  [5,"Solve for x",`Subtract 5/2 from both sides and write over one denominator.`,String.raw`x = -\frac{5}{2} \pm \frac{\sqrt{19}}{2}`]
+ ], ans:String.raw`x = \frac{-5 \pm \sqrt{19}}{2}`}
+};
+const IDS = Object.keys(P).map(Number);
+
+let cur = 5, step = 0; // step 0 = problem page, 1..n = steps, n+1 = answer
+let done = new Set();
+try{ const s = JSON.parse(localStorage.getItem("cts-done")||"[]"); s.forEach(n=>done.add(n)); }catch(e){}
+function saveDone(){ try{ localStorage.setItem("cts-done", JSON.stringify([...done])); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+const picker = $("picker"), phasesEl = $("phases");
+
+IDS.forEach(n=>{
+  const b = document.createElement("button");
+  b.className="chip"; b.type="button"; b.id="chip-"+n; b.dataset.n=n;
+  b.addEventListener("click",()=>go(n,0));
+  picker.appendChild(b);
+});
+PHASES.forEach((p,i)=>{
+  const d=document.createElement("div"); d.className="phase"; d.id="ph"+i;
+  d.innerHTML=`<div class="bar"></div><span>${p}</span>`; phasesEl.appendChild(d);
+});
+
+function typeset(els){
+  if(window.MathJax && MathJax.typesetPromise){
+    MathJax.startup.promise.then(()=>{ MathJax.typesetClear(els); return MathJax.typesetPromise(els); }).catch(()=>{});
+  }
+}
+
+function render(){
+  const pr = P[cur], n = pr.steps.length;
+  IDS.forEach(k=>{
+    const b=$("chip-"+k);
+    b.setAttribute("aria-current", k===cur ? "true":"false");
+    b.innerHTML = k + (done.has(k) ? '<span class="tick" aria-label="done">✓</span>' : '');
+  });
+  const card=$("card"); card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
+  const math=$("math"), ref=$("ref");
+  math.className="math";
+  let phase=-1;
+
+  if(step===0){
+    $("eyebrowL").textContent=`Problem ${cur}`;
+    $("eyebrowR").textContent=`${n} steps`;
+    $("title").textContent="Solve by completing the square";
+    $("note").innerHTML=`Try the first step on paper, then press <b style="color:var(--accent)">Next</b> to check it.`;
+    math.classList.add("big");
+    math.innerHTML=`\\[${pr.eq}\\]`;
+    ref.innerHTML="";
+  } else if(step<=n){
+    const [ph,t,note,tex]=pr.steps[step-1]; phase=ph;
+    $("eyebrowL").textContent=`Problem ${cur} · ${PHASES[ph]}`;
+    $("eyebrowR").textContent=`Step ${step} of ${n}`;
+    $("title").textContent=t;
+    $("note").innerHTML=note;
+    math.innerHTML=`\\[${tex}\\]`;
+    ref.innerHTML=`Original equation: <span class="m">\\(${pr.eq}\\)</span>`;
+  } else {
+    phase=6;
+    $("eyebrowL").textContent=`Problem ${cur} · Solved`;
+    $("eyebrowR").textContent=`Done`;
+    $("title").textContent="Solution";
+    const nextId = IDS[IDS.indexOf(cur)+1];
+    $("note").innerHTML = nextId ? `Nice work. Press <b style="color:var(--accent)">Next problem</b> to go on to problem ${nextId}, or pick any problem above.` : `That was the last problem. Pick any problem above to review it.`;
+    math.classList.add("big","answer");
+    math.innerHTML=`\\[${pr.ans}\\]`;
+    ref.innerHTML=`Original equation: <span class="m">\\(${pr.eq}\\)</span>`;
+    done.add(cur); saveDone();
+    $("chip-"+cur).innerHTML = cur + '<span class="tick" aria-label="done">✓</span>';
+  }
+  PHASES.forEach((_,i)=>{
+    const el=$("ph"+i); el.classList.toggle("now",i===phase); el.classList.toggle("past", phase>=0 && i<phase);
+  });
+
+  $("back").disabled = (step===0 && cur===IDS[0]);
+  const nb=$("next");
+  if(step===0) nb.textContent="Next →";
+  else if(step<n) nb.textContent="Next →";
+  else if(step===n) nb.textContent="Show answer →";
+  else nb.textContent = IDS[IDS.indexOf(cur)+1] ? `Next problem →` : "Start over";
+  typeset([math,ref]);
+  try{ history.replaceState(null,"","#p"+cur); }catch(e){}
+}
+
+function go(n,s){ cur=n; step=s; render(); }
+function next(){
+  const n=P[cur].steps.length;
+  if(step<=n){ step++; render(); return; }
+  const i=IDS.indexOf(cur);
+  go(IDS[i+1] ?? IDS[0], 0);
+}
+function back(){
+  if(step>0){ step--; render(); return; }
+  const i=IDS.indexOf(cur);
+  if(i>0){ const p=IDS[i-1]; go(p, P[p].steps.length+1); }
+}
+$("next").addEventListener("click",next);
+$("back").addEventListener("click",back);
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"){ next(); } else if(e.key==="ArrowLeft"){ back(); }
+});
+
+const m = /^#p(\d+)$/.exec(location.hash);
+if(m && P[+m[1]]) cur=+m[1];
+render();
+if(window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(()=>typeset([$("math"),$("ref")]));
+</script>
+
+</body>
+</html>
