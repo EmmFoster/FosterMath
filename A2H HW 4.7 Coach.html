@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HW 4.7 Inequality Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+html{color-scheme:light}
+body{margin:0}
+[hidden]{display:none!important}
+
+/* Layout: one graph-paper notebook column; a sticky exercise picker on top, one step "page" at a time below, Back/Next under it. */
+:root{
+  --paper:#f5f8fb;
+  --grid:#dfe8f1;
+  --card:#ffffff;
+  --ink:#1b2735;
+  --muted:#5a6a7c;
+  --line:#c9d6e3;
+  --accent:#1f5f8b;
+  --accent-ink:#ffffff;
+  --accent-soft:#e3eef7;
+  --plus:#23784a;
+  --plus-soft:#e2f3e9;
+  --minus:#c0392b;
+  --minus-soft:#fbe7e4;
+  --shade:rgba(31,95,139,.30);
+  --hl:#fff4c7;
+  --f-display:"Zilla Slab", Rockwell, "Roboto Slab", Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-math:"STIX Two Text", "Cambria Math", "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#10161e; --grid:#1a2430; --card:#17202b; --ink:#e4ebf2; --muted:#98a8ba; --line:#2c3a4a;
+    --accent:#6fb3e6; --accent-ink:#0d1620; --accent-soft:#1c3244;
+    --plus:#6fd49a; --plus-soft:#16322a; --minus:#ff8a7a; --minus-soft:#3a1f1d;
+    --shade:rgba(111,179,230,.35); --hl:#3a3418; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10161e; --grid:#1a2430; --card:#17202b; --ink:#e4ebf2; --muted:#98a8ba; --line:#2c3a4a;
+  --accent:#6fb3e6; --accent-ink:#0d1620; --accent-soft:#1c3244;
+  --plus:#6fd49a; --plus-soft:#16322a; --minus:#ff8a7a; --minus-soft:#3a1f1d;
+  --shade:rgba(111,179,230,.35); --hl:#3a3418; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px, transparent 1px),linear-gradient(90deg,var(--grid) 1px, transparent 1px);
+  background-size:24px 24px;
+  color:var(--ink); font-family:var(--f-body); font-size:17px; line-height:1.55;
+  padding-inline:16px; padding-block:0 48px;
+}
+.wrap{max-width:780px;margin:0 auto}
+header.top{padding-block:22px 10px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,5vw,34px);line-height:1.1;margin:4px 0 0;text-wrap:balance}
+.picker{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.picker-label{font-size:13px;color:var(--muted);margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:700 15px/1 var(--f-body);min-width:40px;height:40px;padding:0 10px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;position:relative;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-current="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.chip.done::after{content:"";position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--plus)}
+.chip[aria-current="true"].done::after{background:var(--accent-ink)}
+.chip:focus-visible,.btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px clamp(16px,4vw,32px) 26px;box-shadow:0 1px 0 var(--line)}
+.card-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;margin-bottom:6px}
+.exno{font-family:var(--f-display);font-weight:600;font-size:15px;color:var(--accent);letter-spacing:.02em}
+.stepcount{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.progress{display:flex;gap:4px;margin:6px 0 18px}
+.progress span{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.progress span.on{background:var(--accent)}
+.ctx{font-size:14px;color:var(--muted);padding:8px 12px;border-radius:8px;background:var(--accent-soft);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin-bottom:18px}
+.ctx .math{color:var(--ink);font-size:18px}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(22px,4vw,27px);line-height:1.2;margin:0 0 10px;text-wrap:balance}
+p{margin:0 0 12px;max-width:65ch}
+.lead{font-size:18px}
+.muted{color:var(--muted)}
+.fade-in{animation:fade .25s ease both}
+@keyframes fade{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.fade-in{animation:none}}
+
+/* math */
+.math{font-family:var(--f-math);font-size:1.12em;white-space:nowrap}
+.math i{font-style:italic}
+.math sup{font-size:.68em;line-height:0;vertical-align:.62em;margin-left:1px}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 2px;line-height:1.15}
+.fr .nu{border-bottom:1.3px solid currentColor;padding:0 3px}
+.fr .de{padding:0 3px}
+.fr .nu,.fr .de{font-size:.86em}
+.sq{white-space:nowrap}
+.sq .rd{border-top:1.3px solid currentColor;padding:0 2px;margin-left:1px}
+.big{font-size:clamp(30px,7vw,44px);display:block;text-align:center;padding:26px 8px;margin:10px 0 18px;border:1.5px dashed var(--line);border-radius:10px;background:var(--paper);overflow-x:auto}
+.work{list-style:none;padding:0;margin:8px 0 14px;display:grid;gap:8px}
+.work li{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;padding:8px 12px;border-left:3px solid var(--line);min-width:0}
+.work li .math{font-size:21px;white-space:normal}
+.work li .why{font-size:14px;color:var(--muted)}
+.work li.key{border-left-color:var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0}
+.callout{padding:12px 14px;border-radius:8px;background:var(--hl);font-size:15.5px;margin:12px 0}
+.callout b{font-weight:700}
+.cvals{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px}
+.cval{padding:8px 14px;border-radius:8px;border:1.5px solid var(--accent);font-size:19px;background:var(--card)}
+
+.sign{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 8px;border-radius:15px;font:700 18px/1 var(--f-body)}
+.sign.p{background:var(--plus-soft);color:var(--plus)}
+.sign.m{background:var(--minus-soft);color:var(--minus)}
+.sign.z{background:var(--accent-soft);color:var(--accent)}
+
+/* number line */
+.nlwrap{overflow-x:auto;margin:10px 0 16px}
+.nl{position:relative;height:150px;min-width:320px;margin:0 6px}
+.nl .axis{position:absolute;left:14px;right:14px;top:82px;height:2px;background:var(--ink)}
+.nl .axis::before,.nl .axis::after{content:"";position:absolute;top:-6px;border:7px solid transparent}
+.nl .axis::before{left:-14px;border-right-color:var(--ink)}
+.nl .axis::after{right:-14px;border-left-color:var(--ink)}
+.nl .seg{position:absolute;top:76px;height:14px;background:transparent;border-radius:3px}
+.nl .seg.hl{background:var(--hl)}
+.nl .seg.sh{background:var(--shade)}
+.nl .tick{position:absolute;top:72px;width:2px;height:22px;background:var(--ink);transform:translateX(-1px)}
+.nl .dot{position:absolute;top:74px;width:18px;height:18px;border-radius:50%;transform:translateX(-9px);border:2.5px solid var(--accent);background:var(--card)}
+.nl .dot.closed{background:var(--accent)}
+.nl .lab{position:absolute;bottom:76px;transform:translateX(-50%);font-size:18px;text-align:center;line-height:1.2}
+.nl .zero0{position:absolute;top:100px;transform:translateX(-50%);font:700 18px var(--f-math);color:var(--accent)}
+.nl .sg{position:absolute;top:8px;transform:translateX(-50%)}
+.nl .tv{position:absolute;top:104px;transform:translateX(-50%);font-size:13px;color:var(--muted);white-space:nowrap}
+.nl .tvmark{position:absolute;top:78px;width:10px;height:10px;border-radius:50%;background:var(--ink);transform:translateX(-5px)}
+.ivlist{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.ivlist > span{padding:6px 12px;border-radius:8px;background:var(--paper);border:1px solid var(--line)}
+
+/* table of signs */
+.tblwrap{overflow-x:auto;margin:8px 0 14px}
+table.signs{border-collapse:collapse;min-width:100%;font-variant-numeric:tabular-nums}
+table.signs th,table.signs td{border:1px solid var(--line);padding:8px 10px;text-align:center;white-space:nowrap}
+table.signs thead th{background:var(--accent-soft);font-weight:700;font-size:15px}
+table.signs th.rowh{text-align:left;background:var(--paper);font-weight:400}
+table.signs td.root,table.signs th.root{background:var(--paper)}
+table.signs tr.total th.rowh{font-weight:700}
+table.signs tr.total td{border-top:2px solid var(--ink)}
+table.signs tr.tv td{font-size:15px;color:var(--muted)}
+table.signs .zero{font:700 18px var(--f-body);color:var(--accent)}
+
+.answer{display:grid;gap:10px;margin:14px 0 6px}
+.ans{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:12px 16px;border:2px solid var(--accent);border-radius:10px;min-width:0}
+.ans .k{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;min-width:120px}
+.ans .math{font-size:22px;white-space:normal}
+
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px}
+.btn{font:700 17px/1 var(--f-body);height:48px;padding:0 22px;border-radius:10px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);min-width:140px}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn[disabled]{opacity:.35;cursor:default}
+.kbd{font-size:13px;color:var(--muted);text-align:center;margin-top:12px}
+footer{font-size:13px;color:var(--muted);margin-top:22px;max-width:65ch}
+@media (max-width:480px){
+  body{font-size:16px}
+  .picker{position:static}
+  .chip{min-width:36px;height:36px}
+  .btn{padding:0 16px}
+  .work li .math{font-size:19px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Algebra 2H · HW 4.7</div>
+    <h1>Nonlinear Inequalities, Step by Step</h1>
+  </header>
+
+  <nav class="picker" aria-label="Choose an exercise">
+    <div class="picker-label">Choose an exercise</div>
+    <div class="chips" id="chips"></div>
+  </nav>
+
+  <main class="card" id="card" aria-live="polite"></main>
+
+  <div class="nav">
+    <button class="btn" id="back" type="button">← Back</button>
+    <button class="btn primary" id="next" type="button">Next →</button>
+  </div>
+  <div class="kbd">Tip: the ← and → arrow keys also move between steps.</div>
+
+  <footer>Method: move all terms to one side, find the critical values, test one value in each interval, then read the solution in interval notation. The number lines are not drawn to scale; they only show the order of the critical values.</footer>
+</div>
+
+<script>
+/* ---------- tiny math markup -> HTML ----------
+   frac{a}{b}, sqrt{a}, ^2 or ^{..}, <= >= != , inf, cup, pm, approx, reals, empty, ->  */
+function esc(c){return c==='<'?'&lt;':c==='>'?'&gt;':c==='&'?'&amp;':c}
+function m(s){
+  let i=0;
+  const words=[['<=','≤'],['>=','≥'],['!=','≠'],['->','→'],['approx','≈'],['inf','∞'],['cup','∪'],['pm','±'],['reals','ℝ'],['empty','∅'],['in','∈']];
+  function parse(stop){
+    let out='';
+    while(i<s.length){
+      const ch=s[i];
+      if(stop && ch==='}'){i++;return out}
+      if(s.startsWith('frac{',i)){i+=5;const a=parse(true);i++;const b=parse(true);out+=`<span class="fr"><span class="nu">${a}</span><span class="de">${b}</span></span>`;continue}
+      if(s.startsWith('sqrt{',i)){i+=5;const a=parse(true);out+=`<span class="sq">√<span class="rd">${a}</span></span>`;continue}
+      if(ch==='^'){i++;let a;if(s[i]==='{'){i++;a=parse(true)}else{a=esc(s[i]);i++}out+=`<sup>${a}</sup>`;continue}
+      let hit=false;
+      for(const [w,r] of words){
+        if(s.startsWith(w,i)){
+          const before=s[i-1]||' ', after=s[i+w.length]||' ';
+          if(/[a-z]/.test(w[0]) && (/[a-z]/i.test(before)||/[a-z]/i.test(after))) continue;
+          out+=r;i+=w.length;hit=true;break;
+        }
+      }
+      if(hit) continue;
+      if(ch==='-'){out+='−';i++;continue}
+      if(ch==='*'){out+='·';i++;continue}
+      if(/[a-z]/.test(ch)){
+        let j=i; while(j<s.length && /[a-z]/.test(s[j])) j++;
+        const run=s.slice(i,j);
+        out+= (run.length<=2 && run!=='or') ? `<i>${run}</i>` : run; i=j; continue;
+      }
+      out+=esc(ch);i++;
+    }
+    return out;
+  }
+  return `<span class="math">${parse(false)}</span>`;
+}
+/* text with $math$ */
+function T(s){return s.replace(/\$([^$]+)\$/g,(_,x)=>m(x))}
+
+/* ---------- the 12 exercises of HW 4.7 ---------- */
+const EX=[
+ {n:1,method:'Factoring',ineq:'6x^2 + 20x <= -6',rel:'<=',expr:'6x^2 + 20x + 6',p:[6,20,6],
+  regroup:{why:'Add 6 to both sides so that the right side is 0.',lines:[['6x^2 + 20x + 6 <= -6 + 6','add 6 to both sides'],['6x^2 + 20x + 6 <= 0','']]},
+  solve:{lines:[['6x^2 + 20x + 6 = 0','set the expression equal to 0'],['2(3x^2 + 10x + 3) = 0','factor out the GCF 2'],['2(3x + 1)(x + 3) = 0','factor the trinomial'],['3x + 1 = 0 -> x = -frac{1}{3}','zero-product property'],['x + 3 = 0 -> x = -3','']]},
+  roots:[[-3,'-3'],[-1/3,'-frac{1}{3}']],
+  factors:[['2',x=>2],['x + 3',x=>x+3],['3x + 1',x=>3*x+1]],
+  ans:{iv:'[-3, -frac{1}{3}]',set:'{ x | -3 <= x <= -frac{1}{3} }'}},
+
+ {n:2,method:'Factoring',ineq:'2x^2 < 3 - x',rel:'<',expr:'2x^2 + x - 3',p:[2,1,-3],
+  regroup:{why:'Add x to both sides and subtract 3 from both sides so that the right side is 0.',lines:[['2x^2 + x - 3 < 3 - x + x - 3','add x, subtract 3'],['2x^2 + x - 3 < 0','']]},
+  solve:{lines:[['2x^2 + x - 3 = 0','set the expression equal to 0'],['(2x + 3)(x - 1) = 0','factor'],['2x + 3 = 0 -> x = -frac{3}{2}','zero-product property'],['x - 1 = 0 -> x = 1','']]},
+  roots:[[-1.5,'-frac{3}{2}'],[1,'1']],
+  factors:[['2x + 3',x=>2*x+3],['x - 1',x=>x-1]],
+  ans:{iv:'(-frac{3}{2}, 1)',set:'{ x | -frac{3}{2} < x < 1 }'}},
+
+ {n:3,method:'Factoring',ineq:'4x^2 + 1 < 4x',rel:'<',expr:'4x^2 - 4x + 1',p:[4,-4,1],
+  regroup:{why:'Subtract 4x from both sides so that the right side is 0.',lines:[['4x^2 - 4x + 1 < 4x - 4x','subtract 4x'],['4x^2 - 4x + 1 < 0','']]},
+  solve:{lines:[['4x^2 - 4x + 1 = 0','set the expression equal to 0'],['(2x - 1)^2 = 0','perfect square trinomial'],['2x - 1 = 0 -> x = frac{1}{2}','']],
+   note:'A perfect square gives only <b>one</b> critical value (a double root).'},
+  roots:[[0.5,'frac{1}{2}']],
+  factors:[['(2x - 1)^2',x=>(2*x-1)**2]],
+  why:'The expression is a square, so it is never negative. It equals 0 only at $x = frac{1}{2}$, and the symbol $<$ asks for values <b>strictly</b> less than 0.',
+  ans:{iv:'empty  (no solution)',set:'{ }  = empty'}},
+
+ {n:4,method:'Factoring',ineq:'4x^2 + 4x <= -1',rel:'<=',expr:'4x^2 + 4x + 1',p:[4,4,1],
+  regroup:{why:'Add 1 to both sides so that the right side is 0.',lines:[['4x^2 + 4x + 1 <= -1 + 1','add 1 to both sides'],['4x^2 + 4x + 1 <= 0','']]},
+  solve:{lines:[['4x^2 + 4x + 1 = 0','set the expression equal to 0'],['(2x + 1)^2 = 0','perfect square trinomial'],['2x + 1 = 0 -> x = -frac{1}{2}','']],
+   note:'A perfect square gives only <b>one</b> critical value (a double root).'},
+  roots:[[-0.5,'-frac{1}{2}']],
+  factors:[['(2x + 1)^2',x=>(2*x+1)**2]],
+  why:'The expression is never negative, but $<=$ also accepts 0. The expression is 0 only at $x = -frac{1}{2}$, so that single number is the solution.',
+  ans:{iv:'{ -frac{1}{2} }',set:'{ x | x = -frac{1}{2} }'}},
+
+ {n:5,method:'Quadratic formula',ineq:'4x^2 + 4 <= -5x',rel:'<=',expr:'4x^2 + 5x + 4',p:[4,5,4],
+  regroup:{why:'Add 5x to both sides so that the right side is 0.',lines:[['4x^2 + 5x + 4 <= -5x + 5x','add 5x to both sides'],['4x^2 + 5x + 4 <= 0','']]},
+  solve:{lines:[['4x^2 + 5x + 4 = 0','this trinomial does not factor'],['a = 4,   b = 5,   c = 4','identify a, b, c'],['b^2 - 4ac = 5^2 - 4(4)(4) = 25 - 64 = -39','discriminant']],
+   note:'The discriminant is <b>negative</b>, so the equation has no real solutions. There are <b>no critical values</b>: the expression never crosses 0, so it keeps the same sign for every real number.'},
+  roots:[],factors:null,
+  why:'The expression is positive for every real number, so it is never less than or equal to 0.',
+  ans:{iv:'empty  (no solution)',set:'{ }  = empty'}},
+
+ {n:6,method:'Quadratic formula',ineq:'3x^2 - 3 >= 3x',rel:'>=',expr:'x^2 - x - 1',p:[1,-1,-1],
+  regroup:{why:'Subtract 3x from both sides, then divide every term by 3. Dividing by a <b>positive</b> number does not flip the inequality.',lines:[['3x^2 - 3x - 3 >= 0','subtract 3x'],['x^2 - x - 1 >= 0','divide by 3']]},
+  solve:{lines:[['x^2 - x - 1 = 0','this trinomial does not factor'],['a = 1,   b = -1,   c = -1','identify a, b, c'],['b^2 - 4ac = (-1)^2 - 4(1)(-1) = 1 + 4 = 5','discriminant'],['x = frac{-b pm sqrt{b^2 - 4ac}}{2a} = frac{1 pm sqrt{5}}{2}','quadratic formula'],['x = frac{1 - sqrt{5}}{2} approx -0.62','first critical value'],['x = frac{1 + sqrt{5}}{2} approx 1.62','second critical value']]},
+  roots:[[(1-Math.sqrt(5))/2,'frac{1 - sqrt{5}}{2}'],[(1+Math.sqrt(5))/2,'frac{1 + sqrt{5}}{2}']],
+  factors:null,
+  ans:{iv:'(-inf, frac{1 - sqrt{5}}{2}] cup [frac{1 + sqrt{5}}{2}, inf)',set:'{ x | x <= frac{1 - sqrt{5}}{2}  or  x >= frac{1 + sqrt{5}}{2} }'}},
+
+ {n:7,method:'Factoring',ineq:'x^2 >= 2x - 1',rel:'>=',expr:'x^2 - 2x + 1',p:[1,-2,1],
+  regroup:{why:'Subtract 2x and add 1 on both sides so that the right side is 0.',lines:[['x^2 - 2x + 1 >= 2x - 1 - 2x + 1','subtract 2x, add 1'],['x^2 - 2x + 1 >= 0','']]},
+  solve:{lines:[['x^2 - 2x + 1 = 0','set the expression equal to 0'],['(x - 1)^2 = 0','perfect square trinomial'],['x - 1 = 0 -> x = 1','']],
+   note:'A perfect square gives only <b>one</b> critical value (a double root).'},
+  roots:[[1,'1']],
+  factors:[['(x - 1)^2',x=>(x-1)**2]],
+  why:'The expression is positive everywhere except at $x = 1$, where it is 0. Since $>=$ accepts 0, every real number works.',
+  ans:{iv:'(-inf, inf)  (all real numbers)',set:'{ x | x in reals }'}},
+
+ {n:8,method:'Factoring',ineq:'12x^2 + 27 > -36x',rel:'>',expr:'12x^2 + 36x + 27',p:[12,36,27],
+  regroup:{why:'Add 36x to both sides so that the right side is 0.',lines:[['12x^2 + 36x + 27 > -36x + 36x','add 36x to both sides'],['12x^2 + 36x + 27 > 0','']]},
+  solve:{lines:[['12x^2 + 36x + 27 = 0','set the expression equal to 0'],['3(4x^2 + 12x + 9) = 0','factor out the GCF 3'],['3(2x + 3)^2 = 0','perfect square trinomial'],['2x + 3 = 0 -> x = -frac{3}{2}','']],
+   note:'A perfect square gives only <b>one</b> critical value (a double root).'},
+  roots:[[-1.5,'-frac{3}{2}']],
+  factors:[['3',x=>3],['(2x + 3)^2',x=>(2*x+3)**2]],
+  why:'The expression is positive everywhere except at $x = -frac{3}{2}$, where it is 0. The symbol $>$ does not accept 0, so we remove that one number.',
+  ans:{iv:'(-inf, -frac{3}{2}) cup (-frac{3}{2}, inf)',set:'{ x | x != -frac{3}{2} }'}},
+
+ {n:9,method:'Factoring',ineq:'2x^2 + 9x > -9',rel:'>',expr:'2x^2 + 9x + 9',p:[2,9,9],
+  regroup:{why:'Add 9 to both sides so that the right side is 0.',lines:[['2x^2 + 9x + 9 > -9 + 9','add 9 to both sides'],['2x^2 + 9x + 9 > 0','']]},
+  solve:{lines:[['2x^2 + 9x + 9 = 0','set the expression equal to 0'],['(2x + 3)(x + 3) = 0','factor'],['2x + 3 = 0 -> x = -frac{3}{2}','zero-product property'],['x + 3 = 0 -> x = -3','']],
+   note:'Order matters on the number line: $-3 < -frac{3}{2}$.'},
+  roots:[[-3,'-3'],[-1.5,'-frac{3}{2}']],
+  factors:[['x + 3',x=>x+3],['2x + 3',x=>2*x+3]],
+  ans:{iv:'(-inf, -3) cup (-frac{3}{2}, inf)',set:'{ x | x < -3  or  x > -frac{3}{2} }'}},
+
+ {n:10,method:'Quadratic formula',ineq:'3x^2 - 4x >= -4',rel:'>=',expr:'3x^2 - 4x + 4',p:[3,-4,4],
+  regroup:{why:'Add 4 to both sides so that the right side is 0.',lines:[['3x^2 - 4x + 4 >= -4 + 4','add 4 to both sides'],['3x^2 - 4x + 4 >= 0','']]},
+  solve:{lines:[['3x^2 - 4x + 4 = 0','this trinomial does not factor'],['a = 3,   b = -4,   c = 4','identify a, b, c'],['b^2 - 4ac = (-4)^2 - 4(3)(4) = 16 - 48 = -32','discriminant']],
+   note:'The discriminant is <b>negative</b>, so the equation has no real solutions. There are <b>no critical values</b>: the expression keeps the same sign for every real number.'},
+  roots:[],factors:null,
+  why:'The expression is positive for every real number, so it is always greater than or equal to 0.',
+  ans:{iv:'(-inf, inf)  (all real numbers)',set:'{ x | x in reals }'}},
+
+ {n:11,method:'Quadratic formula',ineq:'3x^2 - 1 < x',rel:'<',expr:'3x^2 - x - 1',p:[3,-1,-1],
+  regroup:{why:'Subtract x from both sides so that the right side is 0.',lines:[['3x^2 - x - 1 < x - x','subtract x'],['3x^2 - x - 1 < 0','']]},
+  solve:{lines:[['3x^2 - x - 1 = 0','this trinomial does not factor'],['a = 3,   b = -1,   c = -1','identify a, b, c'],['b^2 - 4ac = (-1)^2 - 4(3)(-1) = 1 + 12 = 13','discriminant'],['x = frac{-b pm sqrt{b^2 - 4ac}}{2a} = frac{1 pm sqrt{13}}{6}','quadratic formula'],['x = frac{1 - sqrt{13}}{6} approx -0.43','first critical value'],['x = frac{1 + sqrt{13}}{6} approx 0.77','second critical value']]},
+  roots:[[(1-Math.sqrt(13))/6,'frac{1 - sqrt{13}}{6}'],[(1+Math.sqrt(13))/6,'frac{1 + sqrt{13}}{6}']],
+  factors:null,
+  ans:{iv:'(frac{1 - sqrt{13}}{6}, frac{1 + sqrt{13}}{6})',set:'{ x | frac{1 - sqrt{13}}{6} < x < frac{1 + sqrt{13}}{6} }'}},
+
+ {n:12,method:'Factoring',ineq:'4x^2 + 10x >= 6',rel:'>=',expr:'4x^2 + 10x - 6',p:[4,10,-6],
+  regroup:{why:'Subtract 6 from both sides so that the right side is 0.',lines:[['4x^2 + 10x - 6 >= 6 - 6','subtract 6'],['4x^2 + 10x - 6 >= 0','']]},
+  solve:{lines:[['4x^2 + 10x - 6 = 0','set the expression equal to 0'],['2(2x^2 + 5x - 3) = 0','factor out the GCF 2'],['2(2x - 1)(x + 3) = 0','factor the trinomial'],['2x - 1 = 0 -> x = frac{1}{2}','zero-product property'],['x + 3 = 0 -> x = -3','']]},
+  roots:[[-3,'-3'],[0.5,'frac{1}{2}']],
+  factors:[['2',x=>2],['x + 3',x=>x+3],['2x - 1',x=>2*x-1]],
+  ans:{iv:'(-inf, -3] cup [frac{1}{2}, inf)',set:'{ x | x <= -3  or  x >= frac{1}{2} }'}}
+];
+
+/* ---------- helpers ---------- */
+const REL_WORD={'<':'negative','<=':'negative or zero','>':'positive','>=':'positive or zero'};
+const REL_SAY={'<':'less than 0','<=':'less than or equal to 0','>':'greater than 0','>=':'greater than or equal to 0'};
+const sgn=v=>Math.abs(v)<1e-9?0:(v>0?1:-1);
+const chipSign=s=>s>0?'<span class="sign p">+</span>':s<0?'<span class="sign m">−</span>':'<span class="sign z">0</span>';
+const numM=n=>String(n); // plain ints, "-" becomes minus in m()
+
+function intervals(e){
+  const r=e.roots;
+  if(!r.length) return [{a:null,b:null,t:'(-inf, inf)'}];
+  const out=[];
+  out.push({a:null,b:r[0][0],t:`(-inf, ${r[0][1]})`});
+  for(let k=0;k<r.length-1;k++) out.push({a:r[k][0],b:r[k+1][0],t:`(${r[k][1]}, ${r[k+1][1]})`});
+  out.push({a:r[r.length-1][0],b:null,t:`(${r[r.length-1][1]}, inf)`});
+  return out;
+}
+function testValue(iv){
+  const {a,b}=iv;
+  if(a===null&&b===null) return 0;
+  if(a===null) return Number.isInteger(b)?b-1:Math.floor(b);
+  if(b===null) return Number.isInteger(a)?a+1:Math.ceil(a);
+  const cands=[];for(let k=Math.floor(a)+1;k<b;k++) if(k>a) cands.push(k);
+  cands.sort((x,y)=>Math.abs(x)-Math.abs(y));
+  return cands.length?cands[0]:(a+b)/2;
+}
+const P=(p,x)=>p[0]*x*x+p[1]*x+p[2];
+function substitution(p,t){
+  const tt=`(${numM(t)})`;
+  const [a,b,c]=p;
+  let s=(a===1?'':a===-1?'-':a)+tt+'^2';
+  if(b) s+=(b<0?' - ':' + ')+(Math.abs(b)===1?'':Math.abs(b))+tt;
+  if(c) s+=(c<0?' - ':' + ')+Math.abs(c);
+  const vals=[a*t*t]; if(b) vals.push(b*t); if(c) vals.push(c);
+  let s2=numM(vals[0]);
+  for(let k=1;k<vals.length;k++) s2+=(vals[k]<0?' - ':' + ')+Math.abs(vals[k]);
+  return `${s} = ${s2} = ${numM(P(p,t))}`;
+}
+function sat(rel,s){return rel==='<'?s<0:rel==='<='?s<=0:rel==='>'?s>0:s>=0}
+
+/* number line: opts {signs:[...|null], hl:index, tv:index, shade:bool, testvals:bool} */
+function numberLine(e,o={}){
+  const ivs=intervals(e), r=e.roots, n=r.length;
+  const L=4, R=96; // percent track
+  const pos=k=>L+(R-L)*(k+1)/(n+1);
+  const edges=[L-3,...r.map((_,k)=>pos(k)),R+3];
+  let h='<div class="nlwrap"><div class="nl">';
+  ivs.forEach((iv,k)=>{
+    const x1=edges[k],x2=edges[k+1];
+    let cls='seg';
+    if(o.shade && sat(e.rel,sgn(P(e.p,testValue(iv))))) cls+=' sh';
+    else if(o.hl===k) cls+=' hl';
+    h+=`<div class="${cls}" style="left:${x1}%;width:${x2-x1}%"></div>`;
+  });
+  h+='<div class="axis"></div>';
+  ivs.forEach((iv,k)=>{
+    const c=(edges[k]+edges[k+1])/2;
+    if(o.signs && o.signs[k]!=null) h+=`<div class="sg" style="left:${c}%">${chipSign(o.signs[k])}</div>`;
+    if(o.tv===k || o.testvals){ const t=testValue(iv); h+=`<div class="tvmark" style="left:${c}%"></div>`+(o.tv===k?`<div class="tv" style="left:${c}%">test ${m('x = '+t)}</div>`:''); }
+  });
+  r.forEach((rt,k)=>{
+    const x=pos(k);
+    if(o.shade){
+      const closed=(e.rel==='<='||e.rel==='>=');
+      h+=`<div class="dot ${closed?'closed':''}" style="left:${x}%"></div>`;
+    } else h+=`<div class="tick" style="left:${x}%"></div>`;
+    h+=`<div class="lab" style="left:${x}%">${m(rt[1])}</div><div class="zero0" style="left:${x}%">0</div>`;
+  });
+  h+='</div></div>';
+  return h;
+}
+
+function signTable(e){
+  const ivs=intervals(e), r=e.roots;
+  const cols=[]; ivs.forEach((iv,k)=>{cols.push({type:'iv',iv,k}); if(k<r.length) cols.push({type:'root',root:r[k]});});
+  let h='<div class="tblwrap"><table class="signs"><thead><tr><th class="rowh">'+m('x')+'</th>';
+  cols.forEach(c=>{h+= c.type==='iv'?`<th>${m(c.iv.t)}</th>`:`<th class="root">${m(c.root[1])}</th>`});
+  h+='</tr></thead><tbody><tr class="tv"><th class="rowh">Test value</th>';
+  cols.forEach(c=>{h+= c.type==='iv'?`<td>${m('x = '+testValue(c.iv))}</td>`:'<td class="root"></td>'});
+  h+='</tr>';
+  const rowFor=(label,f,total)=>{
+    let s=`<tr class="${total?'total':''}"><th class="rowh">${m(label)}</th>`;
+    cols.forEach(c=>{
+      if(c.type==='iv') s+=`<td>${chipSign(sgn(f(testValue(c.iv))))}</td>`;
+      else { const v=sgn(f(c.root[0])); s+=`<td class="root">${v===0?'<span class="zero">0</span>':chipSign(v)}</td>`; }
+    });
+    return s+'</tr>';
+  };
+  if(e.factors) e.factors.forEach(([lab,f])=>{h+=rowFor(lab,f,false)});
+  h+=rowFor(e.expr,x=>P(e.p,x),true);
+  h+='</tbody></table></div>';
+  return h;
+}
+
+/* ---------- build the steps of one exercise ---------- */
+function buildSteps(e){
+  const S=[];
+  const ctx=`<div class="ctx"><span>Solving</span>${m(e.ineq)}</div>`;
+  const ctx2=`<div class="ctx"><span>Solving</span>${m(e.ineq)}<span>→</span>${m(e.expr+' '+e.rel+' 0')}</div>`;
+  const ivs=intervals(e);
+
+  S.push({title:'The inequality', html:
+    `<h2>Exercise ${e.n}</h2>
+     <p class="muted">Solve the inequality. Give your answer in interval notation.</p>
+     <div class="math big">${m(e.ineq).replace(/^<span class="math">|<\/span>$/g,'')}</div>
+     <p>Method for finding the critical values: <b>${e.method.toLowerCase()}</b>. Press <b>Next</b> to see the first step.</p>`});
+
+  S.push({title:'Move all terms to one side', html: ctx+
+    `<h2>Step 1 · Move all the terms to one side</h2>
+     <p>${T(e.regroup.why)}</p>
+     <ul class="work">${e.regroup.lines.map((l,k,a)=>`<li class="${k===a.length-1?'key':''}">${m(l[0])}${l[1]?`<span class="why">${l[1]}</span>`:''}</li>`).join('')}</ul>
+     <p>Now the question is: when is ${m(e.expr)} <b>${REL_SAY[e.rel]}</b>?</p>`});
+
+  const cv = e.roots.length
+    ? `<p>Critical values:</p><div class="cvals">${e.roots.map(r=>`<span class="cval">${m('x = '+r[1])}</span>`).join('')}</div>`
+    : `<div class="cvals"><span class="cval">No critical values</span></div>`;
+  S.push({title:'Find the critical values', html: ctx2+
+    `<h2>Step 2 · Find the critical values</h2>
+     <p>Solve ${m(e.expr+' = 0')}. These are the only places where the expression can change sign.</p>
+     <ul class="work">${e.solve.lines.map(l=>`<li>${m(l[0])}${l[1]?`<span class="why">${l[1]}</span>`:''}</li>`).join('')}</ul>
+     ${e.solve.note?`<div class="callout">${T(e.solve.note)}</div>`:''}${cv}`});
+
+  S.push({title:'Plot the critical values', html: ctx2+
+    `<h2>Step 3 · Plot the critical values on a number line</h2>
+     ${e.roots.length
+       ? `<p>The ${e.roots.length===1?'critical value splits':'critical values split'} the number line into ${ivs.length} intervals:</p>`
+       : `<p>With no critical values, the whole number line is <b>one interval</b>:</p>`}
+     ${numberLine(e)}
+     <div class="ivlist">${ivs.map(iv=>`<span>${m(iv.t)}</span>`).join('')}</div>
+     <p>${e.roots.length?'Write each critical value above its tick mark. The 0 under each tick mark shows that the expression equals 0 there. ':''}Inside each interval the expression keeps the <b>same sign</b>. We will test one value in each interval.</p>`});
+
+  const signs=ivs.map(()=>null);
+  ivs.forEach((iv,k)=>{
+    const t=testValue(iv), v=P(e.p,t), s=sgn(v);
+    signs[k]=s;
+    const snap=signs.slice();
+    S.push({title:`Test interval ${k+1}`, html: ctx2+
+      `<h2>Step ${4+k} · Test a value in ${m(iv.t)}</h2>
+       <p>Choose a test value in this interval: ${m('x = '+t)}. Substitute it into ${m(e.expr)}:</p>
+       <ul class="work"><li class="key">${m(substitution(e.p,t))}</li></ul>
+       <p>${m(String(v))} is <b>${s>0?'positive':'negative'}</b>, so ${m(e.expr)} is ${chipSign(s)} for <b>every</b> number in ${m(iv.t)}.</p>
+       ${numberLine(e,{signs:snap,hl:k,tv:k})}`});
+  });
+
+  const base=4+ivs.length;
+  const want=REL_WORD[e.rel];
+  const strict=(e.rel==='<'||e.rel==='>');
+  S.push({title:'Write the solution', final:true, html: ctx2+
+    `<h2>Step ${base} · Read the solution</h2>
+     <p>We want ${m(e.expr+' '+e.rel+' 0')}, so we keep the intervals where the expression is <b>${want}</b>.
+     ${e.roots.length?(strict?`The symbol ${m(e.rel)} is strict, so the critical values are <b>not</b> included (open circles, parentheses).`:`The symbol ${m(e.rel)} includes 0, so the critical values <b>are</b> included (closed circles, brackets).`):''}</p>
+     ${e.why?`<div class="callout">${T(e.why)}</div>`:''}
+     ${numberLine(e,{signs:ivs.map(iv=>sgn(P(e.p,testValue(iv)))),shade:true})}
+     <div class="answer">
+       <div class="ans"><span class="k">Interval notation</span>${m(e.ans.iv)}</div>
+     </div>`});
+  return S;
+}
+
+/* ---------- app state + rendering ---------- */
+const STEPS=EX.map(buildSteps);
+let ex=0, st=0;
+let done=new Set();
+try{ const d=JSON.parse(localStorage.getItem('hw47-done')||'[]'); if(Array.isArray(d)) done=new Set(d); }catch(_){}
+function saveDone(){ try{ localStorage.setItem('hw47-done',JSON.stringify([...done])); }catch(_){} }
+
+const chipsEl=document.getElementById('chips'), card=document.getElementById('card'),
+      backBtn=document.getElementById('back'), nextBtn=document.getElementById('next');
+
+function renderChips(){
+  chipsEl.innerHTML=EX.map((e,k)=>`<button type="button" class="chip ${done.has(k)?'done':''}" id="chip-${k+1}" data-k="${k}" aria-current="${k===ex}" aria-label="Exercise ${e.n}${done.has(k)?' (finished)':''}">${e.n}</button>`).join('');
+}
+function render(){
+  const steps=STEPS[ex], s=steps[st], e=EX[ex];
+  if(s.final){ done.add(ex); saveDone(); }
+  renderChips();
+  card.innerHTML=
+    `<div class="card-head"><span class="exno">Exercise ${e.n} of ${EX.length} · ${e.method}</span>
+       <span class="stepcount">${st===0?'Start':`Step ${st} of ${steps.length-1}`}</span></div>
+     <div class="progress">${steps.slice(1).map((_,k)=>`<span class="${k<st?'on':''}"></span>`).join('')}</div>
+     <div class="fade-in">${s.html}</div>`;
+  backBtn.disabled=(ex===0&&st===0);
+  backBtn.textContent= st===0 && ex>0 ? '← Previous exercise' : '← Back';
+  if(s.final) nextBtn.textContent = ex<EX.length-1 ? `Next exercise (${e.n+1}) →` : 'Start over at 1 →';
+  else nextBtn.textContent='Next →';
+  try{ history.replaceState(null,'','#ex'+e.n); }catch(_){}
+}
+function go(k,step=0){ ex=k; st=step; render(); card.scrollIntoView({block:'nearest'}); }
+nextBtn.addEventListener('click',()=>{
+  if(st<STEPS[ex].length-1){ st++; render(); }
+  else go((ex+1)%EX.length);
+});
+backBtn.addEventListener('click',()=>{
+  if(st>0){ st--; render(); }
+  else if(ex>0){ go(ex-1); }
+});
+chipsEl.addEventListener('click',ev=>{ const b=ev.target.closest('.chip'); if(b) go(+b.dataset.k); });
+document.addEventListener('keydown',ev=>{
+  if(ev.target.closest && ev.target.closest('input,textarea')) return;
+  if(ev.key==='ArrowRight'){ nextBtn.click(); }
+  else if(ev.key==='ArrowLeft' && !backBtn.disabled){ backBtn.click(); }
+});
+const hm=(location.hash||'').match(/^#ex(\d+)$/);
+if(hm && +hm[1]>=1 && +hm[1]<=EX.length) ex=+hm[1]-1;
+render();
+</script>
+</body>
+</html>
