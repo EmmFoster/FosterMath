@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FosterMath</title>
+  <meta name="description" content="Welcome to FosterMath by M. Foster.">
+  <style>
+    :root {
+      --bg: #f7f5f0;
+      --text: #1f2933;
+      --muted: #5f6b76;
+      --accent: #2f6f5e;
+      --card: #ffffff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14181c;
+        --text: #eef1f3;
+        --muted: #a3adb6;
+        --accent: #6cc3a8;
+        --card: #1d2328;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+    }
+    .card {
+      background: var(--card);
+      max-width: 560px;
+      width: 100%;
+      padding: 48px 36px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+    .logo {
+      display: block;
+      width: 180px;
+      max-width: 70%;
+      height: auto;
+      margin: 0 auto 16px;
+      color: var(--accent);
+    }
+    .logo .grid { stroke-width: 1; }
+    .logo .spiral { stroke-width: 2.5; }
+    h1 { font-size: 2.2rem; margin-bottom: 12px; letter-spacing: -0.02em; }
+    p { color: var(--muted); font-size: 1.05rem; margin-bottom: 28px; }
+    .button {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 26px;
+      border-radius: 999px;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .button:hover { opacity: 0.85; }
+    .links { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .button.secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+    .link-list {
+      display: inline-block;
+      text-align: left;
+      padding-left: 1.4em;
+      font-size: 1.1rem;
+    }
+    .link-list li { margin: 8px 0; }
+    .link-list li::marker { color: var(--accent); }
+    .link-list a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .link-list a:hover { text-decoration: underline; }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="card">
+      <svg class="logo" viewBox="-1.5 -1.5 147 92" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Golden spiral">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <g class="grid" vector-effect="non-scaling-stroke">
+            <rect x="0" y="0" width="144" height="89" vector-effect="non-scaling-stroke"/>
+            <path vector-effect="non-scaling-stroke" d="M89 0V89 M89 55H144 M110 55V89 M89 68H110 M102 55V68 M102 63H110 M105 63V68 M102 65H105 M104 63V65 M104 64H105"/>
+          </g>
+          <path class="spiral" vector-effect="non-scaling-stroke"
+            d="M0 89 A89 89 0 0 1 89 0 A55 55 0 0 1 144 55 A34 34 0 0 1 110 89 A21 21 0 0 1 89 68 A13 13 0 0 1 102 55 A8 8 0 0 1 110 63 A5 5 0 0 1 105 68 A3 3 0 0 1 102 65 A2 2 0 0 1 104 63 A1 1 0 0 1 105 64 A1 1 0 0 1 104 65"/>
+        </g>
+      </svg>
+      <h1>Welcome to FosterMath</h1>
+      <p>Thanks for stopping by! FosterMath is just getting started — check back soon for math resources and more.</p>
+      <ul class="link-list">
+        <li><a href="AbsoluteValueFlashCards.html">Absolute Value Flash Cards</a></li>
+        <li><a href="A2H HW 4.5 Coach.html">A2H HW 4.5</a></li>
+        <li><a href="A2H HW 4.7 Coach.html">A2H HW 4.7</a></li>
+        <li><a href="A2 HW 4.5-1.html">A2 HW 4.5/1</a></li>
+      </ul>
+    </div>
+  </main>
+  <footer>
+    &copy; <span id="year"></span> M. Foster · FosterMath
+  </footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
