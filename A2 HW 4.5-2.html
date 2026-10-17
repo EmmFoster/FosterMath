@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<!-- Visit counter (GoatCounter). Replace YOURCODE with the code you picked when you signed up. -->
+<script data-goatcounter="https://YOURCODE.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+<title>A2 HW 4.5/2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@500;600;700&display=swap">
+<style>
+:root{
+  --paper:#EEF2EF; --card:#FFFFFF; --ink:#17222C; --muted:#56646E; --line:#D3DCD7;
+  --grid:rgba(27,110,122,.07); --accent:#1B6E7A; --accent-ink:#FFFFFF; --accent-soft:#DDEEEF;
+  --hl:#B86A00; --hl-soft:#FFF1D9; --done:#2F7D4A;
+  --display:"Lexend",system-ui,sans-serif; --body:"Atkinson Hyperlegible",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+    --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+    --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+  --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+  --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.35rem,3.5vw,1.8rem);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);font-size:.95rem;margin:0}
+.picker{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.picker .lbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+.chip{font-family:var(--display);font-weight:600;font-size:1rem;min-width:46px;height:42px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip .tick{color:var(--done);font-size:.85rem}
+.chip[aria-current="true"] .tick{color:var(--accent-ink)}
+button:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+
+.phases{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.phase{display:flex;flex-direction:column;gap:6px;font-size:.74rem;color:var(--muted);line-height:1.25}
+.phase .bar{height:6px;border-radius:3px;background:var(--line)}
+.phase.past .bar{background:var(--accent);opacity:.45}
+.phase.now .bar{background:var(--accent)}
+.phase.now{color:var(--ink);font-weight:700}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,32px);display:flex;flex-direction:column;gap:16px}
+.eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(1.25rem,3vw,1.6rem);margin:0;text-wrap:balance}
+.note{margin:0;max-width:62ch}
+.note b{color:var(--hl)}
+.math{border-radius:12px;padding:22px 16px;min-height:110px;display:flex;align-items:center;justify-content:center;overflow-x:auto;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;font-size:1.25rem}
+.math mjx-container{margin:0!important}
+.math.big{font-size:1.7rem;min-height:150px}
+.ref{font-size:.88rem;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ref .m{font-size:1rem;color:var(--ink)}
+.answer{border:2px solid var(--done);background:transparent}
+.nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-weight:600;font-size:1.05rem;border-radius:12px;padding:12px 22px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);min-width:140px}
+.btn.primary:hover{filter:brightness(1.07)}
+.kbd{font-size:.8rem;color:var(--muted);text-align:center}
+.hlkey{display:inline-block;background:var(--hl-soft);color:var(--hl);border-radius:6px;padding:0 6px;font-weight:700}
+@media (max-width:560px){
+  .phases{grid-template-columns:repeat(3,1fr);row-gap:10px}
+  .math{font-size:1.05rem}
+  .math.big{font-size:1.4rem}
+  .btn{flex:1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .card.enter{animation:rise .22s ease-out}
+  @keyframes rise{from{transform:translateY(6px);opacity:.6}to{transform:none;opacity:1}}
+}
+.picker{display:flex;flex-direction:column;align-items:stretch!important;gap:10px}
+.group{display:grid;grid-template-columns:16rem 1fr;align-items:center;gap:6px 12px}
+.glbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.grng{color:var(--ink);font-weight:700;letter-spacing:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.phases{grid-template-columns:repeat(var(--cols,6),1fr)!important}
+@media (max-width:560px){.group{grid-template-columns:1fr}.phases{grid-template-columns:repeat(3,1fr)!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>A2 HW 4.5/2</h1>
+    </div>
+    <div class="picker" id="picker" role="group" aria-label="Choose a problem">
+          </div>
+  </header>
+
+  <div class="phases" id="phases" aria-hidden="true"></div>
+
+  <main class="card" id="card" aria-live="polite">
+    <div class="eyebrow"><span id="eyebrowL"></span><span id="eyebrowR"></span></div>
+    <h2 id="title"></h2>
+    <p class="note" id="note"></p>
+    <div class="math" id="math"></div>
+    <div class="ref" id="ref"></div>
+  </main>
+
+  <div class="nav">
+    <button class="btn" id="back" type="button">← Back</button>
+    <button class="btn primary" id="next" type="button">Next →</button>
+  </div>
+  <p class="kbd">Tip: you can also use the ← and → arrow keys. <span class="hlkey">Orange</span> marks the key numbers in each step.</p>
+</div>
+
+<script>
+window.MathJax = {
+  loader: { load: ['[tex]/color'] },
+  tex: { packages: {'[+]': ['color']} },
+  svg: { fontCache: 'global' },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<script>
+const H = s => "\\textcolor{#D98A14}{" + s.raw[0] + "}";
+
+const GCF_NONE = (a,b,c)=>`List the coefficients ${a}, ${b} and ${c}. Their only common factor is 1, and not every term has the variable. <b>No GCF to factor out</b>. The expression is a <b>quadratic trinomial</b> (an expression of the form ax² + bx + c), so it needs to be factored using the <b>AC method</b>.`;
+const P = {
+ 1:{k:"factor", eq:String.raw`2n^2 + 5n - 25`, steps:[
+  [0,"First, check for a GCF",GCF_NONE(2,5,"−25"),String.raw`\text{GCF}(2,\,5,\,25) = 1`],
+  [1,"Identify a, b and c, then multiply a · c",`Read the coefficients, then multiply the first and last. Keep the sign of c.`,String.raw`a = 2,\; b = 5,\; c = -25 \qquad a \cdot c = 2 \cdot (-25) = -50`],
+  [2,"Find two numbers",`Find two numbers that <b>multiply to −50</b> and <b>add to 5</b>. The product is negative, so <b>one number is positive and one is negative</b>. The sum is positive, so the bigger number (ignoring signs) is the positive one. Factor pairs of 50: 1 · 50, 2 · 25, 5 · 10. The pair 10 and −5 works.`,String.raw`(${H`10`})(${H`-5`}) = -50 \qquad ${H`10`} + (${H`-5`}) = 5`],
+  [3,"Split the middle term",`Rewrite 5n as 10n − 5n.`,String.raw`2n^2 ${H`+ 10n - 5n`} - 25`],
+  [4,"Factor the first two terms and the last two terms",`From the first two terms, 2n² + 10n, factor out <b>2n</b>. From the last two terms, −5n − 25, factor out <b>−5</b>. We factor out <b>−5</b> (with its negative sign) so the second parentheses match the first.`,String.raw`2n(n + 5) - 5(n + 5)`],
+  [4,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(n + 5)</b>. Because what is inside the parentheses is the same in both terms, <b>(n + 5) is a common factor</b> of the whole expression.`,String.raw`2n(\textcolor{#D98A14}{n + 5}) - 5(\textcolor{#D98A14}{n + 5})`],
+  [4,"Factor out the common binomial",`Factor (n + 5) out of both terms.`,String.raw`(n + 5)(2n - 5)`]
+ ], ans:String.raw`2n^2 + 5n - 25 = (n + 5)(2n - 5)`},
+
+ 2:{k:"factor", eq:String.raw`3n^2 - n - 2`, steps:[
+  [0,"First, check for a GCF",GCF_NONE(3,"−1","−2"),String.raw`\text{GCF}(3,\,1,\,2) = 1`],
+  [1,"Identify a, b and c, then multiply a · c",`Read the coefficients. The middle term −n means b = −1. Keep the sign of c.`,String.raw`a = 3,\; b = -1,\; c = -2 \qquad a \cdot c = 3 \cdot (-2) = -6`],
+  [2,"Find two numbers",`Find two numbers that <b>multiply to −6</b> and <b>add to −1</b>. The product is negative, so <b>one number is positive and one is negative</b>. The sum is negative, so the bigger number (ignoring signs) is the negative one. Factor pairs of 6: 1 · 6, 2 · 3. The pair −3 and 2 works.`,String.raw`(${H`-3`})(${H`2`}) = -6 \qquad ${H`-3`} + ${H`2`} = -1`],
+  [3,"Split the middle term",`Rewrite −n as −3n + 2n.`,String.raw`3n^2 ${H`- 3n + 2n`} - 2`],
+  [4,"Factor the first two terms and the last two terms",`From the first two terms, 3n² − 3n, factor out <b>3n</b>. From the last two terms, 2n − 2, factor out <b>2</b>.`,String.raw`3n(n - 1) + 2(n - 1)`],
+  [4,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(n − 1)</b>. Because what is inside the parentheses is the same in both terms, <b>(n − 1) is a common factor</b> of the whole expression.`,String.raw`3n(\textcolor{#D98A14}{n - 1}) + 2(\textcolor{#D98A14}{n - 1})`],
+  [4,"Factor out the common binomial",`Factor (n − 1) out of both terms.`,String.raw`(n - 1)(3n + 2)`]
+ ], ans:String.raw`3n^2 - n - 2 = (n - 1)(3n + 2)`},
+
+ 3:{k:"factor", eq:String.raw`5a^2 - 18a - 8`, steps:[
+  [0,"First, check for a GCF",GCF_NONE(5,"−18","−8"),String.raw`\text{GCF}(5,\,18,\,8) = 1`],
+  [1,"Identify a, b and c, then multiply a · c",`Read the coefficients, then multiply the first and last. Keep the sign of c.`,String.raw`a = 5,\; b = -18,\; c = -8 \qquad a \cdot c = 5 \cdot (-8) = -40`],
+  [2,"Find two numbers",`Find two numbers that <b>multiply to −40</b> and <b>add to −18</b>. The product is negative, so <b>one number is positive and one is negative</b>. The sum is negative, so the bigger number (ignoring signs) is the negative one. Factor pairs of 40: 1 · 40, 2 · 20, 4 · 10, 5 · 8. The pair −20 and 2 works.`,String.raw`(${H`-20`})(${H`2`}) = -40 \qquad ${H`-20`} + ${H`2`} = -18`],
+  [3,"Split the middle term",`Rewrite −18a as −20a + 2a.`,String.raw`5a^2 ${H`- 20a + 2a`} - 8`],
+  [4,"Factor the first two terms and the last two terms",`From the first two terms, 5a² − 20a, factor out <b>5a</b>. From the last two terms, 2a − 8, factor out <b>2</b>.`,String.raw`5a(a - 4) + 2(a - 4)`],
+  [4,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(a − 4)</b>. Because what is inside the parentheses is the same in both terms, <b>(a − 4) is a common factor</b> of the whole expression.`,String.raw`5a(\textcolor{#D98A14}{a - 4}) + 2(\textcolor{#D98A14}{a - 4})`],
+  [4,"Factor out the common binomial",`Factor (a − 4) out of both terms.`,String.raw`(a - 4)(5a + 2)`]
+ ], ans:String.raw`5a^2 - 18a - 8 = (a - 4)(5a + 2)`},
+
+ 4:{k:"factor", eq:String.raw`4x^2 + 4x - 3`, steps:[
+  [0,"First, check for a GCF",GCF_NONE(4,4,"−3"),String.raw`\text{GCF}(4,\,4,\,3) = 1`],
+  [1,"Identify a, b and c, then multiply a · c",`Read the coefficients, then multiply the first and last. Keep the sign of c.`,String.raw`a = 4,\; b = 4,\; c = -3 \qquad a \cdot c = 4 \cdot (-3) = -12`],
+  [2,"Find two numbers",`Find two numbers that <b>multiply to −12</b> and <b>add to 4</b>. The product is negative, so <b>one number is positive and one is negative</b>. The sum is positive, so the bigger number (ignoring signs) is the positive one. Factor pairs of 12: 1 · 12, 2 · 6, 3 · 4. The pair 6 and −2 works.`,String.raw`(${H`6`})(${H`-2`}) = -12 \qquad ${H`6`} + (${H`-2`}) = 4`],
+  [3,"Split the middle term",`Rewrite 4x as 6x − 2x.`,String.raw`4x^2 ${H`+ 6x - 2x`} - 3`],
+  [4,"Factor the first two terms and the last two terms",`From the first two terms, 4x² + 6x, factor out <b>2x</b>. From the last two terms, −2x − 3, factor out <b>−1</b>. We factor out <b>−1</b> (with its negative sign) so the second parentheses match the first.`,String.raw`2x(2x + 3) - 1(2x + 3)`],
+  [4,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(2x + 3)</b>. Because what is inside the parentheses is the same in both terms, <b>(2x + 3) is a common factor</b> of the whole expression.`,String.raw`2x(\textcolor{#D98A14}{2x + 3}) - 1(\textcolor{#D98A14}{2x + 3})`],
+  [4,"Factor out the common binomial",`Factor (2x + 3) out of both terms.`,String.raw`(2x + 3)(2x - 1)`]
+ ], ans:String.raw`4x^2 + 4x - 3 = (2x + 3)(2x - 1)`},
+
+ 5:{k:"factor", eq:String.raw`8x^2 - 2x - 3`, steps:[
+  [0,"First, check for a GCF",GCF_NONE(8,"−2","−3"),String.raw`\text{GCF}(8,\,2,\,3) = 1`],
+  [1,"Identify a, b and c, then multiply a · c",`Read the coefficients, then multiply the first and last. Keep the sign of c.`,String.raw`a = 8,\; b = -2,\; c = -3 \qquad a \cdot c = 8 \cdot (-3) = -24`],
+  [2,"Find two numbers",`Find two numbers that <b>multiply to −24</b> and <b>add to −2</b>. The product is negative, so <b>one number is positive and one is negative</b>. The sum is negative, so the bigger number (ignoring signs) is the negative one. Factor pairs of 24: 1 · 24, 2 · 12, 3 · 8, 4 · 6. The pair −6 and 4 works.`,String.raw`(${H`-6`})(${H`4`}) = -24 \qquad ${H`-6`} + ${H`4`} = -2`],
+  [3,"Split the middle term",`Rewrite −2x as −6x + 4x.`,String.raw`8x^2 ${H`- 6x + 4x`} - 3`],
+  [4,"Factor the first two terms and the last two terms",`From the first two terms, 8x² − 6x, factor out <b>2x</b>. The last two terms, 4x − 3, have no common factor except <b>1</b>, so factor out 1. That keeps the parentheses matching.`,String.raw`2x(4x - 3) + 1(4x - 3)`],
+  [4,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(4x − 3)</b>. Because what is inside the parentheses is the same in both terms, <b>(4x − 3) is a common factor</b> of the whole expression.`,String.raw`2x(\textcolor{#D98A14}{4x - 3}) + 1(\textcolor{#D98A14}{4x - 3})`],
+  [4,"Factor out the common binomial",`Factor (4x − 3) out of both terms. The 2x and the +1 go together in the second factor.`,String.raw`(4x - 3)(2x + 1)`]
+ ], ans:String.raw`8x^2 - 2x - 3 = (4x - 3)(2x + 1)`},
+
+ 6:{k:"factor", eq:String.raw`9r^4 - 6r^3 - 3r^2`, steps:[
+  [0,"First, check for a GCF",`Coefficients 9, −6 and −3 are all divisible by <b>3</b>. Every term has r; the lowest power is <b>r²</b>. So the GCF is 3r².`,String.raw`\text{GCF}(9r^4,\; 6r^3,\; 3r^2) = ${H`3r^2`}`],
+  [0,"Factor out the GCF",`Divide every term by 3r²: 9r⁴ ÷ 3r² = 3r², −6r³ ÷ 3r² = −2r, −3r² ÷ 3r² = −1. Don't forget the −1 at the end.`,String.raw`${H`3r^2`}\left(3r^2 - 2r - 1\right)`],
+  [0,"Check what's left",`What is left inside the parentheses is a <b>quadratic trinomial</b> (an expression of the form ax² + bx + c). It needs to be factored using the <b>AC method</b>.`,String.raw`3r^2\left(\textcolor{#D98A14}{3r^2 - 2r - 1}\right)`],
+  [1,"Identify a, b and c, then multiply a · c",`Read a, b and c from the trinomial inside the parentheses.`,String.raw`a = 3,\; b = -2,\; c = -1 \qquad a \cdot c = 3 \cdot (-1) = -3`],
+  [2,"Find two numbers",`Find two numbers that <b>multiply to −3</b> and <b>add to −2</b>. One is positive and one is negative; the negative one is bigger (ignoring signs). The only factor pair of 3 is 1 · 3. The pair −3 and 1 works.`,String.raw`(${H`-3`})(${H`1`}) = -3 \qquad ${H`-3`} + ${H`1`} = -2`],
+  [3,"Split the middle term",`Rewrite −2r as −3r + r.`,String.raw`3r^2\left(3r^2 ${H`- 3r + r`} - 1\right)`],
+  [4,"Factor the first two terms and the last two terms",`From the first two terms, 3r² − 3r, factor out <b>3r</b>. The last two terms, r − 1, have no common factor except <b>1</b>, so factor out 1.`,String.raw`3r^2\left[3r(r - 1) + 1(r - 1)\right]`],
+  [4,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(r − 1)</b>. Because what is inside the parentheses is the same in both terms, <b>(r − 1) is a common factor</b> of the whole expression.`,String.raw`3r^2\left[3r(\textcolor{#D98A14}{r - 1}) + 1(\textcolor{#D98A14}{r - 1})\right]`],
+  [4,"Factor out the common binomial",`Factor (r − 1) out of both terms. Keep the 3r² in front.`,String.raw`3r^2(r - 1)(3r + 1)`]
+ ], ans:String.raw`9r^4 - 6r^3 - 3r^2 = 3r^2(r - 1)(3r + 1)`},
+
+ 7:{k:"solve", eq:String.raw`2x^2 = -3x + 9`, steps:[
+  [0,"Write in standard form",`The right side must be 0 before you factor. Add 3x to both sides and subtract 9 from both sides.`,String.raw`2x^2 + 3x - 9 = 0`],
+  [1,"First, check for a GCF",GCF_NONE(2,3,"−9"),String.raw`\text{GCF}(2,\,3,\,9) = 1`],
+  [2,"Identify a, b and c, then multiply a · c",`Read the coefficients, then multiply the first and last. Keep the sign of c.`,String.raw`a = 2,\; b = 3,\; c = -9 \qquad a \cdot c = 2 \cdot (-9) = -18`],
+  [3,"Find two numbers",`Find two numbers that <b>multiply to −18</b> and <b>add to 3</b>. The product is negative, so <b>one number is positive and one is negative</b>. The sum is positive, so the bigger number (ignoring signs) is the positive one. Factor pairs of 18: 1 · 18, 2 · 9, 3 · 6. The pair 6 and −3 works.`,String.raw`(${H`6`})(${H`-3`}) = -18 \qquad ${H`6`} + (${H`-3`}) = 3`],
+  [4,"Split the middle term",`Rewrite 3x as 6x − 3x.`,String.raw`2x^2 ${H`+ 6x - 3x`} - 9 = 0`],
+  [5,"Factor the first two terms and the last two terms",`From the first two terms, 2x² + 6x, factor out <b>2x</b>. From the last two terms, −3x − 9, factor out <b>−3</b>. We factor out <b>−3</b> (with its negative sign) so the second parentheses match the first.`,String.raw`2x(x + 3) - 3(x + 3) = 0`],
+  [5,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(x + 3)</b>. Because what is inside the parentheses is the same in both terms, <b>(x + 3) is a common factor</b> of the whole expression.`,String.raw`2x(\textcolor{#D98A14}{x + 3}) - 3(\textcolor{#D98A14}{x + 3}) = 0`],
+  [5,"Factor out the common binomial",`Factor (x + 3) out of both terms.`,String.raw`(x + 3)(2x - 3) = 0`],
+  [6,"Set each factor equal to zero",`Zero product property: if a product is 0, one of the factors is 0. Solve each small equation.`,String.raw`x + 3 = 0 \quad\text{or}\quad 2x - 3 = 0`]
+ ], ans:String.raw`x = -3 \quad\text{or}\quad x = \frac{3}{2}`},
+
+ 8:{k:"solve", eq:String.raw`4x^2 - 3 = -4x`, steps:[
+  [0,"Write in standard form",`The right side must be 0. Add 4x to both sides, then write the terms in order: x² term, x term, constant.`,String.raw`4x^2 + 4x - 3 = 0`],
+  [1,"First, check for a GCF",GCF_NONE(4,4,"−3"),String.raw`\text{GCF}(4,\,4,\,3) = 1`],
+  [2,"Identify a, b and c, then multiply a · c",`Read the coefficients, then multiply the first and last. Keep the sign of c.`,String.raw`a = 4,\; b = 4,\; c = -3 \qquad a \cdot c = 4 \cdot (-3) = -12`],
+  [3,"Find two numbers",`Find two numbers that <b>multiply to −12</b> and <b>add to 4</b>. One is positive and one is negative; the positive one is bigger (ignoring signs). Factor pairs of 12: 1 · 12, 2 · 6, 3 · 4. The pair 6 and −2 works.`,String.raw`(${H`6`})(${H`-2`}) = -12 \qquad ${H`6`} + (${H`-2`}) = 4`],
+  [4,"Split the middle term",`Rewrite 4x as 6x − 2x.`,String.raw`4x^2 ${H`+ 6x - 2x`} - 3 = 0`],
+  [5,"Factor the first two terms and the last two terms",`From the first two terms, 4x² + 6x, factor out <b>2x</b>. From the last two terms, −2x − 3, factor out <b>−1</b>. We factor out <b>−1</b> (with its negative sign) so the second parentheses match the first.`,String.raw`2x(2x + 3) - 1(2x + 3) = 0`],
+  [5,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(2x + 3)</b>. Because what is inside the parentheses is the same in both terms, <b>(2x + 3) is a common factor</b> of the whole expression.`,String.raw`2x(\textcolor{#D98A14}{2x + 3}) - 1(\textcolor{#D98A14}{2x + 3}) = 0`],
+  [5,"Factor out the common binomial",`Factor (2x + 3) out of both terms.`,String.raw`(2x + 3)(2x - 1) = 0`],
+  [6,"Set each factor equal to zero",`Zero product property. Solve each small equation.`,String.raw`2x + 3 = 0 \quad\text{or}\quad 2x - 1 = 0`]
+ ], ans:String.raw`x = -\frac{3}{2} \quad\text{or}\quad x = \frac{1}{2}`},
+
+ 9:{k:"solve", eq:String.raw`2x^2 - 3x = 2`, steps:[
+  [0,"Write in standard form",`The right side must be 0. Subtract 2 from both sides.`,String.raw`2x^2 - 3x - 2 = 0`],
+  [1,"First, check for a GCF",GCF_NONE(2,"−3","−2"),String.raw`\text{GCF}(2,\,3,\,2) = 1`],
+  [2,"Identify a, b and c, then multiply a · c",`Read the coefficients, then multiply the first and last. Keep the sign of c.`,String.raw`a = 2,\; b = -3,\; c = -2 \qquad a \cdot c = 2 \cdot (-2) = -4`],
+  [3,"Find two numbers",`Find two numbers that <b>multiply to −4</b> and <b>add to −3</b>. One is positive and one is negative; the negative one is bigger (ignoring signs). Factor pairs of 4: 1 · 4, 2 · 2. The pair −4 and 1 works.`,String.raw`(${H`-4`})(${H`1`}) = -4 \qquad ${H`-4`} + ${H`1`} = -3`],
+  [4,"Split the middle term",`Rewrite −3x as −4x + x.`,String.raw`2x^2 ${H`- 4x + x`} - 2 = 0`],
+  [5,"Factor the first two terms and the last two terms",`From the first two terms, 2x² − 4x, factor out <b>2x</b>. The last two terms, x − 2, have no common factor except <b>1</b>, so factor out 1.`,String.raw`2x(x - 2) + 1(x - 2) = 0`],
+  [5,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(x − 2)</b>. Because what is inside the parentheses is the same in both terms, <b>(x − 2) is a common factor</b> of the whole expression.`,String.raw`2x(\textcolor{#D98A14}{x - 2}) + 1(\textcolor{#D98A14}{x - 2}) = 0`],
+  [5,"Factor out the common binomial",`Factor (x − 2) out of both terms.`,String.raw`(x - 2)(2x + 1) = 0`],
+  [6,"Set each factor equal to zero",`Zero product property. Solve each small equation.`,String.raw`x - 2 = 0 \quad\text{or}\quad 2x + 1 = 0`]
+ ], ans:String.raw`x = 2 \quad\text{or}\quad x = -\frac{1}{2}`},
+
+ 10:{k:"solve", phases:["Standard form","First, check for a GCF","Solve"], eq:String.raw`2x^2 - 3x = 0`, steps:[
+  [0,"Check standard form",`0 is already alone on the right. There is no constant term, so c = 0. <b>Do not divide both sides by x</b>; that would lose the solution x = 0.`,String.raw`2x^2 - 3x = 0`],
+  [1,"First, check for a GCF",`Coefficients 2 and 3 share only 1, but both terms have an <b>x</b>. So the GCF is x.`,String.raw`\text{GCF}(2x^2,\; 3x) = ${H`x`}`],
+  [1,"Factor out the GCF",`Divide each term by x: 2x² ÷ x = 2x, and −3x ÷ x = −3. What's left inside the parentheses is a linear binomial (x is not raised to any power greater than 1). It cannot be factored further, so you are done.`,String.raw`${H`x`}(2x - 3) = 0`],
+  [2,"Set each factor equal to zero",`Zero product property. Solve each small equation.`,String.raw`x = 0 \quad\text{or}\quad 2x - 3 = 0`]
+ ], ans:String.raw`x = 0 \quad\text{or}\quad x = \frac{3}{2}`},
+
+ 11:{k:"solve", eq:String.raw`4v^2 + 10v - 6 = 0`, steps:[
+  [0,"Check standard form",`The equation is already in the form av² + bv + c = 0.`,String.raw`4v^2 + 10v - 6 = 0`],
+  [1,"First, check for a GCF",`Coefficients 4, 10 and −6 are all divisible by <b>2</b>. Factor it out: 4v² → 2v², 10v → 5v, −6 → −3.`,String.raw`${H`2`}\left(2v^2 + 5v - 3\right) = 0`],
+  [1,"Check what's left",`What is left inside the parentheses is a <b>quadratic trinomial</b> (an expression of the form ax² + bx + c). It needs to be factored using the <b>AC method</b>.`,String.raw`2\left(\textcolor{#D98A14}{2v^2 + 5v - 3}\right) = 0`],
+  [2,"Identify a, b and c, then multiply a · c",`Read a, b and c from the trinomial inside the parentheses.`,String.raw`a = 2,\; b = 5,\; c = -3 \qquad a \cdot c = 2 \cdot (-3) = -6`],
+  [3,"Find two numbers",`Find two numbers that <b>multiply to −6</b> and <b>add to 5</b>. One is positive and one is negative; the positive one is bigger (ignoring signs). Factor pairs of 6: 1 · 6, 2 · 3. The pair 6 and −1 works.`,String.raw`(${H`6`})(${H`-1`}) = -6 \qquad ${H`6`} + (${H`-1`}) = 5`],
+  [4,"Split the middle term",`Rewrite 5v as 6v − v.`,String.raw`2\left(2v^2 ${H`+ 6v - v`} - 3\right) = 0`],
+  [5,"Factor the first two terms and the last two terms",`From the first two terms, 2v² + 6v, factor out <b>2v</b>. From the last two terms, −v − 3, factor out <b>−1</b>. We factor out <b>−1</b> (with its negative sign) so the second parentheses match the first.`,String.raw`2\left[2v(v + 3) - 1(v + 3)\right] = 0`],
+  [5,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(v + 3)</b>. Because what is inside the parentheses is the same in both terms, <b>(v + 3) is a common factor</b> of the whole expression.`,String.raw`2\left[2v(\textcolor{#D98A14}{v + 3}) - 1(\textcolor{#D98A14}{v + 3})\right] = 0`],
+  [5,"Factor out the common binomial",`Factor (v + 3) out. Keep the 2 in front.`,String.raw`2(v + 3)(2v - 1) = 0`],
+  [6,"Set each factor equal to zero",`The factor 2 can never be 0, so it gives no solution. Set the other two factors equal to 0.`,String.raw`v + 3 = 0 \quad\text{or}\quad 2v - 1 = 0`]
+ ], ans:String.raw`v = -3 \quad\text{or}\quad v = \frac{1}{2}`},
+
+ 12:{k:"solve", eq:String.raw`4n^3 - 2n^2 - 2n = 0`, steps:[
+  [0,"Check standard form",`0 is already alone on the right. This one starts with n³, so look for a GCF that includes n.`,String.raw`4n^3 - 2n^2 - 2n = 0`],
+  [1,"First, check for a GCF",`Coefficients 4, −2 and −2 are all divisible by <b>2</b>. Every term has n; the lowest power is <b>n</b>. So the GCF is 2n.`,String.raw`\text{GCF}(4n^3,\; 2n^2,\; 2n) = ${H`2n`}`],
+  [1,"Factor out the GCF",`Divide every term by 2n: 4n³ ÷ 2n = 2n², −2n² ÷ 2n = −n, −2n ÷ 2n = −1.`,String.raw`${H`2n`}\left(2n^2 - n - 1\right) = 0`],
+  [1,"Check what's left",`What is left inside the parentheses is a <b>quadratic trinomial</b> (an expression of the form ax² + bx + c). It needs to be factored using the <b>AC method</b>.`,String.raw`2n\left(\textcolor{#D98A14}{2n^2 - n - 1}\right) = 0`],
+  [2,"Identify a, b and c, then multiply a · c",`Read a, b and c from the trinomial inside the parentheses. The middle term −n means b = −1.`,String.raw`a = 2,\; b = -1,\; c = -1 \qquad a \cdot c = 2 \cdot (-1) = -2`],
+  [3,"Find two numbers",`Find two numbers that <b>multiply to −2</b> and <b>add to −1</b>. One is positive and one is negative; the negative one is bigger (ignoring signs). The only factor pair of 2 is 1 · 2. The pair −2 and 1 works.`,String.raw`(${H`-2`})(${H`1`}) = -2 \qquad ${H`-2`} + ${H`1`} = -1`],
+  [4,"Split the middle term",`Rewrite −n as −2n + n.`,String.raw`2n\left(2n^2 ${H`- 2n + n`} - 1\right) = 0`],
+  [5,"Factor the first two terms and the last two terms",`From the first two terms, 2n² − 2n, factor out <b>2n</b>. The last two terms, n − 1, have no common factor except <b>1</b>, so factor out 1.`,String.raw`2n\left[2n(n - 1) + 1(n - 1)\right] = 0`],
+  [5,"Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(n − 1)</b>. Because what is inside the parentheses is the same in both terms, <b>(n − 1) is a common factor</b> of the whole expression.`,String.raw`2n\left[2n(\textcolor{#D98A14}{n - 1}) + 1(\textcolor{#D98A14}{n - 1})\right] = 0`],
+  [5,"Factor out the common binomial",`Factor (n − 1) out. Keep the 2n in front.`,String.raw`2n(n - 1)(2n + 1) = 0`],
+  [6,"Set each factor equal to zero",`Unlike a plain number such as 2 or 3, the factor <b>2n contains the variable</b>, so it can equal 0. Set all three factors equal to 0. This gives three solutions.`,String.raw`2n = 0 \quad\text{or}\quad n - 1 = 0 \quad\text{or}\quad 2n + 1 = 0`]
+ ], ans:String.raw`n = 0 \quad\text{or}\quad n = 1 \quad\text{or}\quad n = -\frac{1}{2}`}
+};
+const IDS = Object.keys(P).map(Number).sort((a,b)=>a-b);
+
+const KINDS = {
+  factor:{label:"Factor completely", range:"1–6", intro:"Factor completely", phases:["First, check for a GCF","Multiply a·c","Find the pair","Split the middle","Factor by grouping"], ansTitle:"Factored completely", ref:"Original expression"},
+  solve:{label:"Solve by factoring", range:"7–12", intro:"Solve by factoring", phases:["Standard form","First, check for a GCF","Multiply a·c","Find the pair","Split the middle","Factor by grouping","Solve"], ansTitle:"Solution", ref:"Original equation"}
+};
+
+let cur = IDS[0], step = 0; // step 0 = problem page, 1..n = steps, n+1 = answer
+let done = new Set();
+try{ const s = JSON.parse(localStorage.getItem("hw452-done")||"[]"); s.forEach(n=>done.add(n)); }catch(e){}
+function saveDone(){ try{ localStorage.setItem("hw452-done", JSON.stringify([...done])); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+const picker = $("picker"), phasesEl = $("phases");
+
+Object.entries(KINDS).forEach(([k,info])=>{
+  const g=document.createElement("div"); g.className="group";
+  g.innerHTML=`<span class="glbl">${info.label} <span class="grng">${info.range}</span></span>`;
+  const row=document.createElement("div"); row.className="chips";
+  IDS.filter(n=>P[n].k===k).forEach(n=>{
+    const b = document.createElement("button");
+    b.className="chip"; b.type="button"; b.id="chip-"+n;
+    b.addEventListener("click",()=>go(n,0));
+    row.appendChild(b);
+  });
+  g.appendChild(row); picker.appendChild(g);
+});
+
+let shownPh=null;
+function buildPhases(ph){
+  if(shownPh===ph) return; shownPh=ph;
+  phasesEl.innerHTML=""; phasesEl.style.setProperty("--cols", ph.length);
+  ph.forEach((p,i)=>{
+    const d=document.createElement("div"); d.className="phase"; d.id="ph"+i;
+    d.innerHTML=`<div class="bar"></div><span>${p}</span>`; phasesEl.appendChild(d);
+  });
+}
+
+function typeset(els){
+  if(window.MathJax && MathJax.typesetPromise){
+    MathJax.startup.promise.then(()=>{ MathJax.typesetClear(els); return MathJax.typesetPromise(els); }).catch(()=>{});
+  }
+}
+
+function render(){
+  const pr = P[cur], n = pr.steps.length, K = KINDS[pr.k], PH = pr.phases || K.phases;
+  buildPhases(PH);
+  IDS.forEach(k=>{
+    const b=$("chip-"+k);
+    b.setAttribute("aria-current", k===cur ? "true":"false");
+    b.innerHTML = k + (done.has(k) ? '<span class="tick" aria-label="done">✓</span>' : '');
+  });
+  const card=$("card"); card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
+  const math=$("math"), ref=$("ref");
+  math.className="math";
+  let phase=-1;
+
+  if(step===0){
+    $("eyebrowL").textContent=`Problem ${cur}`;
+    $("eyebrowR").textContent=`${n} steps`;
+    $("title").textContent=pr.intro || K.intro;
+    $("note").innerHTML=`Try the first step on paper, then press <b style="color:var(--accent)">Next</b> to check it.`;
+    math.classList.add("big");
+    math.innerHTML=`\\[${pr.eq}\\]`;
+    ref.innerHTML="";
+  } else if(step<=n){
+    const [ph,t,note,tex]=pr.steps[step-1]; phase=ph;
+    $("eyebrowL").textContent=`Problem ${cur} · ${PH[ph]}`;
+    $("eyebrowR").textContent=`Step ${step} of ${n}`;
+    $("title").textContent=t;
+    $("note").innerHTML=note;
+    math.innerHTML=`\\[${tex}\\]`;
+    ref.innerHTML=`${K.ref}: <span class="m">\\(${pr.eq}\\)</span>`;
+  } else {
+    phase=PH.length;
+    $("eyebrowL").textContent=`Problem ${cur} · Done`;
+    $("eyebrowR").textContent=`Done`;
+    $("title").textContent=K.ansTitle;
+    const nextId = IDS[IDS.indexOf(cur)+1];
+    $("note").innerHTML = nextId ? `Nice work. Press <b style="color:var(--accent)">Next problem</b> to go on to problem ${nextId}, or pick any problem above.` : `That was the last problem. Pick any problem above to review it.`;
+    math.classList.add("big","answer");
+    math.innerHTML=`\\[${pr.ans}\\]`;
+    ref.innerHTML=`${K.ref}: <span class="m">\\(${pr.eq}\\)</span>`;
+    done.add(cur); saveDone();
+    $("chip-"+cur).innerHTML = cur + '<span class="tick" aria-label="done">✓</span>';
+  }
+  PH.forEach((_,i)=>{
+    const el=$("ph"+i); el.classList.toggle("now",i===phase); el.classList.toggle("past", phase>=0 && i<phase);
+  });
+
+  $("back").disabled = (step===0 && cur===IDS[0]);
+  const nb=$("next");
+  if(step<n) nb.textContent="Next →";
+  else if(step===n) nb.textContent="Show answer →";
+  else nb.textContent = IDS[IDS.indexOf(cur)+1] ? `Next problem →` : "Start over";
+  typeset([math,ref]);
+  try{ history.replaceState(null,"","#p"+cur); }catch(e){}
+}
+
+function go(n,s){ cur=n; step=s; render(); }
+function next(){
+  const n=P[cur].steps.length;
+  if(step<=n){ step++; render(); return; }
+  const i=IDS.indexOf(cur);
+  go(IDS[i+1] ?? IDS[0], 0);
+}
+function back(){
+  if(step>0){ step--; render(); return; }
+  const i=IDS.indexOf(cur);
+  if(i>0){ const p=IDS[i-1]; go(p, P[p].steps.length+1); }
+}
+$("next").addEventListener("click",next);
+$("back").addEventListener("click",back);
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"){ next(); } else if(e.key==="ArrowLeft"){ back(); }
+});
+
+const m = /^#p(\d+)$/.exec(location.hash);
+if(m && P[+m[1]]) cur=+m[1];
+render();
+if(window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(()=>typeset([$("math"),$("ref")]));
+</script>
+</body>
+</html>
