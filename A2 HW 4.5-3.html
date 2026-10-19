@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{margin:0}</style>
+<title>A2 HW 4.5/3</title>
+</head>
+<body>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@500;600;700&display=swap">
+<style>
+:root{
+  --paper:#EEF2EF; --card:#FFFFFF; --ink:#17222C; --muted:#56646E; --line:#D3DCD7;
+  --grid:rgba(27,110,122,.07); --accent:#1B6E7A; --accent-ink:#FFFFFF; --accent-soft:#DDEEEF;
+  --hl:#B86A00; --hl-soft:#FFF1D9; --done:#2F7D4A;
+  --display:"Lexend",system-ui,sans-serif; --body:"Atkinson Hyperlegible",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+    --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+    --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+  --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+  --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.35rem,3.5vw,1.8rem);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);font-size:.95rem;margin:0}
+.picker{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.picker .lbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+.chip{font-family:var(--display);font-weight:600;font-size:1rem;min-width:46px;height:42px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip .tick{color:var(--done);font-size:.85rem}
+.chip[aria-current="true"] .tick{color:var(--accent-ink)}
+button:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+
+.phases{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.phase{display:flex;flex-direction:column;gap:6px;font-size:.74rem;color:var(--muted);line-height:1.25}
+.phase .bar{height:6px;border-radius:3px;background:var(--line)}
+.phase.past .bar{background:var(--accent);opacity:.45}
+.phase.now .bar{background:var(--accent)}
+.phase.now{color:var(--ink);font-weight:700}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,32px);display:flex;flex-direction:column;gap:16px}
+.eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(1.25rem,3vw,1.6rem);margin:0;text-wrap:balance}
+.note{margin:0;max-width:62ch}
+.note b{color:var(--hl)}
+.math{border-radius:12px;padding:22px 16px;min-height:110px;display:flex;align-items:center;justify-content:center;overflow-x:auto;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;font-size:1.25rem}
+.math mjx-container{margin:0!important}
+.math.big{font-size:1.7rem;min-height:150px}
+.ref{font-size:.88rem;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ref .m{font-size:1rem;color:var(--ink)}
+.answer{border:2px solid var(--done);background:transparent}
+.nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-weight:600;font-size:1.05rem;border-radius:12px;padding:12px 22px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);min-width:140px}
+.btn.primary:hover{filter:brightness(1.07)}
+.kbd{font-size:.8rem;color:var(--muted);text-align:center}
+.hlkey{display:inline-block;background:var(--hl-soft);color:var(--hl);border-radius:6px;padding:0 6px;font-weight:700}
+@media (max-width:560px){
+  .phases{grid-template-columns:repeat(3,1fr);row-gap:10px}
+  .math{font-size:1.05rem}
+  .math.big{font-size:1.4rem}
+  .btn{flex:1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .card.enter{animation:rise .22s ease-out}
+  @keyframes rise{from{transform:translateY(6px);opacity:.6}to{transform:none;opacity:1}}
+}
+.picker{display:flex;flex-direction:column;align-items:stretch!important;gap:10px}
+.group{display:grid;grid-template-columns:19rem 1fr;align-items:center;gap:6px 12px}
+.glbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.grng{color:var(--ink);font-weight:700;letter-spacing:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.phases{grid-template-columns:repeat(var(--cols,6),1fr)!important}
+@media (max-width:560px){.group{grid-template-columns:1fr}.phases{grid-template-columns:repeat(3,1fr)!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>A2 HW 4.5/3</h1>
+    </div>
+    <div class="picker" id="picker" role="group" aria-label="Choose a problem">
+          </div>
+  </header>
+
+  <div class="phases" id="phases" aria-hidden="true"></div>
+
+  <main class="card" id="card" aria-live="polite">
+    <div class="eyebrow"><span id="eyebrowL"></span><span id="eyebrowR"></span></div>
+    <h2 id="title"></h2>
+    <p class="note" id="note"></p>
+    <div class="math" id="math"></div>
+    <div class="ref" id="ref"></div>
+  </main>
+
+  <div class="nav">
+    <button class="btn" id="back" type="button">← Back</button>
+    <button class="btn primary" id="next" type="button">Next →</button>
+  </div>
+  <p class="kbd">Tip: you can also use the ← and → arrow keys. <span class="hlkey">Orange</span> marks the key numbers in each step.</p>
+</div>
+
+<script>
+window.MathJax = {
+  loader: { load: ['[tex]/color'] },
+  tex: { packages: {'[+]': ['color']} },
+  svg: { fontCache: 'global' },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<script>
+const HL = n => "\\textcolor{#D98A14}{" + n + "}";
+const fmt = n => n < 0 ? "−" + (-n) : String(n);
+const lin = (v,n) => n < 0 ? `${v} - ${-n}` : `${v} + ${n}`;
+const bin = (v,n) => `(${lin(v,n)})`;
+
+function signNote(b,c){
+  if(c>0 && b>0) return `The product is positive, so <b>both numbers have the same sign</b>. The sum is positive, so <b>both are positive</b>.`;
+  if(c>0 && b<0) return `The product is positive, so <b>both numbers have the same sign</b>. The sum is negative, so <b>both are negative</b>.`;
+  return `The product is negative, so <b>one number is positive and one is negative</b>. The sum is ${b>0?"positive":"negative"}, so the bigger number (ignoring signs) is the ${b>0?"positive":"negative"} one.`;
+}
+
+// Shortcut generator: x^2 + bx + c = (x + r)(x + s), with r·s = c and r + s = b
+function SC(o){
+  const v=o.v, b=o.b, c=o.c, r=o.r, s=o.s, solve=!!o.solve, off=solve?1:0, z=solve?" = 0":"";
+  const steps=[];
+  if(solve) steps.push([0,"Check standard form",`0 is already alone on the right, and the terms are in order: ${v}² term, ${v} term, constant. The equation is in standard form.`,o.eq+z]);
+  steps.push([off,"First, check for a GCF",`The coefficient of ${v}² is 1, so the only common number factor is 1, and the last term ${fmt(c)} has no ${v}. <b>No GCF to factor out</b>.`,String.raw`\text{GCF} = 1`]);
+  const bNote = Math.abs(b)===1 ? ` The middle term ${b<0?"−":""}${v} means b = ${fmt(b)}.` : "";
+  steps.push([off+1,"Identify b and c",`The coefficient of ${v}² is <b>1</b>, so we can use the <b>shortcut</b>: find two numbers r and s whose <b>product is c</b> and whose <b>sum is b</b>. Then x² + bx + c factors directly as <b>(x + r)(x + s)</b>. Read b and c, keeping their signs.${bNote}`,String.raw`a = 1,\; b = ${b},\; c = ${c}`]);
+  const sP = s<0 ? `(${HL(s)})` : HL(s);
+  steps.push([off+2,"Find the two numbers",`Find two numbers that <b>multiply to ${fmt(c)}</b> and <b>add to ${fmt(b)}</b>. ${signNote(b,c)} Factor pairs of ${Math.abs(c)}: ${o.pairs}. The pair ${fmt(r)} and ${fmt(s)} works.`,String.raw`(${HL(r)})(${HL(s)}) = ${c} \qquad ${HL(r)} + ${sP} = ${b}`]);
+  const rP = r<0 ? `(${HL(r)})` : HL(r);
+  const neg = (r<0||s<0) ? " Adding a negative number is the same as subtracting." : "";
+  steps.push([off+3,"Write the factors",`Put the two numbers, ${fmt(r)} and ${fmt(s)}, straight into the pattern (${v} + ▢)(${v} + ▢).${neg}`,String.raw`(${v} + ${rP})(${v} + ${sP})${z} \;\;\to\;\; ${bin(v,r)}${bin(v,s)}${z}`]);
+  let fact = bin(v,r)+bin(v,s);
+  if(r===s){
+    fact = bin(v,r)+"^2";
+    steps.push([off+3,"Write it as a square",`Both factors are the same, ${bin(v,r).replace("-","−")}, so write the product as a square. (This trinomial is also a perfect square trinomial.)`,fact+z]);
+  }
+  if(solve){
+    if(r===s) steps.push([5,"Set the factor equal to zero",`Zero product property: if a product is 0, one of the factors is 0. Both factors are the same, so there is only <b>one</b> equation to solve. This kind of solution is called a <b>double root</b>.`,String.raw`${lin(v,r)} = 0`]);
+    else steps.push([5,"Set each factor equal to zero",`Zero product property: if a product is 0, one of the factors is 0. Solve each small equation.`,String.raw`${lin(v,r)} = 0 \quad\text{or}\quad ${lin(v,s)} = 0`]);
+  }
+  const ans = solve ? (r===s ? `${v} = ${-r}` : String.raw`${v} = ${-r} \quad\text{or}\quad ${v} = ${-s}`) : `${o.eq} = ${fact}`;
+  return {k: solve?"ssc":"sc", eq:o.eq+z, steps, ans};
+}
+
+const PST_ENDS = (first,a,last,b) => `A <b>perfect square trinomial</b> has the form <b>a² + 2ab + b²</b> = (a + b)² or <b>a² − 2ab + b²</b> = (a − b)². The first term ${first} is the square of <b>${a}</b>, and the last term ${last} is the square of <b>${b}</b>. Both are positive.`;
+const DOTS_RULE = `There are only two terms, with a <b>minus</b> sign between them, and both are perfect squares. That is a <b>difference of two squares</b>: <b>a² − b² = (a + b)(a − b)</b>.`;
+
+const P = {
+ 1: SC({v:"v",eq:"v^2 - 9v + 20",b:-9,c:20,r:-4,s:-5,pairs:"1 · 20, 2 · 10, 4 · 5"}),
+ 2: SC({v:"r",eq:"r^2 + 6r + 5",b:6,c:5,r:1,s:5,pairs:"1 · 5"}),
+ 3: SC({v:"x",eq:"x^2 + 3x - 10",b:3,c:-10,r:-2,s:5,pairs:"1 · 10, 2 · 5"}),
+ 4: SC({v:"x",eq:"x^2 - x - 2",b:-1,c:-2,r:-2,s:1,pairs:"1 · 2"}),
+ 5: SC({v:"x",eq:"x^2 + 6x + 9",b:6,c:9,r:3,s:3,pairs:"1 · 9, 3 · 3"}),
+ 6: SC({v:"x",eq:"x^2 - 8x + 16",b:-8,c:16,r:-4,s:-4,pairs:"1 · 16, 2 · 8, 4 · 4"}),
+
+ 7:{k:"pst", eq:String.raw`9x^2 - 12x + 4`, steps:[
+  [0,"First, check for a GCF",`Coefficients 9, −12 and 4 share only 1, and the last term has no x. <b>No GCF to factor out</b>. The coefficient of x² is 9, not 1, so the shortcut doesn't apply. Check whether it is a <b>perfect square trinomial</b>.`,String.raw`\text{GCF}(9,\,12,\,4) = 1`],
+  [1,"Check the first and last terms",PST_ENDS("9x²","3x","4","2"),String.raw`9x^2 = (${HL("3x")})^2 \qquad 4 = (${HL("2")})^2`],
+  [2,"Check the middle term",`Multiply 2 · (3x) · (2). If that matches the middle term (ignoring its sign), it is a perfect square trinomial. 2 · 3x · 2 = 12x, which matches. The middle term is <b>negative</b>, so use the <b>minus</b> pattern, (a − b)².`,String.raw`2\cdot(3x)\cdot(2) = 12x \;\checkmark \qquad 9x^2 ${HL("-")} 12x + 4`],
+  [3,"Write the square",`Put a = 3x and b = 2 into (a − b)².`,String.raw`(${HL("3x")} - ${HL("2")})^2`]
+ ], ans:String.raw`9x^2 - 12x + 4 = (3x - 2)^2`},
+
+ 8:{k:"pst", eq:String.raw`4r^2 + 20r + 25`, steps:[
+  [0,"First, check for a GCF",`Coefficients 4, 20 and 25 share only 1, and the last term has no r. <b>No GCF to factor out</b>. The coefficient of r² is 4, not 1, so the shortcut doesn't apply. Check whether it is a <b>perfect square trinomial</b>.`,String.raw`\text{GCF}(4,\,20,\,25) = 1`],
+  [1,"Check the first and last terms",PST_ENDS("4r²","2r","25","5"),String.raw`4r^2 = (${HL("2r")})^2 \qquad 25 = (${HL("5")})^2`],
+  [2,"Check the middle term",`Multiply 2 · (2r) · (5). 2 · 2r · 5 = 20r, which matches the middle term. The middle term is <b>positive</b>, so use the <b>plus</b> pattern, (a + b)².`,String.raw`2\cdot(2r)\cdot(5) = 20r \;\checkmark \qquad 4r^2 ${HL("+")} 20r + 25`],
+  [3,"Write the square",`Put a = 2r and b = 5 into (a + b)².`,String.raw`(${HL("2r")} + ${HL("5")})^2`]
+ ], ans:String.raw`4r^2 + 20r + 25 = (2r + 5)^2`},
+
+ 9:{k:"dots", eq:String.raw`x^2 - 16`, steps:[
+  [0,"First, check for a GCF",`Coefficients 1 and 16 share only 1, and 16 has no x. <b>No GCF to factor out</b>.`,String.raw`\text{GCF}(1,\,16) = 1`],
+  [1,"Spot the two squares",DOTS_RULE+` Here x² is the square of <b>x</b> and 16 is the square of <b>4</b>.`,String.raw`x^2 - 16 = (${HL("x")})^2 - (${HL("4")})^2`],
+  [2,"Write the factors",`Put a = x and b = 4 into (a + b)(a − b).`,String.raw`(${HL("x")} + ${HL("4")})(${HL("x")} - ${HL("4")})`]
+ ], ans:String.raw`x^2 - 16 = (x + 4)(x - 4)`},
+
+ 10:{k:"dots", eq:String.raw`m^2 - 25`, steps:[
+  [0,"First, check for a GCF",`Coefficients 1 and 25 share only 1, and 25 has no m. <b>No GCF to factor out</b>.`,String.raw`\text{GCF}(1,\,25) = 1`],
+  [1,"Spot the two squares",DOTS_RULE+` Here m² is the square of <b>m</b> and 25 is the square of <b>5</b>.`,String.raw`m^2 - 25 = (${HL("m")})^2 - (${HL("5")})^2`],
+  [2,"Write the factors",`Put a = m and b = 5 into (a + b)(a − b).`,String.raw`(${HL("m")} + ${HL("5")})(${HL("m")} - ${HL("5")})`]
+ ], ans:String.raw`m^2 - 25 = (m + 5)(m - 5)`},
+
+ 11:{k:"dots", eq:String.raw`9b^2 - 4`, steps:[
+  [0,"First, check for a GCF",`Coefficients 9 and 4 share only 1, and 4 has no b. <b>No GCF to factor out</b>.`,String.raw`\text{GCF}(9,\,4) = 1`],
+  [1,"Spot the two squares",DOTS_RULE+` Here 9b² is the square of <b>3b</b> and 4 is the square of <b>2</b>.`,String.raw`9b^2 - 4 = (${HL("3b")})^2 - (${HL("2")})^2`],
+  [2,"Write the factors",`Put a = 3b and b = 2 into (a + b)(a − b).`,String.raw`(${HL("3b")} + ${HL("2")})(${HL("3b")} - ${HL("2")})`]
+ ], ans:String.raw`9b^2 - 4 = (3b + 2)(3b - 2)`},
+
+ 12:{k:"dots", eq:String.raw`25x^2 - 16`, steps:[
+  [0,"First, check for a GCF",`Coefficients 25 and 16 share only 1, and 16 has no x. <b>No GCF to factor out</b>.`,String.raw`\text{GCF}(25,\,16) = 1`],
+  [1,"Spot the two squares",DOTS_RULE+` Here 25x² is the square of <b>5x</b> and 16 is the square of <b>4</b>.`,String.raw`25x^2 - 16 = (${HL("5x")})^2 - (${HL("4")})^2`],
+  [2,"Write the factors",`Put a = 5x and b = 4 into (a + b)(a − b).`,String.raw`(${HL("5x")} + ${HL("4")})(${HL("5x")} - ${HL("4")})`]
+ ], ans:String.raw`25x^2 - 16 = (5x + 4)(5x - 4)`},
+
+ 13:{k:"dots", eq:String.raw`32p^2 - 2`, steps:[
+  [0,"First, check for a GCF",`32 and 2 are both even, so they share <b>2</b>. The last term has no p, so the GCF is just 2. (32 is not a perfect square, so factoring out the GCF first is a must.)`,String.raw`\text{GCF}(32p^2,\; 2) = ${HL("2")}`],
+  [0,"Factor out the GCF",`Divide each term by 2: 32p² ÷ 2 = 16p², and −2 ÷ 2 = −1. Don't forget the −1.`,String.raw`${HL("2")}\left(16p^2 - 1\right)`],
+  [1,"Spot the two squares",DOTS_RULE+` Inside the parentheses, 16p² is the square of <b>4p</b> and 1 is the square of <b>1</b>.`,String.raw`2\left[(${HL("4p")})^2 - (${HL("1")})^2\right]`],
+  [2,"Write the factors",`Put a = 4p and b = 1 into (a + b)(a − b). Keep the 2 in front.`,String.raw`2(${HL("4p")} + ${HL("1")})(${HL("4p")} - ${HL("1")})`]
+ ], ans:String.raw`32p^2 - 2 = 2(4p + 1)(4p - 1)`},
+
+ 14:{k:"dots", eq:String.raw`32x^3 - 50x`, steps:[
+  [0,"First, check for a GCF",`32 and 50 are both even, so they share <b>2</b>. Both terms have x; the lowest power is <b>x</b>. So the GCF is 2x.`,String.raw`\text{GCF}(32x^3,\; 50x) = ${HL("2x")}`],
+  [0,"Factor out the GCF",`Divide each term by 2x: 32x³ ÷ 2x = 16x², and −50x ÷ 2x = −25.`,String.raw`${HL("2x")}\left(16x^2 - 25\right)`],
+  [1,"Spot the two squares",DOTS_RULE+` Inside the parentheses, 16x² is the square of <b>4x</b> and 25 is the square of <b>5</b>.`,String.raw`2x\left[(${HL("4x")})^2 - (${HL("5")})^2\right]`],
+  [2,"Write the factors",`Put a = 4x and b = 5 into (a + b)(a − b). Keep the 2x in front.`,String.raw`2x(${HL("4x")} + ${HL("5")})(${HL("4x")} - ${HL("5")})`]
+ ], ans:String.raw`32x^3 - 50x = 2x(4x + 5)(4x - 5)`},
+
+ 15: SC({v:"r",eq:"r^2 + 16r + 64",b:16,c:64,r:8,s:8,pairs:"1 · 64, 2 · 32, 4 · 16, 8 · 8",solve:true}),
+ 16: SC({v:"x",eq:"x^2 + 8x + 7",b:8,c:7,r:7,s:1,pairs:"1 · 7",solve:true}),
+ 17: SC({v:"r",eq:"r^2 + 10r + 24",b:10,c:24,r:4,s:6,pairs:"1 · 24, 2 · 12, 3 · 8, 4 · 6",solve:true}),
+
+ 18:{k:"sdots", eq:String.raw`b^2 - 16 = 0`, steps:[
+  [0,"Check standard form",`0 is already alone on the right. The equation is in standard form.`,String.raw`b^2 - 16 = 0`],
+  [1,"First, check for a GCF",`Coefficients 1 and 16 share only 1, and 16 has no b. <b>No GCF to factor out</b>.`,String.raw`\text{GCF}(1,\,16) = 1`],
+  [2,"Spot the two squares",DOTS_RULE+` Here b² is the square of <b>b</b> and 16 is the square of <b>4</b>.`,String.raw`(${HL("b")})^2 - (${HL("4")})^2 = 0`],
+  [3,"Write the factors",`Put a = b and b = 4 into (a + b)(a − b).`,String.raw`(${HL("b")} + ${HL("4")})(${HL("b")} - ${HL("4")}) = 0`],
+  [4,"Set each factor equal to zero",`Zero product property: if a product is 0, one of the factors is 0. Solve each small equation.`,String.raw`b + 4 = 0 \quad\text{or}\quad b - 4 = 0`]
+ ], ans:String.raw`b = -4 \quad\text{or}\quad b = 4`},
+
+ 19:{k:"spst", eq:String.raw`25x^2 + 20x + 4 = 0`, steps:[
+  [0,"Check standard form",`0 is already alone on the right, and the terms are in order. The equation is in standard form.`,String.raw`25x^2 + 20x + 4 = 0`],
+  [1,"First, check for a GCF",`Coefficients 25, 20 and 4 share only 1, and the last term has no x. <b>No GCF to factor out</b>. The coefficient of x² is 25, not 1, so the shortcut doesn't apply. Check whether it is a <b>perfect square trinomial</b>.`,String.raw`\text{GCF}(25,\,20,\,4) = 1`],
+  [2,"Check the first and last terms",PST_ENDS("25x²","5x","4","2"),String.raw`25x^2 = (${HL("5x")})^2 \qquad 4 = (${HL("2")})^2`],
+  [3,"Check the middle term",`Multiply 2 · (5x) · (2). 2 · 5x · 2 = 20x, which matches the middle term. The middle term is <b>positive</b>, so use the <b>plus</b> pattern, (a + b)².`,String.raw`2\cdot(5x)\cdot(2) = 20x \;\checkmark \qquad 25x^2 ${HL("+")} 20x + 4`],
+  [4,"Write the square",`Put a = 5x and b = 2 into (a + b)².`,String.raw`(${HL("5x")} + ${HL("2")})^2 = 0`],
+  [5,"Set the factor equal to zero",`Zero product property. Both factors are the same, so there is only <b>one</b> equation to solve (a <b>double root</b>). Subtract 2, then divide by 5.`,String.raw`5x + 2 = 0 \quad\Rightarrow\quad 5x = -2`]
+ ], ans:String.raw`x = -\frac{2}{5}`},
+
+ 20:{k:"spst", eq:String.raw`9x^2 - 24x + 16 = 0`, steps:[
+  [0,"Check standard form",`0 is already alone on the right, and the terms are in order. The equation is in standard form.`,String.raw`9x^2 - 24x + 16 = 0`],
+  [1,"First, check for a GCF",`Coefficients 9, −24 and 16 share only 1, and the last term has no x. <b>No GCF to factor out</b>. The coefficient of x² is 9, not 1, so the shortcut doesn't apply. Check whether it is a <b>perfect square trinomial</b>.`,String.raw`\text{GCF}(9,\,24,\,16) = 1`],
+  [2,"Check the first and last terms",PST_ENDS("9x²","3x","16","4"),String.raw`9x^2 = (${HL("3x")})^2 \qquad 16 = (${HL("4")})^2`],
+  [3,"Check the middle term",`Multiply 2 · (3x) · (4). 2 · 3x · 4 = 24x, which matches the middle term. The middle term is <b>negative</b>, so use the <b>minus</b> pattern, (a − b)².`,String.raw`2\cdot(3x)\cdot(4) = 24x \;\checkmark \qquad 9x^2 ${HL("-")} 24x + 16`],
+  [4,"Write the square",`Put a = 3x and b = 4 into (a − b)².`,String.raw`(${HL("3x")} - ${HL("4")})^2 = 0`],
+  [5,"Set the factor equal to zero",`Zero product property. Both factors are the same, so there is only <b>one</b> equation to solve (a <b>double root</b>). Add 4, then divide by 3. The answer is <b>positive</b>.`,String.raw`3x - 4 = 0 \quad\Rightarrow\quad 3x = 4`]
+ ], ans:String.raw`x = \frac{4}{3}`}
+};
+const IDS = Object.keys(P).map(Number).sort((a,b)=>a-b);
+
+const FAC = {ansTitle:"Factored completely", ref:"Original expression"};
+const SOL = {ansTitle:"Solution", ref:"Original equation"};
+const KINDS = {
+  sc:   {...FAC, label:"Factor · shortcut", range:"1–6", intro:"Factor completely (shortcut)", phases:["First, check for a GCF","Identify b and c","Find the pair","Write the factors"]},
+  pst:  {...FAC, label:"Factor · perfect square trinomial", range:"7–8", intro:"Factor completely (perfect square trinomial)", phases:["First, check for a GCF","Squares at the ends","Check the middle","Write the square"]},
+  dots: {...FAC, label:"Factor · difference of squares", range:"9–14", intro:"Factor completely (difference of two squares)", phases:["First, check for a GCF","Spot the squares","Write the factors"]},
+  ssc:  {...SOL, label:"Solve · shortcut", range:"15–17", intro:"Solve by factoring (shortcut)", phases:["Standard form","First, check for a GCF","Identify b and c","Find the pair","Write the factors","Solve"]},
+  sdots:{...SOL, label:"Solve · difference of squares", range:"18", intro:"Solve by factoring (difference of two squares)", phases:["Standard form","First, check for a GCF","Spot the squares","Write the factors","Solve"]},
+  spst: {...SOL, label:"Solve · perfect square trinomial", range:"19–20", intro:"Solve by factoring (perfect square trinomial)", phases:["Standard form","First, check for a GCF","Squares at the ends","Check the middle","Write the square","Solve"]}
+};
+
+let cur = IDS[0], step = 0; // step 0 = problem page, 1..n = steps, n+1 = answer
+let done = new Set();
+try{ const s = JSON.parse(localStorage.getItem("hw453-done")||"[]"); s.forEach(n=>done.add(n)); }catch(e){}
+function saveDone(){ try{ localStorage.setItem("hw453-done", JSON.stringify([...done])); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+const picker = $("picker"), phasesEl = $("phases");
+
+Object.entries(KINDS).forEach(([k,info])=>{
+  const g=document.createElement("div"); g.className="group";
+  g.innerHTML=`<span class="glbl">${info.label} <span class="grng">${info.range}</span></span>`;
+  const row=document.createElement("div"); row.className="chips";
+  IDS.filter(n=>P[n].k===k).forEach(n=>{
+    const b = document.createElement("button");
+    b.className="chip"; b.type="button"; b.id="chip-"+n;
+    b.addEventListener("click",()=>go(n,0));
+    row.appendChild(b);
+  });
+  g.appendChild(row); picker.appendChild(g);
+});
+
+let shownPh=null;
+function buildPhases(ph){
+  if(shownPh===ph) return; shownPh=ph;
+  phasesEl.innerHTML=""; phasesEl.style.setProperty("--cols", ph.length);
+  ph.forEach((p,i)=>{
+    const d=document.createElement("div"); d.className="phase"; d.id="ph"+i;
+    d.innerHTML=`<div class="bar"></div><span>${p}</span>`; phasesEl.appendChild(d);
+  });
+}
+
+function typeset(els){
+  if(window.MathJax && MathJax.typesetPromise){
+    MathJax.startup.promise.then(()=>{ MathJax.typesetClear(els); return MathJax.typesetPromise(els); }).catch(()=>{});
+  }
+}
+
+function render(){
+  const pr = P[cur], n = pr.steps.length, K = KINDS[pr.k], PH = pr.phases || K.phases;
+  buildPhases(PH);
+  IDS.forEach(k=>{
+    const b=$("chip-"+k);
+    b.setAttribute("aria-current", k===cur ? "true":"false");
+    b.innerHTML = k + (done.has(k) ? '<span class="tick" aria-label="done">✓</span>' : '');
+  });
+  const card=$("card"); card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
+  const math=$("math"), ref=$("ref");
+  math.className="math";
+  let phase=-1;
+
+  if(step===0){
+    $("eyebrowL").textContent=`Problem ${cur}`;
+    $("eyebrowR").textContent=`${n} steps`;
+    $("title").textContent=pr.intro || K.intro;
+    $("note").innerHTML=`Try the first step on paper, then press <b style="color:var(--accent)">Next</b> to check it.`;
+    math.classList.add("big");
+    math.innerHTML=`\\[${pr.eq}\\]`;
+    ref.innerHTML="";
+  } else if(step<=n){
+    const [ph,t,note,tex]=pr.steps[step-1]; phase=ph;
+    $("eyebrowL").textContent=`Problem ${cur} · ${PH[ph]}`;
+    $("eyebrowR").textContent=`Step ${step} of ${n}`;
+    $("title").textContent=t;
+    $("note").innerHTML=note;
+    math.innerHTML=`\\[${tex}\\]`;
+    ref.innerHTML=`${K.ref}: <span class="m">\\(${pr.eq}\\)</span>`;
+  } else {
+    phase=PH.length;
+    $("eyebrowL").textContent=`Problem ${cur} · Done`;
+    $("eyebrowR").textContent=`Done`;
+    $("title").textContent=K.ansTitle;
+    const nextId = IDS[IDS.indexOf(cur)+1];
+    $("note").innerHTML = nextId ? `Nice work. Press <b style="color:var(--accent)">Next problem</b> to go on to problem ${nextId}, or pick any problem above.` : `That was the last problem. Pick any problem above to review it.`;
+    math.classList.add("big","answer");
+    math.innerHTML=`\\[${pr.ans}\\]`;
+    ref.innerHTML=`${K.ref}: <span class="m">\\(${pr.eq}\\)</span>`;
+    done.add(cur); saveDone();
+    $("chip-"+cur).innerHTML = cur + '<span class="tick" aria-label="done">✓</span>';
+  }
+  PH.forEach((_,i)=>{
+    const el=$("ph"+i); el.classList.toggle("now",i===phase); el.classList.toggle("past", phase>=0 && i<phase);
+  });
+
+  $("back").disabled = (step===0 && cur===IDS[0]);
+  const nb=$("next");
+  if(step<n) nb.textContent="Next →";
+  else if(step===n) nb.textContent="Show answer →";
+  else nb.textContent = IDS[IDS.indexOf(cur)+1] ? `Next problem →` : "Start over";
+  typeset([math,ref]);
+  try{ history.replaceState(null,"","#p"+cur); }catch(e){}
+}
+
+function go(n,s){ cur=n; step=s; render(); }
+function next(){
+  const n=P[cur].steps.length;
+  if(step<=n){ step++; render(); return; }
+  const i=IDS.indexOf(cur);
+  go(IDS[i+1] ?? IDS[0], 0);
+}
+function back(){
+  if(step>0){ step--; render(); return; }
+  const i=IDS.indexOf(cur);
+  if(i>0){ const p=IDS[i-1]; go(p, P[p].steps.length+1); }
+}
+$("next").addEventListener("click",next);
+$("back").addEventListener("click",back);
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"){ next(); } else if(e.key==="ArrowLeft"){ back(); }
+});
+
+const m = /^#p(\d+)$/.exec(location.hash);
+if(m && P[+m[1]]) cur=+m[1];
+render();
+if(window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(()=>typeset([$("math"),$("ref")]));
+</script>
+
+</body>
+</html>
