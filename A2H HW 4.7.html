@@ -6,7 +6,7 @@
 <title>A2H HW 4.7</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Lexend:wght@500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
 html{color-scheme:light}
 body{margin:0}
@@ -29,6 +29,7 @@ body{margin:0}
   --minus-soft:#fbe7e4;
   --shade:rgba(31,95,139,.30);
   --hl:#fff4c7;
+  --f-title:"Lexend", system-ui, sans-serif;
   --f-display:"Zilla Slab", Rockwell, "Roboto Slab", Georgia, serif;
   --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
   --f-math:"STIX Two Text", "Cambria Math", "Times New Roman", serif;
@@ -56,9 +57,11 @@ body{
   padding-inline:16px; padding-block:0 48px;
 }
 .wrap{max-width:780px;margin:0 auto}
-header.top{padding-block:22px 10px}
+header.top{padding-block:24px 10px}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sub{color:var(--muted);font-size:.95rem;margin:0}
 .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
-h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,5vw,34px);line-height:1.1;margin:4px 0 0;text-wrap:balance}
+h1{font-family:var(--f-title);font-weight:700;font-size:clamp(1.35rem,3.5vw,1.8rem);line-height:1.2;margin:0;letter-spacing:-.01em;text-wrap:balance}
 .picker{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:18px}
 .picker-label{font-size:13px;color:var(--muted);margin-bottom:6px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -169,10 +172,11 @@ footer{font-size:13px;color:var(--muted);margin-top:22px;max-width:65ch}
 </head>
 <body>
 <div class="wrap">
-  <header >
+  <header class="top">
     <div class="brand">
-    <h1>A2H HW 4.7</h1>
-    </div>  
+      <h1>A2H HW 4.7</h1>
+      <p class="sub">Problems 1–12</p>
+    </div>
   </header>
 
   <nav class="picker" aria-label="Choose an exercise">
