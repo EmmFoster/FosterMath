@@ -1,0 +1,502 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>A2 Review 4.5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@500;600;700&display=swap">
+<style>
+:root{
+  --paper:#EEF2EF; --card:#FFFFFF; --ink:#17222C; --muted:#56646E; --line:#D3DCD7;
+  --grid:rgba(27,110,122,.07); --accent:#1B6E7A; --accent-ink:#FFFFFF; --accent-soft:#DDEEEF;
+  --hl:#B86A00; --hl-soft:#FFF1D9; --done:#2F7D4A;
+  --display:"Lexend",system-ui,sans-serif; --body:"Atkinson Hyperlegible",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+    --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+    --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+  --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+  --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.35rem,3.5vw,1.8rem);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);font-size:.95rem;margin:0}
+.picker{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.picker .lbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+.chip{font-family:var(--display);font-weight:600;font-size:1rem;min-width:46px;height:42px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip .tick{color:var(--done);font-size:.85rem}
+.chip[aria-current="true"] .tick{color:var(--accent-ink)}
+button:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+
+.phases{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.phase{display:flex;flex-direction:column;gap:6px;font-size:.74rem;color:var(--muted);line-height:1.25}
+.phase .bar{height:6px;border-radius:3px;background:var(--line)}
+.phase.past .bar{background:var(--accent);opacity:.45}
+.phase.now .bar{background:var(--accent)}
+.phase.now{color:var(--ink);font-weight:700}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,32px);display:flex;flex-direction:column;gap:16px}
+.eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(1.25rem,3vw,1.6rem);margin:0;text-wrap:balance}
+.note{margin:0;max-width:62ch}
+.note b{color:var(--hl)}
+.math{border-radius:12px;padding:22px 16px;min-height:110px;display:flex;align-items:center;justify-content:center;overflow-x:auto;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;font-size:1.25rem}
+.math mjx-container{margin:0!important}
+.math.big{font-size:1.7rem;min-height:150px}
+.ref{font-size:.88rem;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ref .m{font-size:1rem;color:var(--ink)}
+.answer{border:2px solid var(--done);background:transparent}
+.nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-weight:600;font-size:1.05rem;border-radius:12px;padding:12px 22px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);min-width:140px}
+.btn.primary:hover{filter:brightness(1.07)}
+.kbd{font-size:.8rem;color:var(--muted);text-align:center}
+.hlkey{display:inline-block;background:var(--hl-soft);color:var(--hl);border-radius:6px;padding:0 6px;font-weight:700}
+@media (max-width:560px){
+  .phases{grid-template-columns:repeat(3,1fr);row-gap:10px}
+  .math{font-size:1.05rem}
+  .math.big{font-size:1.4rem}
+  .btn{flex:1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .card.enter{animation:rise .22s ease-out}
+  @keyframes rise{from{transform:translateY(6px);opacity:.6}to{transform:none;opacity:1}}
+}
+.picker{display:flex;flex-direction:column;align-items:stretch!important;gap:10px}
+.group{display:grid;grid-template-columns:19rem 1fr;align-items:center;gap:6px 12px}
+.glbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.grng{color:var(--ink);font-weight:700;letter-spacing:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.phases{grid-template-columns:repeat(var(--cols,6),1fr)!important}
+@media (max-width:560px){.group{grid-template-columns:1fr}.phases{grid-template-columns:repeat(3,1fr)!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>A2 Review 4.5</h1>
+    </div>
+    <div class="picker" id="picker" role="group" aria-label="Choose a problem">
+          </div>
+  </header>
+
+  <div class="phases" id="phases" aria-hidden="true"></div>
+
+  <main class="card" id="card" aria-live="polite">
+    <div class="eyebrow"><span id="eyebrowL"></span><span id="eyebrowR"></span></div>
+    <h2 id="title"></h2>
+    <p class="note" id="note"></p>
+    <div class="math" id="math"></div>
+    <div class="ref" id="ref"></div>
+  </main>
+
+  <div class="nav">
+    <button class="btn" id="back" type="button">← Back</button>
+    <button class="btn primary" id="next" type="button">Next →</button>
+  </div>
+  <p class="kbd">Tip: you can also use the ← and → arrow keys. <span class="hlkey">Orange</span> marks the key numbers in each step.</p>
+</div>
+
+<script>
+window.MathJax = {
+  loader: { load: ['[tex]/color'] },
+  tex: { packages: {'[+]': ['color']} },
+  svg: { fontCache: 'global' },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<script>
+const HL = n => "\\textcolor{#D98A14}{" + n + "}";
+const fmt = n => n < 0 ? "−" + (-n) : String(n);
+const lin = n => n < 0 ? `x - ${-n}` : `x + ${n}`;
+const bin = n => `(${lin(n)})`;
+const par = n => n < 0 ? `(${n})` : String(n);
+const Z = " = 0";
+const G = "First, check for a GCF";
+
+function signNote(b,c){
+  if(c>0 && b>0) return `The product is positive, so <b>both numbers have the same sign</b>. The sum is positive, so <b>both are positive</b>.`;
+  if(c>0 && b<0) return `The product is positive, so <b>both numbers have the same sign</b>. The sum is negative, so <b>both are negative</b>.`;
+  return `The product is negative, so <b>one number is positive and one is negative</b>. The sum is ${b>0?"positive":"negative"}, so the bigger number (ignoring signs) is the ${b>0?"positive":"negative"} one.`;
+}
+
+// No GCF, coefficient of x² not 1 -> AC method
+const ACN = (coefs,list) => [G,G,`Coefficients ${coefs} share only 1, and the last term has no x. <b>No GCF to factor out</b>. The coefficient of x² is not 1, so this <b>quadratic trinomial</b> needs the <b>AC method</b>.`,String.raw`\text{GCF}(${list}) = 1`];
+// No GCF, coefficient of x² is 1 -> shortcut
+const SCN = (coefs,list) => [G,G,`Coefficients ${coefs} share only 1, and the last term has no x. <b>No GCF to factor out</b>. The coefficient of x² is 1, so we can use the <b>shortcut</b>.`,String.raw`\text{GCF}(${list}) = 1`];
+const STD = (note,tex) => ["Standard form","Write in standard form",note,tex];
+const SOLVE = (note,tex) => ["Solve","Set each factor equal to zero",note,tex];
+const ZPP = `Zero product property: if a product is 0, one of the factors is 0. Solve each small equation.`;
+const ZPP_C = k => `Zero product property: if a product is 0, one of the factors is 0. The number ${k} in front can never equal 0, so only the two binomials give solutions.`;
+
+// AC method: a x² + b x + c, split b into p + q, then group
+function AC(o){
+  const {a,b,c,p,q}=o, ac=a*c, pre=o.pre||"", z=o.z||"";
+  const W  = s => pre ? String.raw`${pre}\left(${s}\right)` : s;
+  const WB = s => pre ? String.raw`${pre}\left[${s}\right]` : s;
+  const cT = c<0 ? `- ${-c}` : `+ ${c}`;
+  const aT = a===1 ? "" : a;
+  const one = n => Math.abs(n)===1 ? "" : Math.abs(n);
+  const mid = n => (n<0?"- ":"+ ") + one(n) + "x";
+  const mT  = n => (n<0?"−":"") + one(n) + "x";
+  const grp = h => { const B = h ? HL(o.bin) : o.bin; return `${o.f1}(${B}) ${o.f2}(${B})`; };
+  const qP = q<0 ? `(${HL(q)})` : HL(q);
+  return [
+    ["Multiply a·c","Identify a, b and c, then multiply a · c",`Read a, b and c${pre?" from the trinomial inside the parentheses":""}, keeping their signs.${o.bnote||""} Then multiply a and c.`,String.raw`a = ${a},\; b = ${b},\; c = ${c} \qquad a \cdot c = ${a} \cdot ${par(c)} = ${ac}`],
+    ["Find the pair","Find two numbers",`Find two numbers that <b>multiply to ${fmt(ac)}</b> and <b>add to ${fmt(b)}</b>. ${signNote(b,ac)} Factor pairs of ${Math.abs(ac)}: ${o.pairs}. The pair ${fmt(p)} and ${fmt(q)} works.`,String.raw`(${HL(p)})(${HL(q)}) = ${ac} \qquad ${HL(p)} + ${qP} = ${b}`],
+    ["Split the middle","Split the middle term",`Rewrite ${mT(b)} as ${mT(p)} ${q<0?"−":"+"} ${mT(Math.abs(q))}.`,W(`${aT}x^2 ${HL(mid(p)+" "+mid(q))} ${cT}`)+z],
+    ["Factor by grouping","Factor the first two terms and the last two terms",o.gnote,WB(grp(false))+z],
+    ["Factor by grouping","Spot the common factor",`Look inside the parentheses. Both terms have the same binomial, <b>(${o.binTxt})</b>. Because what is inside the parentheses is the same in both terms, <b>(${o.binTxt}) is a common factor</b> of the whole expression.`,WB(grp(true))+z],
+    ["Factor by grouping","Factor out the common binomial",`Factor (${o.binTxt}) out of both terms.${pre?` Keep the ${o.preTxt} in front.`:""}`,pre+o.fin+z]
+  ];
+}
+
+// Shortcut: x² + bx + c = (x + r)(x + s)
+function SC(o){
+  const {b,c,r,s}=o, pre=o.pre||"", z=o.z||"";
+  const rP = r<0 ? `(${HL(r)})` : HL(r), sP = s<0 ? `(${HL(s)})` : HL(s);
+  const bNote = Math.abs(b)===1 ? ` The middle term ${b<0?"−":""}x means b = ${fmt(b)}.` : "";
+  const neg = (r<0||s<0) ? " Adding a negative number is the same as subtracting." : "";
+  const keep = pre ? ` Keep the ${o.preTxt} in front.` : "";
+  const st = [
+    ["Identify b and c","Identify b and c",`${pre?"Inside the parentheses, the":"The"} coefficient of x² is <b>1</b>, so we can use the <b>shortcut</b>: find two numbers r and s whose <b>product is c</b> and whose <b>sum is b</b>. Then x² + bx + c factors directly as <b>(x + r)(x + s)</b>. Read b and c, keeping their signs.${bNote}`,String.raw`a = 1,\; b = ${b},\; c = ${c}`],
+    ["Find the pair","Find the two numbers",`Find two numbers that <b>multiply to ${fmt(c)}</b> and <b>add to ${fmt(b)}</b>. ${signNote(b,c)} Factor pairs of ${Math.abs(c)}: ${o.pairs}. The pair ${fmt(r)} and ${fmt(s)} works.`,String.raw`(${HL(r)})(${HL(s)}) = ${c} \qquad ${HL(r)} + ${sP} = ${b}`],
+    ["Write the factors","Write the factors",`Put the two numbers, ${fmt(r)} and ${fmt(s)}, straight into the pattern (x + ▢)(x + ▢).${neg}${keep}`,String.raw`${pre}(x + ${rP})(x + ${sP})${z} \;\;\to\;\; ${pre}${bin(r)}${bin(s)}${z}`]
+  ];
+  if(r===s) st.push(["Write the factors","Write it as a square",`Both factors are the same, ${bin(r).replace("-","−")}, so write the product as a square. (This trinomial is a <b>perfect square trinomial</b>.)`,`${pre}${bin(r)}^2${z}`]);
+  return st;
+}
+
+const DOTS_RULE = `There are only two terms, with a <b>minus</b> sign between them, and both are perfect squares. That is a <b>difference of two squares</b>: <b>a² − b² = (a + b)(a − b)</b>.`;
+function DOTS(o){
+  const pre=o.pre||"", z=o.z||"";
+  const W = s => pre ? String.raw`${pre}\left[${s}\right]` : s;
+  return [
+    ["Spot the squares","Spot the two squares",DOTS_RULE+` ${pre?"Inside the parentheses, ":"Here "}${o.sqA} is the square of <b>${o.A}</b> and ${o.sqB} is the square of <b>${o.B}</b>.`,W(`(${HL(o.A)})^2 - (${HL(o.B)})^2`)+z],
+    ["Write the factors","Write the factors",`Put a = ${o.A} and b = ${o.B} into (a + b)(a − b).${pre?` Keep the ${o.preTxt} in front.`:""}`,`${pre}(${HL(o.A)} + ${HL(o.B)})(${HL(o.A)} - ${HL(o.B)})`+z]
+  ];
+}
+
+const P = {
+ // ---------- Factor completely ----------
+ 1:{k:"factor", intro:"Factor completely (AC method)", eq:String.raw`4x^2 - 7x - 15`, steps:[
+  ACN("4, −7 and −15","4,\\,7,\\,15"),
+  ...AC({a:4,b:-7,c:-15,p:-12,q:5,pairs:"1 · 60, 2 · 30, 3 · 20, 4 · 15, 5 · 12, 6 · 10",
+   gnote:`From the first two terms, 4x² − 12x, factor out <b>4x</b>. From the last two terms, 5x − 15, factor out <b>5</b>.`,
+   f1:"4x",f2:"+ 5",bin:"x - 3",binTxt:"x − 3",fin:"(x - 3)(4x + 5)"})
+ ], ans:String.raw`4x^2 - 7x - 15 = (x - 3)(4x + 5)`},
+
+ 2:{k:"factor", intro:"Factor completely (AC method)", eq:String.raw`2x^2 + 7x - 15`, steps:[
+  ACN("2, 7 and −15","2,\\,7,\\,15"),
+  ...AC({a:2,b:7,c:-15,p:10,q:-3,pairs:"1 · 30, 2 · 15, 3 · 10, 5 · 6",
+   gnote:`From the first two terms, 2x² + 10x, factor out <b>2x</b>. From the last two terms, −3x − 15, factor out <b>−3</b>. We factor out <b>−3</b> (with its negative sign) so the second parentheses match the first.`,
+   f1:"2x",f2:"- 3",bin:"x + 5",binTxt:"x + 5",fin:"(x + 5)(2x - 3)"})
+ ], ans:String.raw`2x^2 + 7x - 15 = (x + 5)(2x - 3)`},
+
+ 3:{k:"factor", intro:"Factor completely (GCF, then difference of two squares)", eq:String.raw`3x^4 - 75x^2`, steps:[
+  [G,G,`Coefficients 3 and −75 are both divisible by <b>3</b> (75 = 3 · 25). Both terms have x; the lowest power is <b>x²</b>. So the GCF is 3x².`,String.raw`\text{GCF}(3x^4,\; 75x^2) = ${HL("3x^2")}`],
+  [G,"Factor out the GCF",`Divide each term by 3x²: 3x⁴ ÷ 3x² = x², and −75x² ÷ 3x² = −25.`,String.raw`${HL("3x^2")}\left(x^2 - 25\right)`],
+  ...DOTS({pre:"3x^2",preTxt:"3x²",A:"x",B:"5",sqA:"x²",sqB:"25"})
+ ], ans:String.raw`3x^4 - 75x^2 = 3x^2(x + 5)(x - 5)`},
+
+ 4:{k:"factor", intro:"Factor completely (AC method)", eq:String.raw`4x^2 - 16x + 15`, steps:[
+  ACN("4, −16 and 15","4,\\,16,\\,15"),
+  ...AC({a:4,b:-16,c:15,p:-6,q:-10,pairs:"1 · 60, 2 · 30, 3 · 20, 4 · 15, 5 · 12, 6 · 10",
+   gnote:`From the first two terms, 4x² − 6x, factor out <b>2x</b>. From the last two terms, −10x + 15, factor out <b>−5</b>. We factor out <b>−5</b> (with its negative sign) so the second parentheses match the first.`,
+   f1:"2x",f2:"- 5",bin:"2x - 3",binTxt:"2x − 3",fin:"(2x - 3)(2x - 5)"})
+ ], ans:String.raw`4x^2 - 16x + 15 = (2x - 3)(2x - 5)`},
+
+ 5:{k:"factor", intro:"Factor completely (GCF, then shortcut)", eq:String.raw`2x^2 - 4x - 30`, steps:[
+  [G,G,`Coefficients 2, −4 and −30 are all even, so they share <b>2</b>. The last term has no x, so the GCF is just 2.`,String.raw`\text{GCF}(2,\,4,\,30) = ${HL("2")}`],
+  [G,"Factor out the GCF",`Divide every term by 2: 2x² ÷ 2 = x², −4x ÷ 2 = −2x, −30 ÷ 2 = −15.`,String.raw`${HL("2")}\left(x^2 - 2x - 15\right)`],
+  ...SC({pre:"2",preTxt:"2",b:-2,c:-15,r:3,s:-5,pairs:"1 · 15, 3 · 5"})
+ ], ans:String.raw`2x^2 - 4x - 30 = 2(x + 3)(x - 5)`},
+
+ 6:{k:"factor", intro:"Factor completely (GCF, then difference of two squares)", eq:String.raw`2x^4 - 2x^2`, steps:[
+  [G,G,`Coefficients 2 and −2 share <b>2</b>. Both terms have x; the lowest power is <b>x²</b>. So the GCF is 2x².`,String.raw`\text{GCF}(2x^4,\; 2x^2) = ${HL("2x^2")}`],
+  [G,"Factor out the GCF",`Divide each term by 2x²: 2x⁴ ÷ 2x² = x², and −2x² ÷ 2x² = −1. Don't forget the −1.`,String.raw`${HL("2x^2")}\left(x^2 - 1\right)`],
+  ...DOTS({pre:"2x^2",preTxt:"2x²",A:"x",B:"1",sqA:"x²",sqB:"1"})
+ ], ans:String.raw`2x^4 - 2x^2 = 2x^2(x + 1)(x - 1)`},
+
+ 7:{k:"factor", intro:"Factor completely (shortcut)", eq:String.raw`x^2 + 10x + 25`, steps:[
+  SCN("1, 10 and 25","1,\\,10,\\,25"),
+  ...SC({b:10,c:25,r:5,s:5,pairs:"1 · 25, 5 · 5"})
+ ], ans:String.raw`x^2 + 10x + 25 = (x + 5)^2`},
+
+ 8:{k:"factor", intro:"Factor completely (GCF, then shortcut)", eq:String.raw`3x^3 - 27x^2 + 60x`, steps:[
+  [G,G,`Coefficients 3, −27 and 60 are all divisible by <b>3</b> (27 = 3 · 9, 60 = 3 · 20). Every term has x; the lowest power is <b>x</b>. So the GCF is 3x.`,String.raw`\text{GCF}(3x^3,\; 27x^2,\; 60x) = ${HL("3x")}`],
+  [G,"Factor out the GCF",`Divide every term by 3x: 3x³ ÷ 3x = x², −27x² ÷ 3x = −9x, 60x ÷ 3x = 20.`,String.raw`${HL("3x")}\left(x^2 - 9x + 20\right)`],
+  ...SC({pre:"3x",preTxt:"3x",b:-9,c:20,r:-4,s:-5,pairs:"1 · 20, 2 · 10, 4 · 5"})
+ ], ans:String.raw`3x^3 - 27x^2 + 60x = 3x(x - 4)(x - 5)`},
+
+ 9:{k:"factor", intro:"Factor completely (shortcut)", eq:String.raw`x^2 - 3x - 4`, steps:[
+  SCN("1, −3 and −4","1,\\,3,\\,4"),
+  ...SC({b:-3,c:-4,r:1,s:-4,pairs:"1 · 4, 2 · 2"})
+ ], ans:String.raw`x^2 - 3x - 4 = (x + 1)(x - 4)`},
+
+ 10:{k:"factor", intro:"Factor completely (difference of two squares)", eq:String.raw`x^2 - 16`, steps:[
+  [G,G,`Coefficients 1 and 16 share only 1, and 16 has no x. <b>No GCF to factor out</b>.`,String.raw`\text{GCF}(1,\,16) = 1`],
+  ...DOTS({A:"x",B:"4",sqA:"x²",sqB:"16"})
+ ], ans:String.raw`x^2 - 16 = (x + 4)(x - 4)`},
+
+ 11:{k:"factor", intro:"Factor completely (AC method)", eq:String.raw`5x^2 + 22x - 15`, steps:[
+  ACN("5, 22 and −15","5,\\,22,\\,15"),
+  ...AC({a:5,b:22,c:-15,p:25,q:-3,pairs:"1 · 75, 3 · 25, 5 · 15",
+   gnote:`From the first two terms, 5x² + 25x, factor out <b>5x</b>. From the last two terms, −3x − 15, factor out <b>−3</b>. We factor out <b>−3</b> (with its negative sign) so the second parentheses match the first.`,
+   f1:"5x",f2:"- 3",bin:"x + 5",binTxt:"x + 5",fin:"(x + 5)(5x - 3)"})
+ ], ans:String.raw`5x^2 + 22x - 15 = (x + 5)(5x - 3)`},
+
+ 12:{k:"factor", intro:"Factor completely (shortcut)", eq:String.raw`x^2 + 5x + 6`, steps:[
+  SCN("1, 5 and 6","1,\\,5,\\,6"),
+  ...SC({b:5,c:6,r:2,s:3,pairs:"1 · 6, 2 · 3"})
+ ], ans:String.raw`x^2 + 5x + 6 = (x + 2)(x + 3)`},
+
+ // ---------- Solve by factoring ----------
+ 13:{k:"solve", intro:"Solve by factoring (shortcut)", eq:String.raw`3 - 4x = -x^2`, steps:[
+  STD(`The right side must be 0 before you factor. Add x² to both sides, then write the terms in order: x² term, x term, constant.`,String.raw`x^2 - 4x + 3 = 0`),
+  SCN("1, −4 and 3","1,\\,4,\\,3"),
+  ...SC({b:-4,c:3,r:-1,s:-3,pairs:"1 · 3",z:Z}),
+  SOLVE(ZPP,String.raw`x - 1 = 0 \quad\text{or}\quad x - 3 = 0`)
+ ], ans:String.raw`x = 1 \quad\text{or}\quad x = 3`},
+
+ 14:{k:"solve", intro:"Solve by factoring (GCF, then shortcut)", eq:String.raw`0 = 6 - 4x - 2x^2`, steps:[
+  STD(`0 is alone, but the x² term is negative and out of order. Move every term to the left side: add 2x² and 4x to both sides, and subtract 6. Now the x² term is positive.`,String.raw`2x^2 + 4x - 6 = 0`),
+  [G,G,`Coefficients 2, 4 and −6 are all even, so they share <b>2</b>. The last term has no x, so the GCF is 2.`,String.raw`\text{GCF}(2,\,4,\,6) = ${HL("2")}`],
+  [G,"Factor out the GCF",`Divide every term by 2: 2x² ÷ 2 = x², 4x ÷ 2 = 2x, −6 ÷ 2 = −3.`,String.raw`${HL("2")}\left(x^2 + 2x - 3\right) = 0`],
+  ...SC({pre:"2",preTxt:"2",b:2,c:-3,r:3,s:-1,pairs:"1 · 3",z:Z}),
+  SOLVE(ZPP_C(2),String.raw`x + 3 = 0 \quad\text{or}\quad x - 1 = 0`)
+ ], ans:String.raw`x = -3 \quad\text{or}\quad x = 1`},
+
+ 15:{k:"solve", intro:"Solve by factoring (AC method)", eq:String.raw`5x^2 + 2x - 2 = -x + 3x^2`, steps:[
+  STD(`The right side must be 0. Subtract 3x² from both sides and add x to both sides. Combine like terms: 5x² − 3x² = 2x², and 2x + x = 3x.`,String.raw`2x^2 + 3x - 2 = 0`),
+  ACN("2, 3 and −2","2,\\,3,\\,2"),
+  ...AC({a:2,b:3,c:-2,p:4,q:-1,pairs:"1 · 4, 2 · 2",z:Z,
+   gnote:`From the first two terms, 2x² + 4x, factor out <b>2x</b>. From the last two terms, −x − 2, factor out <b>−1</b>. We factor out <b>−1</b> (with its negative sign) so the second parentheses match the first.`,
+   f1:"2x",f2:"- 1",bin:"x + 2",binTxt:"x + 2",fin:"(x + 2)(2x - 1)"}),
+  SOLVE(ZPP,String.raw`x + 2 = 0 \quad\text{or}\quad 2x - 1 = 0`)
+ ], ans:String.raw`x = -2 \quad\text{or}\quad x = \frac{1}{2}`},
+
+ 16:{k:"solve", intro:"Solve by factoring (shortcut)", eq:String.raw`x^2 + 4 = 4x`, steps:[
+  STD(`The right side must be 0. Subtract 4x from both sides, then write the terms in order: x² term, x term, constant.`,String.raw`x^2 - 4x + 4 = 0`),
+  SCN("1, −4 and 4","1,\\,4,\\,4"),
+  ...SC({b:-4,c:4,r:-2,s:-2,pairs:"1 · 4, 2 · 2",z:Z}),
+  ["Solve","Set the factor equal to zero",`Zero product property: if a product is 0, one of the factors is 0. Both factors are the same, so there is only <b>one</b> equation to solve. This kind of solution is called a <b>double root</b>.`,String.raw`x - 2 = 0`]
+ ], ans:String.raw`x = 2`},
+
+ 17:{k:"solve", intro:"Solve by factoring (GCF, then AC method)", eq:String.raw`4x^2 = 6x + 18`, steps:[
+  STD(`The right side must be 0. Subtract 6x and subtract 18 from both sides.`,String.raw`4x^2 - 6x - 18 = 0`),
+  [G,G,`Coefficients 4, −6 and −18 are all even, so they share <b>2</b>. The last term has no x, so the GCF is 2.`,String.raw`\text{GCF}(4,\,6,\,18) = ${HL("2")}`],
+  [G,"Factor out the GCF",`Divide every term by 2: 4x² ÷ 2 = 2x², −6x ÷ 2 = −3x, −18 ÷ 2 = −9.`,String.raw`${HL("2")}\left(2x^2 - 3x - 9\right) = 0`],
+  [G,"Check what's left",`What is left inside the parentheses is a <b>quadratic trinomial</b> whose x² coefficient is 2, not 1. It needs to be factored using the <b>AC method</b>.`,String.raw`2\left(\textcolor{#D98A14}{2x^2 - 3x - 9}\right) = 0`],
+  ...AC({pre:"2",preTxt:"2",a:2,b:-3,c:-9,p:-6,q:3,pairs:"1 · 18, 2 · 9, 3 · 6",z:Z,
+   gnote:`From the first two terms, 2x² − 6x, factor out <b>2x</b>. From the last two terms, 3x − 9, factor out <b>3</b>.`,
+   f1:"2x",f2:"+ 3",bin:"x - 3",binTxt:"x − 3",fin:"(x - 3)(2x + 3)"}),
+  SOLVE(ZPP_C(2),String.raw`x - 3 = 0 \quad\text{or}\quad 2x + 3 = 0`)
+ ], ans:String.raw`x = 3 \quad\text{or}\quad x = -\frac{3}{2}`},
+
+ 18:{k:"solve", intro:"Solve by factoring (GCF, then AC method)", eq:String.raw`-3x = -2x^3 + 5x^2`, steps:[
+  STD(`The right side must be 0. Move every term to the left so the highest-power term is positive: add 2x³ to both sides and subtract 5x² from both sides. Then write the terms from highest power to lowest.`,String.raw`2x^3 - 5x^2 - 3x = 0`),
+  [G,G,`Coefficients 2, −5 and −3 share only 1, but <b>every term has x</b>; the lowest power is <b>x</b>. So the GCF is x.`,String.raw`\text{GCF}(2x^3,\; 5x^2,\; 3x) = ${HL("x")}`],
+  [G,"Factor out the GCF",`Divide every term by x: 2x³ ÷ x = 2x², −5x² ÷ x = −5x, −3x ÷ x = −3. (Don't divide both sides by x — you would lose the solution x = 0.)`,String.raw`${HL("x")}\left(2x^2 - 5x - 3\right) = 0`],
+  [G,"Check what's left",`What is left inside the parentheses is a <b>quadratic trinomial</b> whose x² coefficient is 2, not 1. It needs to be factored using the <b>AC method</b>.`,String.raw`x\left(\textcolor{#D98A14}{2x^2 - 5x - 3}\right) = 0`],
+  ...AC({pre:"x",preTxt:"x",a:2,b:-5,c:-3,p:-6,q:1,pairs:"1 · 6, 2 · 3",z:Z,
+   gnote:`From the first two terms, 2x² − 6x, factor out <b>2x</b>. The last two terms, x − 3, have no common factor except <b>1</b>, so factor out 1. That keeps the parentheses matching.`,
+   f1:"2x",f2:"+ 1",bin:"x - 3",binTxt:"x − 3",fin:"(x - 3)(2x + 1)"}),
+  SOLVE(`Zero product property: there are <b>three</b> factors, so there are three small equations. The first factor is just x, so <b>x = 0</b> is one solution.`,String.raw`x = 0 \quad\text{or}\quad x - 3 = 0 \quad\text{or}\quad 2x + 1 = 0`)
+ ], ans:String.raw`x = 0, \quad x = 3, \quad x = -\frac{1}{2}`},
+
+ 19:{k:"solve", intro:"Solve by factoring (GCF)", eq:String.raw`x^2 = 3x`, steps:[
+  STD(`The right side must be 0. Subtract 3x from both sides. (Don't divide both sides by x — you would lose the solution x = 0.)`,String.raw`x^2 - 3x = 0`),
+  [G,G,`Coefficients 1 and −3 share only 1, but <b>both terms have x</b>; the lowest power is <b>x</b>. So the GCF is x.`,String.raw`\text{GCF}(x^2,\; 3x) = ${HL("x")}`],
+  [G,"Factor out the GCF",`Divide each term by x: x² ÷ x = x, and −3x ÷ x = −3. What's left, x − 3, is linear and cannot be factored further.`,String.raw`${HL("x")}(x - 3) = 0`],
+  SOLVE(`Zero product property: if a product is 0, one of the factors is 0. The first factor is just x, so <b>x = 0</b> is one solution.`,String.raw`x = 0 \quad\text{or}\quad x - 3 = 0`)
+ ], ans:String.raw`x = 0 \quad\text{or}\quad x = 3`},
+
+ 20:{k:"solve", intro:"Solve by factoring (GCF, then difference of two squares)", eq:String.raw`x^3 - 100x = 0`, steps:[
+  STD(`0 is already alone on the right, and the terms are in order. The equation is in standard form.`,String.raw`x^3 - 100x = 0`),
+  [G,G,`Coefficients 1 and −100 share only 1, but <b>both terms have x</b>; the lowest power is <b>x</b>. So the GCF is x.`,String.raw`\text{GCF}(x^3,\; 100x) = ${HL("x")}`],
+  [G,"Factor out the GCF",`Divide each term by x: x³ ÷ x = x², and −100x ÷ x = −100.`,String.raw`${HL("x")}\left(x^2 - 100\right) = 0`],
+  ...DOTS({pre:"x",preTxt:"x",A:"x",B:"10",sqA:"x²",sqB:"100",z:Z}),
+  SOLVE(`Zero product property: there are <b>three</b> factors, so there are three small equations. The first factor is just x, so <b>x = 0</b> is one solution.`,String.raw`x = 0 \quad\text{or}\quad x + 10 = 0 \quad\text{or}\quad x - 10 = 0`)
+ ], ans:String.raw`x = 0, \quad x = -10, \quad x = 10`},
+
+ 21:{k:"solve", intro:"Solve by factoring (AC method)", eq:String.raw`2 - x = -2x - 2x^2 + 3`, steps:[
+  STD(`The right side must be 0. Move every term to the left side: add 2x² and 2x to both sides, and subtract 3. Combine like terms: −x + 2x = x, and 2 − 3 = −1.`,String.raw`2x^2 + x - 1 = 0`),
+  ACN("2, 1 and −1","2,\\,1,\\,1"),
+  ...AC({a:2,b:1,c:-1,p:2,q:-1,pairs:"1 · 2",z:Z,bnote:" The middle term x means b = 1.",
+   gnote:`From the first two terms, 2x² + 2x, factor out <b>2x</b>. From the last two terms, −x − 1, factor out <b>−1</b>. We factor out <b>−1</b> (with its negative sign) so the second parentheses match the first.`,
+   f1:"2x",f2:"- 1",bin:"x + 1",binTxt:"x + 1",fin:"(x + 1)(2x - 1)"}),
+  SOLVE(ZPP,String.raw`x + 1 = 0 \quad\text{or}\quad 2x - 1 = 0`)
+ ], ans:String.raw`x = -1 \quad\text{or}\quad x = \frac{1}{2}`},
+
+ 22:{k:"solve", intro:"Solve by factoring (GCF, then shortcut)", eq:String.raw`3x^2 + 3x = 18`, steps:[
+  STD(`The right side must be 0. Subtract 18 from both sides.`,String.raw`3x^2 + 3x - 18 = 0`),
+  [G,G,`Coefficients 3, 3 and −18 are all divisible by <b>3</b>. The last term has no x, so the GCF is 3.`,String.raw`\text{GCF}(3,\,3,\,18) = ${HL("3")}`],
+  [G,"Factor out the GCF",`Divide every term by 3: 3x² ÷ 3 = x², 3x ÷ 3 = x, −18 ÷ 3 = −6.`,String.raw`${HL("3")}\left(x^2 + x - 6\right) = 0`],
+  ...SC({pre:"3",preTxt:"3",b:1,c:-6,r:3,s:-2,pairs:"1 · 6, 2 · 3",z:Z}),
+  SOLVE(ZPP_C(3),String.raw`x + 3 = 0 \quad\text{or}\quad x - 2 = 0`)
+ ], ans:String.raw`x = -3 \quad\text{or}\quad x = 2`}
+};
+
+// Each problem gets its own progress phases, in the order its steps use them
+Object.values(P).forEach(pr=>{
+  const ph=[];
+  pr.steps.forEach(s=>{ if(!ph.includes(s[0])) ph.push(s[0]); });
+  pr.phases = ph;
+  pr.steps = pr.steps.map(s=>[ph.indexOf(s[0]),s[1],s[2],s[3]]);
+});
+const IDS = Object.keys(P).map(Number).sort((a,b)=>a-b);
+
+const KINDS = {
+  factor:{label:"Factor completely", range:"1–12", intro:"Factor completely", ansTitle:"Factored completely", ref:"Original expression"},
+  solve: {label:"Solve by factoring", range:"13–22", intro:"Solve by factoring", ansTitle:"Solution", ref:"Original equation"}
+};
+
+let cur = IDS[0], step = 0; // step 0 = problem page, 1..n = steps, n+1 = answer
+let done = new Set();
+try{ const s = JSON.parse(localStorage.getItem("rev45-done")||"[]"); s.forEach(n=>done.add(n)); }catch(e){}
+function saveDone(){ try{ localStorage.setItem("rev45-done", JSON.stringify([...done])); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+const picker = $("picker"), phasesEl = $("phases");
+
+Object.entries(KINDS).forEach(([k,info])=>{
+  const g=document.createElement("div"); g.className="group";
+  g.innerHTML=`<span class="glbl">${info.label} <span class="grng">${info.range}</span></span>`;
+  const row=document.createElement("div"); row.className="chips";
+  IDS.filter(n=>P[n].k===k).forEach(n=>{
+    const b = document.createElement("button");
+    b.className="chip"; b.type="button"; b.id="chip-"+n;
+    b.addEventListener("click",()=>go(n,0));
+    row.appendChild(b);
+  });
+  g.appendChild(row); picker.appendChild(g);
+});
+
+let shownPh=null;
+function buildPhases(ph){
+  if(shownPh===ph) return; shownPh=ph;
+  phasesEl.innerHTML=""; phasesEl.style.setProperty("--cols", ph.length);
+  ph.forEach((p,i)=>{
+    const d=document.createElement("div"); d.className="phase"; d.id="ph"+i;
+    d.innerHTML=`<div class="bar"></div><span>${p}</span>`; phasesEl.appendChild(d);
+  });
+}
+
+function typeset(els){
+  if(window.MathJax && MathJax.typesetPromise){
+    MathJax.startup.promise.then(()=>{ MathJax.typesetClear(els); return MathJax.typesetPromise(els); }).catch(()=>{});
+  }
+}
+
+function render(){
+  const pr = P[cur], n = pr.steps.length, K = KINDS[pr.k], PH = pr.phases || K.phases;
+  buildPhases(PH);
+  IDS.forEach(k=>{
+    const b=$("chip-"+k);
+    b.setAttribute("aria-current", k===cur ? "true":"false");
+    b.innerHTML = k + (done.has(k) ? '<span class="tick" aria-label="done">✓</span>' : '');
+  });
+  const card=$("card"); card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
+  const math=$("math"), ref=$("ref");
+  math.className="math";
+  let phase=-1;
+
+  if(step===0){
+    $("eyebrowL").textContent=`Problem ${cur}`;
+    $("eyebrowR").textContent=`${n} steps`;
+    $("title").textContent=pr.intro || K.intro;
+    $("note").innerHTML=`Try the first step on paper, then press <b style="color:var(--accent)">Next</b> to check it.`;
+    math.classList.add("big");
+    math.innerHTML=`\\[${pr.eq}\\]`;
+    ref.innerHTML="";
+  } else if(step<=n){
+    const [ph,t,note,tex]=pr.steps[step-1]; phase=ph;
+    $("eyebrowL").textContent=`Problem ${cur} · ${PH[ph]}`;
+    $("eyebrowR").textContent=`Step ${step} of ${n}`;
+    $("title").textContent=t;
+    $("note").innerHTML=note;
+    math.innerHTML=`\\[${tex}\\]`;
+    ref.innerHTML=`${K.ref}: <span class="m">\\(${pr.eq}\\)</span>`;
+  } else {
+    phase=PH.length;
+    $("eyebrowL").textContent=`Problem ${cur} · Done`;
+    $("eyebrowR").textContent=`Done`;
+    $("title").textContent=K.ansTitle;
+    const nextId = IDS[IDS.indexOf(cur)+1];
+    $("note").innerHTML = nextId ? `Nice work. Press <b style="color:var(--accent)">Next problem</b> to go on to problem ${nextId}, or pick any problem above.` : `That was the last problem. Pick any problem above to review it.`;
+    math.classList.add("big","answer");
+    math.innerHTML=`\\[${pr.ans}\\]`;
+    ref.innerHTML=`${K.ref}: <span class="m">\\(${pr.eq}\\)</span>`;
+    done.add(cur); saveDone();
+    $("chip-"+cur).innerHTML = cur + '<span class="tick" aria-label="done">✓</span>';
+  }
+  PH.forEach((_,i)=>{
+    const el=$("ph"+i); el.classList.toggle("now",i===phase); el.classList.toggle("past", phase>=0 && i<phase);
+  });
+
+  $("back").disabled = (step===0 && cur===IDS[0]);
+  const nb=$("next");
+  if(step<n) nb.textContent="Next →";
+  else if(step===n) nb.textContent="Show answer →";
+  else nb.textContent = IDS[IDS.indexOf(cur)+1] ? `Next problem →` : "Start over";
+  typeset([math,ref]);
+  try{ history.replaceState(null,"","#p"+cur); }catch(e){}
+}
+
+function go(n,s){ cur=n; step=s; render(); }
+function next(){
+  const n=P[cur].steps.length;
+  if(step<=n){ step++; render(); return; }
+  const i=IDS.indexOf(cur);
+  go(IDS[i+1] ?? IDS[0], 0);
+}
+function back(){
+  if(step>0){ step--; render(); return; }
+  const i=IDS.indexOf(cur);
+  if(i>0){ const p=IDS[i-1]; go(p, P[p].steps.length+1); }
+}
+$("next").addEventListener("click",next);
+$("back").addEventListener("click",back);
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"){ next(); } else if(e.key==="ArrowLeft"){ back(); }
+});
+
+const m = /^#p(\d+)$/.exec(location.hash);
+if(m && P[+m[1]]) cur=+m[1];
+render();
+if(window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(()=>typeset([$("math"),$("ref")]));
+</script>
+
+<script>
+// GoatCounter (code: fostermath) — inline beacon, since the artifact viewer blocks gc.zgo.at/count.js
+(function(){
+  try{
+    var url="https://fostermath.goatcounter.com/count?p="+encodeURIComponent("/a2-review-4-5")
+      +"&t="+encodeURIComponent("A2 Review 4.5")
+      +"&s="+encodeURIComponent((window.screen&&screen.width)||0)
+      +"&rnd="+Math.random().toString(36).slice(2);
+    var sent=false;
+    if(navigator.sendBeacon){ try{ sent=navigator.sendBeacon(url); }catch(e){} }
+    if(!sent){ var i=new Image(); i.src=url; }
+  }catch(e){}
+})();
+</script>
+</body></html>
