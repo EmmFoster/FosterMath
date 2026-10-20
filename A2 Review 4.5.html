@@ -485,18 +485,8 @@ render();
 if(window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(()=>typeset([$("math"),$("ref")]));
 </script>
 
-<script>
-// GoatCounter (code: fostermath) — inline beacon, since the artifact viewer blocks gc.zgo.at/count.js
-(function(){
-  try{
-    var url="https://fostermath.goatcounter.com/count?p="+encodeURIComponent("/a2-review-4-5")
-      +"&t="+encodeURIComponent("A2 Review 4.5")
-      +"&s="+encodeURIComponent((window.screen&&screen.width)||0)
-      +"&rnd="+Math.random().toString(36).slice(2);
-    var sent=false;
-    if(navigator.sendBeacon){ try{ sent=navigator.sendBeacon(url); }catch(e){} }
-    if(!sent){ var i=new Image(); i.src=url; }
-  }catch(e){}
-})();
-</script>
+
+ <!-- Visit counter (GoatCounter). Replace YOURCODE with the code you picked when you signed up. -->
+<script data-goatcounter="https://fostermath.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+
 </body></html>
