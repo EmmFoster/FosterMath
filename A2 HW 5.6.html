@@ -1,0 +1,1279 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>A2 HW 5.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@500;600;700&display=swap">
+<style>
+:root{
+  --paper:#EEF2EF; --card:#FFFFFF; --ink:#17222C; --muted:#56646E; --line:#D3DCD7;
+  --grid:rgba(27,110,122,.07); --accent:#1B6E7A; --accent-ink:#FFFFFF; --accent-soft:#DDEEEF;
+  --hl:#B86A00; --hl-soft:#FFF1D9; --done:#2F7D4A;
+  --display:"Lexend",system-ui,sans-serif; --body:"Atkinson Hyperlegible",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+    --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+    --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+  --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+  --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.35rem,3.5vw,1.8rem);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);font-size:.95rem;margin:0}
+.picker{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.picker .lbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+.chip{font-family:var(--display);font-weight:600;font-size:1rem;min-width:46px;height:42px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip .tick{color:var(--done);font-size:.85rem}
+.chip[aria-current="true"] .tick{color:var(--accent-ink)}
+button:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+
+.phases{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.phase{display:flex;flex-direction:column;gap:6px;font-size:.74rem;color:var(--muted);line-height:1.25}
+.phase .bar{height:6px;border-radius:3px;background:var(--line)}
+.phase.past .bar{background:var(--accent);opacity:.45}
+.phase.now .bar{background:var(--accent)}
+.phase.now{color:var(--ink);font-weight:700}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,32px);display:flex;flex-direction:column;gap:16px}
+.eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(1.25rem,3vw,1.6rem);margin:0;text-wrap:balance}
+.note{margin:0;max-width:62ch}
+.note b{color:var(--hl)}
+.math{border-radius:12px;padding:22px 16px;min-height:110px;display:flex;align-items:center;justify-content:center;overflow-x:auto;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;font-size:1.25rem}
+.math mjx-container{margin:0!important}
+.math.big{font-size:1.7rem;min-height:150px}
+.ref{font-size:.88rem;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ref .m{font-size:1rem;color:var(--ink)}
+.answer{border:2px solid var(--done);background:transparent}
+.nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-weight:600;font-size:1.05rem;border-radius:12px;padding:12px 22px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);min-width:140px}
+.btn.primary:hover{filter:brightness(1.07)}
+.kbd{font-size:.8rem;color:var(--muted);text-align:center}
+.hlkey{display:inline-block;background:var(--hl-soft);color:var(--hl);border-radius:6px;padding:0 6px;font-weight:700}
+@media (max-width:560px){
+  .phases{grid-template-columns:repeat(3,1fr);row-gap:10px}
+  .math{font-size:1.05rem}
+  .math.big{font-size:1.4rem}
+  .btn{flex:1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .card.enter{animation:rise .22s ease-out}
+  @keyframes rise{from{transform:translateY(6px);opacity:.6}to{transform:none;opacity:1}}
+}
+.picker{display:flex;flex-direction:column;align-items:stretch!important;gap:10px}
+.group{display:grid;grid-template-columns:16rem 1fr;align-items:center;gap:6px 12px}
+.glbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.grng{color:var(--ink);font-weight:700;letter-spacing:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.phases{grid-template-columns:repeat(var(--cols,6),1fr)!important}
+@media (max-width:560px){.group{grid-template-columns:1fr}.phases{grid-template-columns:repeat(3,1fr)!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>A2 HW 5.6</h1>
+      <p class="sub">Problems 1–18</p>
+    </div>
+    <div class="picker" id="picker" role="group" aria-label="Choose a problem">
+          </div>
+  </header>
+
+  <div class="phases" id="phases" aria-hidden="true"></div>
+
+  <main class="card" id="card" aria-live="polite">
+    <div class="eyebrow"><span id="eyebrowL"></span><span id="eyebrowR"></span></div>
+    <h2 id="title"></h2>
+    <p class="note" id="note"></p>
+    <div class="math" id="math"></div>
+    <div class="ref" id="ref"></div>
+  </main>
+
+  <div class="nav">
+    <button class="btn" id="back" type="button">← Back</button>
+    <button class="btn primary" id="next" type="button">Next →</button>
+  </div>
+  <p class="kbd">Tip: you can also use the ← and → arrow keys. <span class="hlkey">Orange</span> marks the key numbers in each step.</p>
+</div>
+
+<script>
+window.MathJax = {
+  loader: { load: ['[tex]/color'] },
+  tex: { packages: {'[+]': ['color']} },
+  svg: { fontCache: 'global' },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<script>
+const P = {
+"1": {
+"k": "square",
+"eq": "x^2 - 6x + \\underline{\\qquad}",
+"steps": [
+[
+0,
+"Check the leading coefficient",
+"The coefficient of <i>x²</i> is 1, so there is nothing to factor out.",
+"x^2 - 6x + \\underline{\\qquad}"
+],
+[
+1,
+"Find the number that completes the square",
+"Take half of the <i>x</i>-coefficient, −6, then square it.",
+"\\left(\\frac{-6}{2}\\right)^2 = (-3)^2 = 9"
+],
+[
+2,
+"Fill in the blank",
+"Put <b>9</b> in the blank.",
+"x^2 - 6x + \\color{#D98A14}{9}"
+],
+[
+3,
+"Write it as a perfect square",
+"The number inside the square is half of −6, which is −3.",
+"x^2 - 6x + 9 = (x - 3)^2"
+]
+],
+"ans": "x^2 - 6x + 9 = (x - 3)^2"
+},
+"2": {
+"k": "square",
+"eq": "m^2 - 14m + \\underline{\\qquad}",
+"steps": [
+[
+0,
+"Check the leading coefficient",
+"The coefficient of <i>m²</i> is 1, so there is nothing to factor out.",
+"m^2 - 14m + \\underline{\\qquad}"
+],
+[
+1,
+"Find the number that completes the square",
+"Take half of the <i>m</i>-coefficient, −14, then square it.",
+"\\left(\\frac{-14}{2}\\right)^2 = (-7)^2 = 49"
+],
+[
+2,
+"Fill in the blank",
+"Put <b>49</b> in the blank.",
+"m^2 - 14m + \\color{#D98A14}{49}"
+],
+[
+3,
+"Write it as a perfect square",
+"The number inside the square is half of −14, which is −7.",
+"m^2 - 14m + 49 = (m - 7)^2"
+]
+],
+"ans": "m^2 - 14m + 49 = (m - 7)^2"
+},
+"3": {
+"k": "square",
+"eq": "x^2 + 15x + \\underline{\\qquad}",
+"steps": [
+[
+0,
+"Check the leading coefficient",
+"The coefficient of <i>x²</i> is 1, so there is nothing to factor out.",
+"x^2 + 15x + \\underline{\\qquad}"
+],
+[
+1,
+"Find the number that completes the square",
+"Take half of the <i>x</i>-coefficient, 15, then square it.",
+"\\left(\\frac{15}{2}\\right)^2 = \\frac{225}{4}"
+],
+[
+2,
+"Fill in the blank",
+"Put <b>225/4</b> in the blank.",
+"x^2 + 15x + \\color{#D98A14}{\\tfrac{225}{4}}"
+],
+[
+3,
+"Write it as a perfect square",
+"The number inside the square is half of 15, which is 15/2.",
+"x^2 + 15x + \\frac{225}{4} = \\left(x + \\frac{15}{2}\\right)^2"
+]
+],
+"ans": "x^2 + 15x + \\frac{225}{4} = \\left(x + \\frac{15}{2}\\right)^2"
+},
+"4": {
+"k": "square",
+"eq": "p^2 - 10p + \\underline{\\qquad}",
+"steps": [
+[
+0,
+"Check the leading coefficient",
+"The coefficient of <i>p²</i> is 1, so there is nothing to factor out.",
+"p^2 - 10p + \\underline{\\qquad}"
+],
+[
+1,
+"Find the number that completes the square",
+"Take half of the <i>p</i>-coefficient, −10, then square it.",
+"\\left(\\frac{-10}{2}\\right)^2 = (-5)^2 = 25"
+],
+[
+2,
+"Fill in the blank",
+"Put <b>25</b> in the blank.",
+"p^2 - 10p + \\color{#D98A14}{25}"
+],
+[
+3,
+"Write it as a perfect square",
+"The number inside the square is half of −10, which is −5.",
+"p^2 - 10p + 25 = (p - 5)^2"
+]
+],
+"ans": "p^2 - 10p + 25 = (p - 5)^2"
+},
+"5": {
+"k": "solve",
+"eq": "m^2 - 3m + 17 = 0",
+"v": "m",
+"steps": [
+[
+0,
+"Check the m terms",
+"The <i>m²</i> and <i>m</i> terms are already on the same side, so nothing needs to move.",
+"m^2 - 3m + 17 = 0"
+],
+[
+1,
+"Regroup the m terms inside parentheses",
+"Put the <i>m²</i> and <i>m</i> terms together in parentheses. The constant stays outside.",
+"(m^2 - 3m) + 17 = 0"
+],
+[
+2,
+"Factor the leading coefficient",
+"The coefficient of <i>m²</i> is 1, so there is nothing to factor out. Move on.",
+"1\\,\\left(m^2 - 3m\\right) + 17 = 0"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of −3 is −3/2. Square it.",
+"\\left(\\frac{-3}{2}\\right)^2 = \\frac{9}{4}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>9/4</b> inside the parentheses and subtract <b>1 · 9/4 = 9/4</b> outside, on the same side, to stay balanced.",
+"\\left(m^2 - 3m + \\color{#D98A14}{\\tfrac{9}{4}}\\right) + 17 - \\color{#D98A14}{\\tfrac{9}{4}} = 0"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"m² − 3m + 9/4 = (m − 3/2)². Combine the constants: 17 − 9/4 = 68/4 − 9/4 = 59/4.",
+"\\left(m - \\frac{3}{2}\\right)^2 + \\frac{59}{4} = 0"
+],
+[
+5,
+"Isolate the square",
+"Subtract 59/4 from both sides. A square equal to a negative number means the solutions are complex.",
+"\\left(m - \\frac{3}{2}\\right)^2 = -\\frac{59}{4}"
+],
+[
+5,
+"Take the square root of both sides",
+"Use √−1 = i, and √4 = 2. Remember ±.",
+"m - \\frac{3}{2} = \\pm\\sqrt{-\\frac{59}{4}} = \\pm\\frac{i\\sqrt{59}}{2}"
+],
+[
+5,
+"Solve for m",
+"Add 3/2 to both sides and write over one denominator.",
+"m = \\frac{3}{2} \\pm \\frac{i\\sqrt{59}}{2}"
+]
+],
+"ans": "m = \\frac{3 \\pm i\\sqrt{59}}{2}"
+},
+"6": {
+"k": "solve",
+"eq": "m^2 + 7m - 8 = 0",
+"v": "m",
+"steps": [
+[
+0,
+"Check the m terms",
+"The <i>m²</i> and <i>m</i> terms are already on the same side, so nothing needs to move.",
+"m^2 + 7m - 8 = 0"
+],
+[
+1,
+"Regroup the m terms inside parentheses",
+"Put the <i>m²</i> and <i>m</i> terms together in parentheses. The constant stays outside.",
+"(m^2 + 7m) - 8 = 0"
+],
+[
+2,
+"Factor the leading coefficient",
+"The coefficient of <i>m²</i> is 1, so there is nothing to factor out. Move on.",
+"1\\,\\left(m^2 + 7m\\right) - 8 = 0"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of 7 is 7/2. Square it.",
+"\\left(\\frac{7}{2}\\right)^2 = \\frac{49}{4}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>49/4</b> inside the parentheses and subtract <b>1 · 49/4 = 49/4</b> outside, on the same side, to stay balanced.",
+"\\left(m^2 + 7m + \\color{#D98A14}{\\tfrac{49}{4}}\\right) - 8 - \\color{#D98A14}{\\tfrac{49}{4}} = 0"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"m² + 7m + 49/4 = (m + 7/2)². Combine the constants: −8 − 49/4 = −32/4 − 49/4 = −81/4.",
+"\\left(m + \\frac{7}{2}\\right)^2 - \\frac{81}{4} = 0"
+],
+[
+5,
+"Isolate the square",
+"Add 81/4 to both sides.",
+"\\left(m + \\frac{7}{2}\\right)^2 = \\frac{81}{4}"
+],
+[
+5,
+"Take the square root of both sides",
+"√81 = 9 and √4 = 2. Remember ±.",
+"m + \\frac{7}{2} = \\pm\\sqrt{\\frac{81}{4}} = \\pm \\frac{9}{2}"
+],
+[
+5,
+"Solve for m",
+"Subtract 7/2 from both sides, then work out each sign.",
+"m = -\\frac{7}{2} + \\frac{9}{2} = \\frac{2}{2} \\quad\\text{or}\\quad m = -\\frac{7}{2} - \\frac{9}{2} = -\\frac{16}{2}"
+]
+],
+"ans": "m = 1 \\quad\\text{or}\\quad m = -8"
+},
+"7": {
+"k": "solve",
+"eq": "k^2 - k - 1 = 0",
+"v": "k",
+"steps": [
+[
+0,
+"Check the k terms",
+"The <i>k²</i> and <i>k</i> terms are already on the same side, so nothing needs to move.",
+"k^2 - k - 1 = 0"
+],
+[
+1,
+"Regroup the k terms inside parentheses",
+"Put the <i>k²</i> and <i>k</i> terms together in parentheses. The constant stays outside.",
+"(k^2 - k) - 1 = 0"
+],
+[
+2,
+"Factor the leading coefficient",
+"The coefficient of <i>k²</i> is 1, so there is nothing to factor out. Move on.",
+"1\\,\\left(k^2 - k\\right) - 1 = 0"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of −1 is −1/2. Square it.",
+"\\left(\\frac{-1}{2}\\right)^2 = \\frac{1}{4}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>1/4</b> inside the parentheses and subtract <b>1 · 1/4 = 1/4</b> outside, on the same side, to stay balanced.",
+"\\left(k^2 - k + \\color{#D98A14}{\\tfrac{1}{4}}\\right) - 1 - \\color{#D98A14}{\\tfrac{1}{4}} = 0"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"k² − k + 1/4 = (k − 1/2)². Combine the constants: −1 − 1/4 = −4/4 − 1/4 = −5/4.",
+"\\left(k - \\frac{1}{2}\\right)^2 - \\frac{5}{4} = 0"
+],
+[
+5,
+"Isolate the square",
+"Add 5/4 to both sides.",
+"\\left(k - \\frac{1}{2}\\right)^2 = \\frac{5}{4}"
+],
+[
+5,
+"Take the square root of both sides",
+"Remember ±. √4 = 2.",
+"k - \\frac{1}{2} = \\pm\\sqrt{\\frac{5}{4}} = \\pm\\frac{\\sqrt{5}}{2}"
+],
+[
+5,
+"Solve for k",
+"Add 1/2 to both sides and write over one denominator.",
+"k = \\frac{1}{2} \\pm \\frac{\\sqrt{5}}{2}"
+]
+],
+"ans": "k = \\frac{1 \\pm \\sqrt{5}}{2}"
+},
+"8": {
+"k": "solve",
+"eq": "b^2 + 7b - 46 = 7",
+"v": "b",
+"steps": [
+[
+0,
+"Check the b terms",
+"The <i>b²</i> and <i>b</i> terms are already on the same side, so nothing needs to move.",
+"b^2 + 7b - 46 = 7"
+],
+[
+1,
+"Regroup the b terms inside parentheses",
+"Put the <i>b²</i> and <i>b</i> terms together in parentheses. The constant stays outside.",
+"(b^2 + 7b) - 46 = 7"
+],
+[
+2,
+"Factor the leading coefficient",
+"The coefficient of <i>b²</i> is 1, so there is nothing to factor out. Move on.",
+"1\\,\\left(b^2 + 7b\\right) - 46 = 7"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of 7 is 7/2. Square it.",
+"\\left(\\frac{7}{2}\\right)^2 = \\frac{49}{4}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>49/4</b> inside the parentheses and subtract <b>1 · 49/4 = 49/4</b> outside, on the same side, to stay balanced.",
+"\\left(b^2 + 7b + \\color{#D98A14}{\\tfrac{49}{4}}\\right) - 46 - \\color{#D98A14}{\\tfrac{49}{4}} = 7"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"b² + 7b + 49/4 = (b + 7/2)². Combine the constants: −46 − 49/4 = −184/4 − 49/4 = −233/4.",
+"\\left(b + \\frac{7}{2}\\right)^2 - \\frac{233}{4} = 7"
+],
+[
+5,
+"Isolate the square",
+"Add 233/4 to both sides: 7 + 233/4 = 28/4 + 233/4 = 261/4.",
+"\\left(b + \\frac{7}{2}\\right)^2 = \\frac{261}{4}"
+],
+[
+5,
+"Take the square root of both sides",
+"Remember ±. √4 = 2. Simplify: √261 = √9 · √29 = 3√29.",
+"b + \\frac{7}{2} = \\pm\\sqrt{\\frac{261}{4}} = \\pm\\frac{3\\sqrt{29}}{2}"
+],
+[
+5,
+"Solve for b",
+"Subtract 7/2 from both sides and write over one denominator.",
+"b = -\\frac{7}{2} \\pm \\frac{3\\sqrt{29}}{2}"
+]
+],
+"ans": "b = \\frac{-7 \\pm 3\\sqrt{29}}{2}"
+},
+"9": {
+"k": "solve",
+"eq": "n^2 + n - 38 = 4",
+"v": "n",
+"steps": [
+[
+0,
+"Check the n terms",
+"The <i>n²</i> and <i>n</i> terms are already on the same side, so nothing needs to move.",
+"n^2 + n - 38 = 4"
+],
+[
+1,
+"Regroup the n terms inside parentheses",
+"Put the <i>n²</i> and <i>n</i> terms together in parentheses. The constant stays outside.",
+"(n^2 + n) - 38 = 4"
+],
+[
+2,
+"Factor the leading coefficient",
+"The coefficient of <i>n²</i> is 1, so there is nothing to factor out. Move on.",
+"1\\,\\left(n^2 + n\\right) - 38 = 4"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of 1 is 1/2. Square it.",
+"\\left(\\frac{1}{2}\\right)^2 = \\frac{1}{4}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>1/4</b> inside the parentheses and subtract <b>1 · 1/4 = 1/4</b> outside, on the same side, to stay balanced.",
+"\\left(n^2 + n + \\color{#D98A14}{\\tfrac{1}{4}}\\right) - 38 - \\color{#D98A14}{\\tfrac{1}{4}} = 4"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"n² + n + 1/4 = (n + 1/2)². Combine the constants: −38 − 1/4 = −152/4 − 1/4 = −153/4.",
+"\\left(n + \\frac{1}{2}\\right)^2 - \\frac{153}{4} = 4"
+],
+[
+5,
+"Isolate the square",
+"Add 153/4 to both sides: 4 + 153/4 = 16/4 + 153/4 = 169/4.",
+"\\left(n + \\frac{1}{2}\\right)^2 = \\frac{169}{4}"
+],
+[
+5,
+"Take the square root of both sides",
+"√169 = 13 and √4 = 2. Remember ±.",
+"n + \\frac{1}{2} = \\pm\\sqrt{\\frac{169}{4}} = \\pm \\frac{13}{2}"
+],
+[
+5,
+"Solve for n",
+"Subtract 1/2 from both sides, then work out each sign.",
+"n = -\\frac{1}{2} + \\frac{13}{2} = \\frac{12}{2} \\quad\\text{or}\\quad n = -\\frac{1}{2} - \\frac{13}{2} = -\\frac{14}{2}"
+]
+],
+"ans": "n = 6 \\quad\\text{or}\\quad n = -7"
+},
+"10": {
+"k": "solve",
+"eq": "k^2 - 7k + 10 = -6",
+"v": "k",
+"steps": [
+[
+0,
+"Check the k terms",
+"The <i>k²</i> and <i>k</i> terms are already on the same side, so nothing needs to move.",
+"k^2 - 7k + 10 = -6"
+],
+[
+1,
+"Regroup the k terms inside parentheses",
+"Put the <i>k²</i> and <i>k</i> terms together in parentheses. The constant stays outside.",
+"(k^2 - 7k) + 10 = -6"
+],
+[
+2,
+"Factor the leading coefficient",
+"The coefficient of <i>k²</i> is 1, so there is nothing to factor out. Move on.",
+"1\\,\\left(k^2 - 7k\\right) + 10 = -6"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of −7 is −7/2. Square it.",
+"\\left(\\frac{-7}{2}\\right)^2 = \\frac{49}{4}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>49/4</b> inside the parentheses and subtract <b>1 · 49/4 = 49/4</b> outside, on the same side, to stay balanced.",
+"\\left(k^2 - 7k + \\color{#D98A14}{\\tfrac{49}{4}}\\right) + 10 - \\color{#D98A14}{\\tfrac{49}{4}} = -6"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"k² − 7k + 49/4 = (k − 7/2)². Combine the constants: 10 − 49/4 = 40/4 − 49/4 = −9/4.",
+"\\left(k - \\frac{7}{2}\\right)^2 - \\frac{9}{4} = -6"
+],
+[
+5,
+"Isolate the square",
+"Add 9/4 to both sides: −6 + 9/4 = −24/4 + 9/4 = −15/4. A square equal to a negative number means the solutions are complex.",
+"\\left(k - \\frac{7}{2}\\right)^2 = -\\frac{15}{4}"
+],
+[
+5,
+"Take the square root of both sides",
+"Use √−1 = i, and √4 = 2. Remember ±.",
+"k - \\frac{7}{2} = \\pm\\sqrt{-\\frac{15}{4}} = \\pm\\frac{i\\sqrt{15}}{2}"
+],
+[
+5,
+"Solve for k",
+"Add 7/2 to both sides and write over one denominator.",
+"k = \\frac{7}{2} \\pm \\frac{i\\sqrt{15}}{2}"
+]
+],
+"ans": "k = \\frac{7 \\pm i\\sqrt{15}}{2}"
+},
+"11": {
+"k": "solve",
+"eq": "v^2 - 7v + 3 = -7",
+"v": "v",
+"steps": [
+[
+0,
+"Check the v terms",
+"The <i>v²</i> and <i>v</i> terms are already on the same side, so nothing needs to move.",
+"v^2 - 7v + 3 = -7"
+],
+[
+1,
+"Regroup the v terms inside parentheses",
+"Put the <i>v²</i> and <i>v</i> terms together in parentheses. The constant stays outside.",
+"(v^2 - 7v) + 3 = -7"
+],
+[
+2,
+"Factor the leading coefficient",
+"The coefficient of <i>v²</i> is 1, so there is nothing to factor out. Move on.",
+"1\\,\\left(v^2 - 7v\\right) + 3 = -7"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of −7 is −7/2. Square it.",
+"\\left(\\frac{-7}{2}\\right)^2 = \\frac{49}{4}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>49/4</b> inside the parentheses and subtract <b>1 · 49/4 = 49/4</b> outside, on the same side, to stay balanced.",
+"\\left(v^2 - 7v + \\color{#D98A14}{\\tfrac{49}{4}}\\right) + 3 - \\color{#D98A14}{\\tfrac{49}{4}} = -7"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"v² − 7v + 49/4 = (v − 7/2)². Combine the constants: 3 − 49/4 = 12/4 − 49/4 = −37/4.",
+"\\left(v - \\frac{7}{2}\\right)^2 - \\frac{37}{4} = -7"
+],
+[
+5,
+"Isolate the square",
+"Add 37/4 to both sides: −7 + 37/4 = −28/4 + 37/4 = 9/4.",
+"\\left(v - \\frac{7}{2}\\right)^2 = \\frac{9}{4}"
+],
+[
+5,
+"Take the square root of both sides",
+"√9 = 3 and √4 = 2. Remember ±.",
+"v - \\frac{7}{2} = \\pm\\sqrt{\\frac{9}{4}} = \\pm \\frac{3}{2}"
+],
+[
+5,
+"Solve for v",
+"Add 7/2 to both sides, then work out each sign.",
+"v = \\frac{7}{2} + \\frac{3}{2} = \\frac{10}{2} \\quad\\text{or}\\quad v = \\frac{7}{2} - \\frac{3}{2} = \\frac{4}{2}"
+]
+],
+"ans": "v = 5 \\quad\\text{or}\\quad v = 2"
+},
+"12": {
+"k": "solve",
+"eq": "n^2 + 5n - 58 = 8",
+"v": "n",
+"steps": [
+[
+0,
+"Check the n terms",
+"The <i>n²</i> and <i>n</i> terms are already on the same side, so nothing needs to move.",
+"n^2 + 5n - 58 = 8"
+],
+[
+1,
+"Regroup the n terms inside parentheses",
+"Put the <i>n²</i> and <i>n</i> terms together in parentheses. The constant stays outside.",
+"(n^2 + 5n) - 58 = 8"
+],
+[
+2,
+"Factor the leading coefficient",
+"The coefficient of <i>n²</i> is 1, so there is nothing to factor out. Move on.",
+"1\\,\\left(n^2 + 5n\\right) - 58 = 8"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of 5 is 5/2. Square it.",
+"\\left(\\frac{5}{2}\\right)^2 = \\frac{25}{4}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>25/4</b> inside the parentheses and subtract <b>1 · 25/4 = 25/4</b> outside, on the same side, to stay balanced.",
+"\\left(n^2 + 5n + \\color{#D98A14}{\\tfrac{25}{4}}\\right) - 58 - \\color{#D98A14}{\\tfrac{25}{4}} = 8"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"n² + 5n + 25/4 = (n + 5/2)². Combine the constants: −58 − 25/4 = −232/4 − 25/4 = −257/4.",
+"\\left(n + \\frac{5}{2}\\right)^2 - \\frac{257}{4} = 8"
+],
+[
+5,
+"Isolate the square",
+"Add 257/4 to both sides: 8 + 257/4 = 32/4 + 257/4 = 289/4.",
+"\\left(n + \\frac{5}{2}\\right)^2 = \\frac{289}{4}"
+],
+[
+5,
+"Take the square root of both sides",
+"√289 = 17 and √4 = 2. Remember ±.",
+"n + \\frac{5}{2} = \\pm\\sqrt{\\frac{289}{4}} = \\pm \\frac{17}{2}"
+],
+[
+5,
+"Solve for n",
+"Subtract 5/2 from both sides, then work out each sign.",
+"n = -\\frac{5}{2} + \\frac{17}{2} = \\frac{12}{2} \\quad\\text{or}\\quad n = -\\frac{5}{2} - \\frac{17}{2} = -\\frac{22}{2}"
+]
+],
+"ans": "n = 6 \\quad\\text{or}\\quad n = -11"
+},
+"13": {
+"k": "solve",
+"eq": "3r^2 + 2r + 3 = 0",
+"v": "r",
+"steps": [
+[
+0,
+"Check the r terms",
+"The <i>r²</i> and <i>r</i> terms are already on the same side, so nothing needs to move.",
+"3r^2 + 2r + 3 = 0"
+],
+[
+1,
+"Regroup the r terms inside parentheses",
+"Put the <i>r²</i> and <i>r</i> terms together in parentheses. The constant stays outside.",
+"(3r^2 + 2r) + 3 = 0"
+],
+[
+2,
+"Factor 3 out of the parentheses",
+"Divide each term inside by 3: 3r² → r², 2r → (2/3)r.",
+"3\\left(r^2 + \\frac{2}{3}r\\right) + 3 = 0"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of 2/3 is 1/3. Square it.",
+"\\left(\\frac{1}{2}\\cdot\\frac{2}{3}\\right)^2 = \\left(\\frac{1}{3}\\right)^2 = \\frac{1}{9}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>1/9</b> inside. It gets multiplied by 3, so subtract <b>3 · 1/9 = 1/3</b> outside, on the same side.",
+"3\\left(r^2 + \\frac{2}{3}r + \\color{#D98A14}{\\tfrac{1}{9}}\\right) + 3 - \\color{#D98A14}{3\\cdot\\tfrac{1}{9}} = 0"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"r² + (2/3)r + 1/9 = (r + 1/3)². Combine the constants: 3 − 1/3 = 9/3 − 1/3 = 8/3.",
+"3\\left(r + \\frac{1}{3}\\right)^2 + \\frac{8}{3} = 0"
+],
+[
+5,
+"Isolate the square",
+"Subtract 8/3 from both sides.",
+"3\\left(r + \\frac{1}{3}\\right)^2 = -\\frac{8}{3}"
+],
+[
+5,
+"Divide by 3",
+"Divide both sides by 3 so the square is alone: −8/3 ÷ 3 = −8/9. A square equal to a negative number means the solutions are complex.",
+"\\left(r + \\frac{1}{3}\\right)^2 = -\\frac{8}{9}"
+],
+[
+5,
+"Take the square root of both sides",
+"Use √−1 = i, and √9 = 3. Remember ±. Simplify: √8 = √4 · √2 = 2√2.",
+"r + \\frac{1}{3} = \\pm\\sqrt{-\\frac{8}{9}} = \\pm\\frac{2i\\sqrt{2}}{3}"
+],
+[
+5,
+"Solve for r",
+"Subtract 1/3 from both sides and write over one denominator.",
+"r = -\\frac{1}{3} \\pm \\frac{2i\\sqrt{2}}{3}"
+]
+],
+"ans": "r = \\frac{-1 \\pm 2i\\sqrt{2}}{3}"
+},
+"14": {
+"k": "solve",
+"eq": "3k^2 - 2k + 8 = 0",
+"v": "k",
+"steps": [
+[
+0,
+"Check the k terms",
+"The <i>k²</i> and <i>k</i> terms are already on the same side, so nothing needs to move.",
+"3k^2 - 2k + 8 = 0"
+],
+[
+1,
+"Regroup the k terms inside parentheses",
+"Put the <i>k²</i> and <i>k</i> terms together in parentheses. The constant stays outside.",
+"(3k^2 - 2k) + 8 = 0"
+],
+[
+2,
+"Factor 3 out of the parentheses",
+"Divide each term inside by 3: 3k² → k², −2k → −(2/3)k.",
+"3\\left(k^2 - \\frac{2}{3}k\\right) + 8 = 0"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of −2/3 is −1/3. Square it.",
+"\\left(\\frac{1}{2}\\cdot\\left(-\\frac{2}{3}\\right)\\right)^2 = \\left(-\\frac{1}{3}\\right)^2 = \\frac{1}{9}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>1/9</b> inside. It gets multiplied by 3, so subtract <b>3 · 1/9 = 1/3</b> outside, on the same side.",
+"3\\left(k^2 - \\frac{2}{3}k + \\color{#D98A14}{\\tfrac{1}{9}}\\right) + 8 - \\color{#D98A14}{3\\cdot\\tfrac{1}{9}} = 0"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"k² − (2/3)k + 1/9 = (k − 1/3)². Combine the constants: 8 − 1/3 = 24/3 − 1/3 = 23/3.",
+"3\\left(k - \\frac{1}{3}\\right)^2 + \\frac{23}{3} = 0"
+],
+[
+5,
+"Isolate the square",
+"Subtract 23/3 from both sides.",
+"3\\left(k - \\frac{1}{3}\\right)^2 = -\\frac{23}{3}"
+],
+[
+5,
+"Divide by 3",
+"Divide both sides by 3 so the square is alone: −23/3 ÷ 3 = −23/9. A square equal to a negative number means the solutions are complex.",
+"\\left(k - \\frac{1}{3}\\right)^2 = -\\frac{23}{9}"
+],
+[
+5,
+"Take the square root of both sides",
+"Use √−1 = i, and √9 = 3. Remember ±.",
+"k - \\frac{1}{3} = \\pm\\sqrt{-\\frac{23}{9}} = \\pm\\frac{i\\sqrt{23}}{3}"
+],
+[
+5,
+"Solve for k",
+"Add 1/3 to both sides and write over one denominator.",
+"k = \\frac{1}{3} \\pm \\frac{i\\sqrt{23}}{3}"
+]
+],
+"ans": "k = \\frac{1 \\pm i\\sqrt{23}}{3}"
+},
+"15": {
+"k": "solve",
+"eq": "2x^2 + x - 3 = 0",
+"v": "x",
+"steps": [
+[
+0,
+"Check the x terms",
+"The <i>x²</i> and <i>x</i> terms are already on the same side, so nothing needs to move.",
+"2x^2 + x - 3 = 0"
+],
+[
+1,
+"Regroup the x terms inside parentheses",
+"Put the <i>x²</i> and <i>x</i> terms together in parentheses. The constant stays outside.",
+"(2x^2 + x) - 3 = 0"
+],
+[
+2,
+"Factor 2 out of the parentheses",
+"Divide each term inside by 2: 2x² → x², x → (1/2)x.",
+"2\\left(x^2 + \\frac{1}{2}x\\right) - 3 = 0"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of 1/2 is 1/4. Square it.",
+"\\left(\\frac{1}{2}\\cdot\\frac{1}{2}\\right)^2 = \\left(\\frac{1}{4}\\right)^2 = \\frac{1}{16}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>1/16</b> inside. It gets multiplied by 2, so subtract <b>2 · 1/16 = 1/8</b> outside, on the same side.",
+"2\\left(x^2 + \\frac{1}{2}x + \\color{#D98A14}{\\tfrac{1}{16}}\\right) - 3 - \\color{#D98A14}{2\\cdot\\tfrac{1}{16}} = 0"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"x² + (1/2)x + 1/16 = (x + 1/4)². Combine the constants: −3 − 1/8 = −24/8 − 1/8 = −25/8.",
+"2\\left(x + \\frac{1}{4}\\right)^2 - \\frac{25}{8} = 0"
+],
+[
+5,
+"Isolate the square",
+"Add 25/8 to both sides.",
+"2\\left(x + \\frac{1}{4}\\right)^2 = \\frac{25}{8}"
+],
+[
+5,
+"Divide by 2",
+"Divide both sides by 2 so the square is alone: 25/8 ÷ 2 = 25/16.",
+"\\left(x + \\frac{1}{4}\\right)^2 = \\frac{25}{16}"
+],
+[
+5,
+"Take the square root of both sides",
+"√25 = 5 and √16 = 4. Remember ±.",
+"x + \\frac{1}{4} = \\pm\\sqrt{\\frac{25}{16}} = \\pm \\frac{5}{4}"
+],
+[
+5,
+"Solve for x",
+"Subtract 1/4 from both sides, then work out each sign.",
+"x = -\\frac{1}{4} + \\frac{5}{4} = \\frac{4}{4} \\quad\\text{or}\\quad x = -\\frac{1}{4} - \\frac{5}{4} = -\\frac{6}{4}"
+]
+],
+"ans": "x = 1 \\quad\\text{or}\\quad x = -\\frac{3}{2}"
+},
+"16": {
+"k": "solve",
+"eq": "3n^2 - 9n - 14 = -2",
+"v": "n",
+"steps": [
+[
+0,
+"Check the n terms",
+"The <i>n²</i> and <i>n</i> terms are already on the same side, so nothing needs to move.",
+"3n^2 - 9n - 14 = -2"
+],
+[
+1,
+"Regroup the n terms inside parentheses",
+"Put the <i>n²</i> and <i>n</i> terms together in parentheses. The constant stays outside.",
+"(3n^2 - 9n) - 14 = -2"
+],
+[
+2,
+"Factor 3 out of the parentheses",
+"Divide each term inside by 3: 3n² → n², −9n → −3n.",
+"3\\left(n^2 - 3n\\right) - 14 = -2"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of −3 is −3/2. Square it.",
+"\\left(\\frac{-3}{2}\\right)^2 = \\frac{9}{4}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>9/4</b> inside. It gets multiplied by 3, so subtract <b>3 · 9/4 = 27/4</b> outside, on the same side.",
+"3\\left(n^2 - 3n + \\color{#D98A14}{\\tfrac{9}{4}}\\right) - 14 - \\color{#D98A14}{3\\cdot\\tfrac{9}{4}} = -2"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"n² − 3n + 9/4 = (n − 3/2)². Combine the constants: −14 − 27/4 = −56/4 − 27/4 = −83/4.",
+"3\\left(n - \\frac{3}{2}\\right)^2 - \\frac{83}{4} = -2"
+],
+[
+5,
+"Isolate the square",
+"Add 83/4 to both sides: −2 + 83/4 = −8/4 + 83/4 = 75/4.",
+"3\\left(n - \\frac{3}{2}\\right)^2 = \\frac{75}{4}"
+],
+[
+5,
+"Divide by 3",
+"Divide both sides by 3 so the square is alone: 75/4 ÷ 3 = 25/4.",
+"\\left(n - \\frac{3}{2}\\right)^2 = \\frac{25}{4}"
+],
+[
+5,
+"Take the square root of both sides",
+"√25 = 5 and √4 = 2. Remember ±.",
+"n - \\frac{3}{2} = \\pm\\sqrt{\\frac{25}{4}} = \\pm \\frac{5}{2}"
+],
+[
+5,
+"Solve for n",
+"Add 3/2 to both sides, then work out each sign.",
+"n = \\frac{3}{2} + \\frac{5}{2} = \\frac{8}{2} \\quad\\text{or}\\quad n = \\frac{3}{2} - \\frac{5}{2} = -\\frac{2}{2}"
+]
+],
+"ans": "n = 4 \\quad\\text{or}\\quad n = -1"
+},
+"17": {
+"k": "solve",
+"eq": "3n^2 - 10n + 7 = -5",
+"v": "n",
+"steps": [
+[
+0,
+"Check the n terms",
+"The <i>n²</i> and <i>n</i> terms are already on the same side, so nothing needs to move.",
+"3n^2 - 10n + 7 = -5"
+],
+[
+1,
+"Regroup the n terms inside parentheses",
+"Put the <i>n²</i> and <i>n</i> terms together in parentheses. The constant stays outside.",
+"(3n^2 - 10n) + 7 = -5"
+],
+[
+2,
+"Factor 3 out of the parentheses",
+"Divide each term inside by 3: 3n² → n², −10n → −(10/3)n.",
+"3\\left(n^2 - \\frac{10}{3}n\\right) + 7 = -5"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of −10/3 is −5/3. Square it.",
+"\\left(\\frac{1}{2}\\cdot\\left(-\\frac{10}{3}\\right)\\right)^2 = \\left(-\\frac{5}{3}\\right)^2 = \\frac{25}{9}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>25/9</b> inside. It gets multiplied by 3, so subtract <b>3 · 25/9 = 25/3</b> outside, on the same side.",
+"3\\left(n^2 - \\frac{10}{3}n + \\color{#D98A14}{\\tfrac{25}{9}}\\right) + 7 - \\color{#D98A14}{3\\cdot\\tfrac{25}{9}} = -5"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"n² − (10/3)n + 25/9 = (n − 5/3)². Combine the constants: 7 − 25/3 = 21/3 − 25/3 = −4/3.",
+"3\\left(n - \\frac{5}{3}\\right)^2 - \\frac{4}{3} = -5"
+],
+[
+5,
+"Isolate the square",
+"Add 4/3 to both sides: −5 + 4/3 = −15/3 + 4/3 = −11/3.",
+"3\\left(n - \\frac{5}{3}\\right)^2 = -\\frac{11}{3}"
+],
+[
+5,
+"Divide by 3",
+"Divide both sides by 3 so the square is alone: −11/3 ÷ 3 = −11/9. A square equal to a negative number means the solutions are complex.",
+"\\left(n - \\frac{5}{3}\\right)^2 = -\\frac{11}{9}"
+],
+[
+5,
+"Take the square root of both sides",
+"Use √−1 = i, and √9 = 3. Remember ±.",
+"n - \\frac{5}{3} = \\pm\\sqrt{-\\frac{11}{9}} = \\pm\\frac{i\\sqrt{11}}{3}"
+],
+[
+5,
+"Solve for n",
+"Add 5/3 to both sides and write over one denominator.",
+"n = \\frac{5}{3} \\pm \\frac{i\\sqrt{11}}{3}"
+]
+],
+"ans": "n = \\frac{5 \\pm i\\sqrt{11}}{3}"
+},
+"18": {
+"k": "solve",
+"eq": "2a^2 + 7a - 9 = -4",
+"v": "a",
+"steps": [
+[
+0,
+"Check the a terms",
+"The <i>a²</i> and <i>a</i> terms are already on the same side, so nothing needs to move.",
+"2a^2 + 7a - 9 = -4"
+],
+[
+1,
+"Regroup the a terms inside parentheses",
+"Put the <i>a²</i> and <i>a</i> terms together in parentheses. The constant stays outside.",
+"(2a^2 + 7a) - 9 = -4"
+],
+[
+2,
+"Factor 2 out of the parentheses",
+"Divide each term inside by 2: 2a² → a², 7a → (7/2)a.",
+"2\\left(a^2 + \\frac{7}{2}a\\right) - 9 = -4"
+],
+[
+3,
+"Find the number that completes the square",
+"Half of 7/2 is 7/4. Square it.",
+"\\left(\\frac{1}{2}\\cdot\\frac{7}{2}\\right)^2 = \\left(\\frac{7}{4}\\right)^2 = \\frac{49}{16}"
+],
+[
+3,
+"Add it inside, subtract it outside",
+"Add <b>49/16</b> inside. It gets multiplied by 2, so subtract <b>2 · 49/16 = 49/8</b> outside, on the same side.",
+"2\\left(a^2 + \\frac{7}{2}a + \\color{#D98A14}{\\tfrac{49}{16}}\\right) - 9 - \\color{#D98A14}{2\\cdot\\tfrac{49}{16}} = -4"
+],
+[
+4,
+"Factor the perfect square trinomial",
+"a² + (7/2)a + 49/16 = (a + 7/4)². Combine the constants: −9 − 49/8 = −72/8 − 49/8 = −121/8.",
+"2\\left(a + \\frac{7}{4}\\right)^2 - \\frac{121}{8} = -4"
+],
+[
+5,
+"Isolate the square",
+"Add 121/8 to both sides: −4 + 121/8 = −32/8 + 121/8 = 89/8.",
+"2\\left(a + \\frac{7}{4}\\right)^2 = \\frac{89}{8}"
+],
+[
+5,
+"Divide by 2",
+"Divide both sides by 2 so the square is alone: 89/8 ÷ 2 = 89/16.",
+"\\left(a + \\frac{7}{4}\\right)^2 = \\frac{89}{16}"
+],
+[
+5,
+"Take the square root of both sides",
+"Remember ±. √16 = 4.",
+"a + \\frac{7}{4} = \\pm\\sqrt{\\frac{89}{16}} = \\pm\\frac{\\sqrt{89}}{4}"
+],
+[
+5,
+"Solve for a",
+"Subtract 7/4 from both sides and write over one denominator.",
+"a = -\\frac{7}{4} \\pm \\frac{\\sqrt{89}}{4}"
+]
+],
+"ans": "a = \\frac{-7 \\pm \\sqrt{89}}{4}"
+}
+};
+const IDS = Object.keys(P).map(Number).sort((a,b)=>a-b);
+const KINDS = {
+  square:{label:"Complete the square", range:"1–4", intro:"Find the value that completes the square, then rewrite as a perfect square", phases:["Factor out a","Find (b/2)²","Fill in the blank","Perfect square"], ansTitle:"Answer", ref:"Original expression"},
+  solve:{label:"Solve by completing the square", range:"5–18", intro:"Solve by completing the square", phases:["Set up","Regroup","Factor out a","Complete the square","Factor the trinomial","Square root property"], ansTitle:"Solution", ref:"Original equation"}
+};
+
+let cur = IDS[0], step = 0; // step 0 = problem page, 1..n = steps, n+1 = answer
+let done = new Set();
+try{ const s = JSON.parse(localStorage.getItem("hw56-v2-done")||"[]"); s.forEach(n=>done.add(n)); }catch(e){}
+function saveDone(){ try{ localStorage.setItem("hw56-v2-done", JSON.stringify([...done])); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+const picker = $("picker"), phasesEl = $("phases");
+
+Object.entries(KINDS).forEach(([k,info])=>{
+  const g=document.createElement("div"); g.className="group";
+  g.innerHTML=`<span class="glbl">${info.label} <span class="grng">${info.range}</span></span>`;
+  const row=document.createElement("div"); row.className="chips";
+  IDS.filter(n=>P[n].k===k).forEach(n=>{
+    const b = document.createElement("button");
+    b.className="chip"; b.type="button"; b.id="chip-"+n;
+    b.addEventListener("click",()=>go(n,0));
+    row.appendChild(b);
+  });
+  g.appendChild(row); picker.appendChild(g);
+});
+
+let shownPh=null;
+function buildPhases(ph){
+  if(shownPh===ph) return; shownPh=ph;
+  phasesEl.innerHTML=""; phasesEl.style.setProperty("--cols", ph.length);
+  ph.forEach((p,i)=>{
+    const d=document.createElement("div"); d.className="phase"; d.id="ph"+i;
+    d.innerHTML=`<div class="bar"></div><span>${p}</span>`; phasesEl.appendChild(d);
+  });
+}
+
+function typeset(els){
+  if(window.MathJax && MathJax.typesetPromise){
+    MathJax.startup.promise.then(()=>{ MathJax.typesetClear(els); return MathJax.typesetPromise(els); }).catch(()=>{});
+  }
+}
+
+function render(){
+  const pr = P[cur], n = pr.steps.length, K = KINDS[pr.k], PH = pr.phases || K.phases;
+  buildPhases(PH);
+  IDS.forEach(k=>{
+    const b=$("chip-"+k);
+    b.setAttribute("aria-current", k===cur ? "true":"false");
+    b.innerHTML = k + (done.has(k) ? '<span class="tick" aria-label="done">✓</span>' : '');
+  });
+  const card=$("card"); card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
+  const math=$("math"), ref=$("ref");
+  math.className="math";
+  let phase=-1;
+
+  if(step===0){
+    $("eyebrowL").textContent=`Problem ${cur}`;
+    $("eyebrowR").textContent=`${n} steps`;
+    $("title").textContent=pr.intro || K.intro;
+    $("note").innerHTML=`Try the first step on paper, then press <b style="color:var(--accent)">Next</b> to check it.`;
+    math.classList.add("big");
+    math.innerHTML=`\\[${pr.eq}\\]`;
+    ref.innerHTML="";
+  } else if(step<=n){
+    const [ph,t,note,tex]=pr.steps[step-1]; phase=ph;
+    $("eyebrowL").textContent=`Problem ${cur} · ${PH[ph]}`;
+    $("eyebrowR").textContent=`Step ${step} of ${n}`;
+    $("title").textContent=t;
+    $("note").innerHTML=note;
+    math.innerHTML=`\\[${tex}\\]`;
+    ref.innerHTML=`${K.ref}: <span class="m">\\(${pr.eq}\\)</span>`;
+  } else {
+    phase=PH.length;
+    $("eyebrowL").textContent=`Problem ${cur} · Done`;
+    $("eyebrowR").textContent=`Done`;
+    $("title").textContent=K.ansTitle;
+    const nextId = IDS[IDS.indexOf(cur)+1];
+    $("note").innerHTML = nextId ? `Nice work. Press <b style="color:var(--accent)">Next problem</b> to go on to problem ${nextId}, or pick any problem above.` : `That was the last problem. Pick any problem above to review it.`;
+    math.classList.add("big","answer");
+    math.innerHTML=`\\[${pr.ans}\\]`;
+    ref.innerHTML=`${K.ref}: <span class="m">\\(${pr.eq}\\)</span>`;
+    done.add(cur); saveDone();
+    $("chip-"+cur).innerHTML = cur + '<span class="tick" aria-label="done">✓</span>';
+  }
+  PH.forEach((_,i)=>{
+    const el=$("ph"+i); el.classList.toggle("now",i===phase); el.classList.toggle("past", phase>=0 && i<phase);
+  });
+
+  $("back").disabled = (step===0 && cur===IDS[0]);
+  const nb=$("next");
+  if(step<n) nb.textContent="Next →";
+  else if(step===n) nb.textContent="Show answer →";
+  else nb.textContent = IDS[IDS.indexOf(cur)+1] ? `Next problem →` : "Start over";
+  typeset([math,ref]);
+  try{ history.replaceState(null,"","#p"+cur); }catch(e){}
+}
+
+function go(n,s){ cur=n; step=s; render(); }
+function next(){
+  const n=P[cur].steps.length;
+  if(step<=n){ step++; render(); return; }
+  const i=IDS.indexOf(cur);
+  go(IDS[i+1] ?? IDS[0], 0);
+}
+function back(){
+  if(step>0){ step--; render(); return; }
+  const i=IDS.indexOf(cur);
+  if(i>0){ const p=IDS[i-1]; go(p, P[p].steps.length+1); }
+}
+$("next").addEventListener("click",next);
+$("back").addEventListener("click",back);
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"){ next(); } else if(e.key==="ArrowLeft"){ back(); }
+});
+
+const m = /^#p(\d+)$/.exec(location.hash);
+if(m && P[+m[1]]) cur=+m[1];
+render();
+if(window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(()=>typeset([$("math"),$("ref")]));
+</script>
+
+</body></html>
