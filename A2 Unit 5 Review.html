@@ -1,0 +1,1440 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>A2 Unit 5 Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@500;600;700&display=swap">
+<style>
+:root{
+  --paper:#EEF2EF; --card:#FFFFFF; --ink:#17222C; --muted:#56646E; --line:#D3DCD7;
+  --grid:rgba(27,110,122,.07); --accent:#1B6E7A; --accent-ink:#FFFFFF; --accent-soft:#DDEEEF;
+  --hl:#B86A00; --hl-soft:#FFF1D9; --done:#2F7D4A;
+  --display:"Lexend",system-ui,sans-serif; --body:"Atkinson Hyperlegible",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+    --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+    --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0F161B; --card:#172128; --ink:#E4EBEE; --muted:#95A4AD; --line:#2A3A43;
+  --grid:rgba(92,193,204,.07); --accent:#5CC1CC; --accent-ink:#0B1519; --accent-soft:#1D3339;
+  --hl:#F2A93B; --hl-soft:#3A2C14; --done:#6BC98A;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.35rem,3.5vw,1.8rem);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);font-size:.95rem;margin:0}
+.picker{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.picker .lbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+.chip{font-family:var(--display);font-weight:600;font-size:1rem;min-width:46px;height:42px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip .tick{color:var(--done);font-size:.85rem}
+.chip[aria-current="true"] .tick{color:var(--accent-ink)}
+button:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+
+.phases{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.phase{display:flex;flex-direction:column;gap:6px;font-size:.74rem;color:var(--muted);line-height:1.25}
+.phase .bar{height:6px;border-radius:3px;background:var(--line)}
+.phase.past .bar{background:var(--accent);opacity:.45}
+.phase.now .bar{background:var(--accent)}
+.phase.now{color:var(--ink);font-weight:700}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,32px);display:flex;flex-direction:column;gap:16px}
+.eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(1.25rem,3vw,1.6rem);margin:0;text-wrap:balance}
+.note{margin:0;max-width:62ch}
+.note b{color:var(--hl)}
+.math{border-radius:12px;padding:22px 16px;min-height:110px;display:flex;align-items:center;justify-content:center;overflow-x:auto;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;font-size:1.25rem}
+.math mjx-container{margin:0!important}
+.math.big{font-size:1.7rem;min-height:150px}
+.ref{font-size:.88rem;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ref .m{font-size:1rem;color:var(--ink)}
+.answer{border:2px solid var(--done);background:transparent}
+.nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-weight:600;font-size:1.05rem;border-radius:12px;padding:12px 22px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);min-width:140px}
+.btn.primary:hover{filter:brightness(1.07)}
+.kbd{font-size:.8rem;color:var(--muted);text-align:center}
+.hlkey{display:inline-block;background:var(--hl-soft);color:var(--hl);border-radius:6px;padding:0 6px;font-weight:700}
+@media (max-width:560px){
+  .phases{grid-template-columns:repeat(3,1fr);row-gap:10px}
+  .math{font-size:1.05rem}
+  .math.big{font-size:1.4rem}
+  .btn{flex:1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .card.enter{animation:rise .22s ease-out}
+  @keyframes rise{from{transform:translateY(6px);opacity:.6}to{transform:none;opacity:1}}
+}
+.picker{display:flex;flex-direction:column;align-items:stretch!important;gap:10px}
+.group{display:grid;grid-template-columns:16rem 1fr;align-items:center;gap:6px 12px}
+.glbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.grng{color:var(--ink);font-weight:700;letter-spacing:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.phases{grid-template-columns:repeat(var(--cols,6),1fr)!important}
+@media (max-width:560px){.group{grid-template-columns:1fr}.phases{grid-template-columns:repeat(3,1fr)!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>A2 Unit 5 Review</h1>
+      <p class="sub">Chapter 5 Review · Problems 1–31</p>
+    </div>
+    <div class="picker" id="picker" role="group" aria-label="Choose a problem">
+          </div>
+  </header>
+
+  <div class="phases" id="phases" aria-hidden="true"></div>
+
+  <main class="card" id="card" aria-live="polite">
+    <div class="eyebrow"><span id="eyebrowL"></span><span id="eyebrowR"></span></div>
+    <h2 id="title"></h2>
+    <p class="note" id="note"></p>
+    <div class="math" id="math"></div>
+    <div class="ref" id="ref"></div>
+  </main>
+
+  <div class="nav">
+    <button class="btn" id="back" type="button">← Back</button>
+    <button class="btn primary" id="next" type="button">Next →</button>
+  </div>
+  <p class="kbd">Tip: you can also use the ← and → arrow keys. <span class="hlkey">Orange</span> marks the key numbers in each step.</p>
+</div>
+
+<script>
+window.MathJax = {
+  loader: { load: ['[tex]/color'] },
+  tex: { packages: {'[+]': ['color']} },
+  svg: { fontCache: 'global' },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<script>
+const P = {
+ "1": {
+  "k": "rad",
+  "eq": "\\sqrt{12}\\cdot\\sqrt{7}",
+  "steps": [
+   [
+    0,
+    "Multiply under one root",
+    "√a · √b = √(ab). Multiply 12 · 7 = 84.",
+    "\\sqrt{12}\\cdot\\sqrt{7} = \\sqrt{12\\cdot 7} = \\sqrt{84}"
+   ],
+   [
+    1,
+    "Write the perfect square with prime factors",
+    "Break 84 into primes: 84 = 2 · 2 · 3 · 7. The pair of 2s is the perfect square <b>2²</b>.",
+    "\\sqrt{84} = \\sqrt{2\\cdot 2\\cdot 3\\cdot 7} = \\sqrt{\\color{#D98A14}{2^2}\\cdot 21}"
+   ],
+   [
+    2,
+    "Take the square root of the perfect square",
+    "√(2²) = 2. 21 = 3 · 7 has no pair, so it stays inside.",
+    "\\sqrt{2^2}\\cdot\\sqrt{21} = 2\\sqrt{21}"
+   ]
+  ],
+  "ans": "2\\sqrt{21}",
+  "phases": [
+   "Multiply",
+   "Find perfect squares",
+   "Simplify"
+  ]
+ },
+ "2": {
+  "k": "rad",
+  "eq": "\\sqrt{10}\\cdot\\sqrt{14}",
+  "steps": [
+   [
+    0,
+    "Multiply under one root",
+    "√a · √b = √(ab). Multiply 10 · 14 = 140.",
+    "\\sqrt{10}\\cdot\\sqrt{14} = \\sqrt{10\\cdot 14} = \\sqrt{140}"
+   ],
+   [
+    1,
+    "Write the perfect square with prime factors",
+    "Break 140 into primes: 140 = 2 · 2 · 5 · 7. The pair of 2s is the perfect square <b>2²</b>.",
+    "\\sqrt{140} = \\sqrt{2\\cdot 2\\cdot 5\\cdot 7} = \\sqrt{\\color{#D98A14}{2^2}\\cdot 35}"
+   ],
+   [
+    2,
+    "Take the square root of the perfect square",
+    "√(2²) = 2. 35 = 5 · 7 has no pair, so it stays inside.",
+    "\\sqrt{2^2}\\cdot\\sqrt{35} = 2\\sqrt{35}"
+   ]
+  ],
+  "ans": "2\\sqrt{35}",
+  "phases": [
+   "Multiply",
+   "Find perfect squares",
+   "Simplify"
+  ]
+ },
+ "3": {
+  "k": "rad",
+  "eq": "5\\sqrt{24}\\cdot 2\\sqrt{28}",
+  "steps": [
+   [
+    0,
+    "Multiply the outside numbers",
+    "Multiply the numbers in front of the roots: 5 · 2 = 10.",
+    "(5\\cdot 2)\\,\\sqrt{24}\\cdot\\sqrt{28} = 10\\sqrt{24}\\cdot\\sqrt{28}"
+   ],
+   [
+    0,
+    "Multiply under one root",
+    "24 · 28 = 672.",
+    "10\\sqrt{24\\cdot 28} = 10\\sqrt{672}"
+   ],
+   [
+    1,
+    "Write the perfect squares with prime factors",
+    "Break 672 into primes: 672 = 2 · 2 · 2 · 2 · 2 · 3 · 7. There are two pairs of 2s, so write <b>2² · 2²</b>. What is left is 2 · 3 · 7 = 42.",
+    "10\\sqrt{672} = 10\\sqrt{\\color{#D98A14}{2^2\\cdot 2^2}\\cdot 42}"
+   ],
+   [
+    2,
+    "Take the square root of each perfect square",
+    "√(2²) = 2 for each pair, so we get 2 · 2. Then 10 · 2 · 2 = 40. 42 has no pair, so it stays inside.",
+    "10\\cdot 2\\cdot 2\\sqrt{42} = 40\\sqrt{42}"
+   ]
+  ],
+  "ans": "40\\sqrt{42}",
+  "phases": [
+   "Multiply",
+   "Find perfect squares",
+   "Simplify"
+  ]
+ },
+ "4": {
+  "k": "rad",
+  "eq": "\\sqrt{\\frac{81}{7}}",
+  "steps": [
+   [
+    0,
+    "Split the root of a fraction",
+    "√(a/b) = √a / √b.",
+    "\\sqrt{\\frac{81}{7}} = \\frac{\\sqrt{81}}{\\sqrt{7}}"
+   ],
+   [
+    1,
+    "Simplify the numerator",
+    "Break 81 into primes: 81 = 3 · 3 · 3 · 3 = <b>3² · 3²</b>. √(3²) = 3 for each pair, so √81 = 3 · 3 = 9.",
+    "\\frac{\\sqrt{\\color{#D98A14}{3^2\\cdot 3^2}}}{\\sqrt{7}} = \\frac{3\\cdot 3}{\\sqrt{7}} = \\frac{9}{\\sqrt{7}}"
+   ],
+   [
+    2,
+    "Rationalize the denominator",
+    "A square root cannot stay in the denominator. Multiply the top and bottom by <b>√7</b>. √7 · √7 = 7.",
+    "\\frac{9}{\\sqrt{7}}\\cdot\\frac{\\color{#D98A14}{\\sqrt{7}}}{\\color{#D98A14}{\\sqrt{7}}} = \\frac{9\\sqrt{7}}{7}"
+   ]
+  ],
+  "ans": "\\frac{9\\sqrt{7}}{7}",
+  "phases": [
+   "Split the root",
+   "Simplify",
+   "Rationalize"
+  ]
+ },
+ "5": {
+  "k": "rad",
+  "eq": "\\sqrt{-24}",
+  "steps": [
+   [
+    0,
+    "Write the negative as i",
+    "√−1 = i, so √−24 = i√24.",
+    "\\sqrt{-24} = \\sqrt{-1}\\cdot\\sqrt{24} = i\\sqrt{24}"
+   ],
+   [
+    1,
+    "Write the perfect square with prime factors",
+    "Break 24 into primes: 24 = 2 · 2 · 2 · 3. The pair of 2s is the perfect square <b>2²</b>.",
+    "i\\sqrt{2\\cdot 2\\cdot 2\\cdot 3} = i\\sqrt{\\color{#D98A14}{2^2}\\cdot 6}"
+   ],
+   [
+    2,
+    "Take the square root of the perfect square",
+    "√(2²) = 2. 6 = 2 · 3 has no pair, so it stays inside.",
+    "i\\sqrt{2^2}\\cdot\\sqrt{6} = 2i\\sqrt{6}"
+   ]
+  ],
+  "ans": "2i\\sqrt{6}",
+  "phases": [
+   "Pull out i",
+   "Find perfect squares",
+   "Simplify"
+  ]
+ },
+ "6": {
+  "k": "rad",
+  "eq": "\\sqrt{\\frac{-16}{3}}",
+  "steps": [
+   [
+    0,
+    "Write the negative as i",
+    "√−1 = i.",
+    "\\sqrt{\\frac{-16}{3}} = i\\sqrt{\\frac{16}{3}}"
+   ],
+   [
+    1,
+    "Split the root of the fraction",
+    "√(a/b) = √a / √b. Break 16 into primes: 16 = 2 · 2 · 2 · 2 = <b>2² · 2²</b>, so √16 = 2 · 2 = 4.",
+    "i\\,\\frac{\\sqrt{\\color{#D98A14}{2^2\\cdot 2^2}}}{\\sqrt{3}} = \\frac{2\\cdot 2\\,i}{\\sqrt{3}} = \\frac{4i}{\\sqrt{3}}"
+   ],
+   [
+    2,
+    "Rationalize the denominator",
+    "Multiply the top and bottom by <b>√3</b>. √3 · √3 = 3.",
+    "\\frac{4i}{\\sqrt{3}}\\cdot\\frac{\\color{#D98A14}{\\sqrt{3}}}{\\color{#D98A14}{\\sqrt{3}}} = \\frac{4i\\sqrt{3}}{3}"
+   ]
+  ],
+  "ans": "\\frac{4i\\sqrt{3}}{3}",
+  "phases": [
+   "Pull out i",
+   "Split the root",
+   "Rationalize"
+  ]
+ },
+ "7": {
+  "k": "rad",
+  "eq": "\\frac{-6}{5-\\sqrt{11}}",
+  "steps": [
+   [
+    0,
+    "Find the conjugate of the denominator",
+    "The denominator is 5 − √11. Its conjugate is <b>5 + √11</b> (change the sign in the middle).",
+    "5-\\sqrt{11}\\ \\longrightarrow\\ \\color{#D98A14}{5+\\sqrt{11}}"
+   ],
+   [
+    1,
+    "Multiply top and bottom by the conjugate",
+    "This does not change the value, because (5 + √11)/(5 + √11) = 1.",
+    "\\frac{-6}{5-\\sqrt{11}}\\cdot\\frac{\\color{#D98A14}{5+\\sqrt{11}}}{\\color{#D98A14}{5+\\sqrt{11}}}"
+   ],
+   [
+    1,
+    "Multiply the denominator",
+    "(a − b)(a + b) = a² − b². So 5² − (√11)² = 25 − 11 = 14. The square root is gone.",
+    "\\frac{-6(5+\\sqrt{11})}{25-11} = \\frac{-6(5+\\sqrt{11})}{14}"
+   ],
+   [
+    2,
+    "Reduce the fraction",
+    "−6 and 14 share a factor of 2: −6/14 = −3/7.",
+    "\\frac{-3(5+\\sqrt{11})}{7}"
+   ],
+   [
+    2,
+    "Distribute",
+    "−3 · 5 = −15 and −3 · √11 = −3√11.",
+    "\\frac{-15-3\\sqrt{11}}{7}"
+   ]
+  ],
+  "ans": "\\frac{-15-3\\sqrt{11}}{7}",
+  "phases": [
+   "Find the conjugate",
+   "Multiply",
+   "Simplify"
+  ]
+ },
+ "8": {
+  "k": "rad",
+  "eq": "\\frac{3}{4+\\sqrt{5}}",
+  "steps": [
+   [
+    0,
+    "Find the conjugate of the denominator",
+    "The denominator is 4 + √5. Its conjugate is <b>4 − √5</b> (change the sign in the middle).",
+    "4+\\sqrt{5}\\ \\longrightarrow\\ \\color{#D98A14}{4-\\sqrt{5}}"
+   ],
+   [
+    1,
+    "Multiply top and bottom by the conjugate",
+    "This does not change the value, because (4 − √5)/(4 − √5) = 1.",
+    "\\frac{3}{4+\\sqrt{5}}\\cdot\\frac{\\color{#D98A14}{4-\\sqrt{5}}}{\\color{#D98A14}{4-\\sqrt{5}}}"
+   ],
+   [
+    1,
+    "Multiply the denominator",
+    "(a + b)(a − b) = a² − b². So 4² − (√5)² = 16 − 5 = 11.",
+    "\\frac{3(4-\\sqrt{5})}{16-5} = \\frac{3(4-\\sqrt{5})}{11}"
+   ],
+   [
+    2,
+    "Distribute",
+    "3 · 4 = 12 and 3 · √5 = 3√5. 3 and 11 share no factor, so it does not reduce.",
+    "\\frac{12-3\\sqrt{5}}{11}"
+   ]
+  ],
+  "ans": "\\frac{12-3\\sqrt{5}}{11}",
+  "phases": [
+   "Find the conjugate",
+   "Multiply",
+   "Simplify"
+  ]
+ },
+ "9": {
+  "k": "rad",
+  "eq": "\\frac{4\\sqrt{3}}{\\sqrt{5}}",
+  "steps": [
+   [
+    0,
+    "Rationalize the denominator",
+    "A square root cannot stay in the denominator. Multiply the top and bottom by <b>√5</b>.",
+    "\\frac{4\\sqrt{3}}{\\sqrt{5}}\\cdot\\frac{\\color{#D98A14}{\\sqrt{5}}}{\\color{#D98A14}{\\sqrt{5}}}"
+   ],
+   [
+    1,
+    "Multiply",
+    "Top: 4√3 · √5 = 4√15. Bottom: √5 · √5 = 5.",
+    "\\frac{4\\sqrt{15}}{5}"
+   ],
+   [
+    2,
+    "Check if it simplifies",
+    "15 = 3 · 5 has no perfect square factor, and 4 and 5 share no factor. Done.",
+    "\\frac{4\\sqrt{15}}{5}"
+   ]
+  ],
+  "ans": "\\frac{4\\sqrt{15}}{5}",
+  "phases": [
+   "Rationalize",
+   "Multiply",
+   "Simplify"
+  ]
+ },
+ "10": {
+  "k": "sqrt",
+  "eq": "20 - x^2 = -29",
+  "steps": [
+   [
+    0,
+    "Subtract 20 from both sides",
+    "Move the constant away from x²: −29 − 20 = −49.",
+    "-x^2 = -49"
+   ],
+   [
+    0,
+    "Divide both sides by −1",
+    "Now x² is alone and positive.",
+    "x^2 = 49"
+   ],
+   [
+    1,
+    "Take the square root of both sides",
+    "Remember <b>±</b>. √49 = 7.",
+    "x = \\color{#D98A14}{\\pm}\\sqrt{49} = \\pm 7"
+   ],
+   [
+    2,
+    "Write both solutions",
+    "One positive, one negative.",
+    "x = 7 \\quad\\text{or}\\quad x = -7"
+   ]
+  ],
+  "ans": "x = 7 \\quad\\text{or}\\quad x = -7"
+ },
+ "11": {
+  "k": "sqrt",
+  "eq": "\\frac{1}{2}x^2 + 8 = 17",
+  "steps": [
+   [
+    0,
+    "Subtract 8 from both sides",
+    "17 − 8 = 9.",
+    "\\frac{1}{2}x^2 = 9"
+   ],
+   [
+    0,
+    "Multiply both sides by 2",
+    "Multiplying by 2 undoes the 1/2: 9 · 2 = 18.",
+    "x^2 = 18"
+   ],
+   [
+    1,
+    "Take the square root of both sides",
+    "Remember <b>±</b>.",
+    "x = \\color{#D98A14}{\\pm}\\sqrt{18}"
+   ],
+   [
+    2,
+    "Simplify the radical",
+    "Break 18 into primes: 18 = 2 · 3 · 3. The pair of 3s is <b>3²</b>, and √(3²) = 3.",
+    "x = \\pm\\sqrt{\\color{#D98A14}{3^2}\\cdot 2} = \\pm 3\\sqrt{2}"
+   ]
+  ],
+  "ans": "x = \\pm 3\\sqrt{2}"
+ },
+ "12": {
+  "k": "sqrt",
+  "eq": "\\frac{1}{2}(x-4)^2 = 8",
+  "steps": [
+   [
+    0,
+    "Multiply both sides by 2",
+    "Undo the 1/2: 8 · 2 = 16. Keep (x − 4) together.",
+    "(x-4)^2 = 16"
+   ],
+   [
+    1,
+    "Take the square root of both sides",
+    "Remember <b>±</b>. √16 = 4.",
+    "x - 4 = \\color{#D98A14}{\\pm}4"
+   ],
+   [
+    2,
+    "Add 4 to both sides",
+    "",
+    "x = 4 \\pm 4"
+   ],
+   [
+    2,
+    "Work out each sign",
+    "4 + 4 = 8 and 4 − 4 = 0.",
+    "x = 8 \\quad\\text{or}\\quad x = 0"
+   ]
+  ],
+  "ans": "x = 8 \\quad\\text{or}\\quad x = 0"
+ },
+ "13": {
+  "k": "sqrt",
+  "eq": "\\frac{2}{3}(x+8)^2 + 66 = 0",
+  "steps": [
+   [
+    0,
+    "Subtract 66 from both sides",
+    "Get the squared part alone.",
+    "\\frac{2}{3}(x+8)^2 = -66"
+   ],
+   [
+    0,
+    "Multiply both sides by 3/2",
+    "Multiply by the reciprocal of 2/3: −66 · 3/2 = −99. A square equal to a negative number means the solutions are complex.",
+    "(x+8)^2 = -66\\cdot\\frac{3}{2} = -99"
+   ],
+   [
+    1,
+    "Take the square root of both sides",
+    "Remember <b>±</b>, and √−1 = i.",
+    "x + 8 = \\color{#D98A14}{\\pm}\\sqrt{-99} = \\pm i\\sqrt{99}"
+   ],
+   [
+    1,
+    "Simplify the radical",
+    "Break 99 into primes: 99 = 3 · 3 · 11. The pair of 3s is <b>3²</b>, and √(3²) = 3.",
+    "x + 8 = \\pm i\\sqrt{\\color{#D98A14}{3^2}\\cdot 11} = \\pm 3i\\sqrt{11}"
+   ],
+   [
+    2,
+    "Subtract 8 from both sides",
+    "",
+    "x = -8 \\pm 3i\\sqrt{11}"
+   ]
+  ],
+  "ans": "x = -8 \\pm 3i\\sqrt{11}"
+ },
+ "14": {
+  "k": "cx",
+  "eq": "(2+i) + (3+2i)",
+  "steps": [
+   [
+    0,
+    "Remove the parentheses",
+    "We are adding, so every sign stays the same.",
+    "2 + i + 3 + 2i"
+   ],
+   [
+    0,
+    "Group real and imaginary parts",
+    "Numbers with numbers, i-terms with i-terms.",
+    "(2+3) + (i+2i)"
+   ],
+   [
+    1,
+    "Combine like terms",
+    "2 + 3 = 5 and i + 2i = 3i.",
+    "5 + 3i"
+   ]
+  ],
+  "ans": "5 + 3i",
+  "phases": [
+   "Group like terms",
+   "Combine"
+  ]
+ },
+ "15": {
+  "k": "cx",
+  "eq": "(5+i) - (-3-5i)",
+  "steps": [
+   [
+    0,
+    "Distribute the minus sign",
+    "Subtracting changes every sign in the second parentheses: −(−3 − 5i) = <b>+3 + 5i</b>.",
+    "5 + i\\ \\color{#D98A14}{+\\,3 + 5i}"
+   ],
+   [
+    1,
+    "Group real and imaginary parts",
+    "",
+    "(5+3) + (i+5i)"
+   ],
+   [
+    2,
+    "Combine like terms",
+    "5 + 3 = 8 and i + 5i = 6i.",
+    "8 + 6i"
+   ]
+  ],
+  "ans": "8 + 6i",
+  "phases": [
+   "Distribute the −",
+   "Group like terms",
+   "Combine"
+  ]
+ },
+ "16": {
+  "k": "cx",
+  "eq": "2i(4+i)",
+  "steps": [
+   [
+    0,
+    "Distribute 2i",
+    "2i · 4 = 8i and 2i · i = 2i².",
+    "2i(4+i) = 8i + 2i^2"
+   ],
+   [
+    1,
+    "Replace i² with −1",
+    "2i² = 2(−1) = −2.",
+    "8i + 2(\\color{#D98A14}{-1}) = 8i - 2"
+   ],
+   [
+    2,
+    "Write in a + bi form",
+    "Put the real part first.",
+    "-2 + 8i"
+   ]
+  ],
+  "ans": "-2 + 8i",
+  "phases": [
+   "Distribute",
+   "Use i² = −1",
+   "Standard form"
+  ]
+ },
+ "17": {
+  "k": "cx",
+  "eq": "(2-i)^2",
+  "steps": [
+   [
+    0,
+    "Write as a product",
+    "Squaring means multiply it by itself. Do not just square each part!",
+    "(2-i)^2 = (2-i)(2-i)"
+   ],
+   [
+    0,
+    "FOIL",
+    "First 4, Outer −2i, Inner −2i, Last i².",
+    "4 - 2i - 2i + i^2"
+   ],
+   [
+    1,
+    "Replace i² with −1",
+    "",
+    "4 - 4i + (\\color{#D98A14}{-1})"
+   ],
+   [
+    2,
+    "Combine the real parts",
+    "4 − 1 = 3.",
+    "3 - 4i"
+   ]
+  ],
+  "ans": "3 - 4i",
+  "phases": [
+   "Expand",
+   "Use i² = −1",
+   "Combine"
+  ]
+ },
+ "18": {
+  "k": "cx",
+  "eq": "-(3+i)(7-3i)",
+  "steps": [
+   [
+    0,
+    "FOIL the two binomials first",
+    "Keep the negative sign out front for now. First 21, Outer −9i, Inner 7i, Last −3i².",
+    "-\\left(21 - 9i + 7i - 3i^2\\right)"
+   ],
+   [
+    1,
+    "Replace i² with −1",
+    "−3i² = −3(−1) = <b>+3</b>.",
+    "-\\left(21 - 9i + 7i\\ \\color{#D98A14}{+\\,3}\\right)"
+   ],
+   [
+    2,
+    "Combine like terms",
+    "21 + 3 = 24 and −9i + 7i = −2i.",
+    "-\\left(24 - 2i\\right)"
+   ],
+   [
+    3,
+    "Distribute the negative sign",
+    "Change every sign inside.",
+    "-24 + 2i"
+   ]
+  ],
+  "ans": "-24 + 2i",
+  "phases": [
+   "FOIL",
+   "Use i² = −1",
+   "Combine",
+   "Distribute the −"
+  ]
+ },
+ "19": {
+  "k": "cx",
+  "eq": "-2i(3-i) + 6i(2-i)",
+  "steps": [
+   [
+    0,
+    "Distribute −2i",
+    "−2i · 3 = −6i and −2i · (−i) = +2i².",
+    "-6i + 2i^2 + 6i(2-i)"
+   ],
+   [
+    0,
+    "Distribute 6i",
+    "6i · 2 = 12i and 6i · (−i) = −6i².",
+    "-6i + 2i^2 + 12i - 6i^2"
+   ],
+   [
+    1,
+    "Replace i² with −1",
+    "2i² = <b>−2</b> and −6i² = <b>+6</b>.",
+    "-6i\\ \\color{#D98A14}{-\\,2} + 12i\\ \\color{#D98A14}{+\\,6}"
+   ],
+   [
+    2,
+    "Combine like terms",
+    "Real: −2 + 6 = 4. Imaginary: −6i + 12i = 6i.",
+    "4 + 6i"
+   ]
+  ],
+  "ans": "4 + 6i",
+  "phases": [
+   "Distribute",
+   "Use i² = −1",
+   "Combine"
+  ]
+ },
+ "20": {
+  "k": "cx",
+  "eq": "\\frac{5}{3-2i}",
+  "steps": [
+   [
+    0,
+    "Find the conjugate of the denominator",
+    "The conjugate of 3 − 2i is <b>3 + 2i</b> (change the sign of the i-part).",
+    "3-2i\\ \\longrightarrow\\ \\color{#D98A14}{3+2i}"
+   ],
+   [
+    1,
+    "Multiply top and bottom by the conjugate",
+    "Top: 5(3 + 2i) = 15 + 10i.",
+    "\\frac{5}{3-2i}\\cdot\\frac{\\color{#D98A14}{3+2i}}{\\color{#D98A14}{3+2i}} = \\frac{15+10i}{(3-2i)(3+2i)}"
+   ],
+   [
+    2,
+    "Multiply the denominator",
+    "(a − bi)(a + bi) = a² − b²i². So 9 − 4i² = 9 + 4 = 13. No i left in the bottom.",
+    "\\frac{15+10i}{9-4i^2} = \\frac{15+10i}{13}"
+   ],
+   [
+    3,
+    "Split into a + bi",
+    "Divide each part by 13.",
+    "\\frac{15}{13} + \\frac{10}{13}i"
+   ]
+  ],
+  "ans": "\\frac{15}{13} + \\frac{10}{13}i",
+  "phases": [
+   "Conjugate",
+   "Multiply",
+   "Use i² = −1",
+   "Standard form"
+  ]
+ },
+ "21": {
+  "k": "cx",
+  "eq": "\\frac{6-4i}{2-i}",
+  "steps": [
+   [
+    0,
+    "Find the conjugate of the denominator",
+    "The conjugate of 2 − i is <b>2 + i</b>.",
+    "2-i\\ \\longrightarrow\\ \\color{#D98A14}{2+i}"
+   ],
+   [
+    1,
+    "Multiply top and bottom by the conjugate",
+    "",
+    "\\frac{6-4i}{2-i}\\cdot\\frac{\\color{#D98A14}{2+i}}{\\color{#D98A14}{2+i}}"
+   ],
+   [
+    1,
+    "FOIL the top and the bottom",
+    "Top: 12 + 6i − 8i − 4i². Bottom: 4 + 2i − 2i − i².",
+    "\\frac{12 + 6i - 8i - 4i^2}{4 - i^2}"
+   ],
+   [
+    2,
+    "Replace i² with −1",
+    "Top: −4i² = +4, so 12 + 4 − 2i = 16 − 2i. Bottom: 4 − (−1) = 5.",
+    "\\frac{16 - 2i}{5}"
+   ],
+   [
+    3,
+    "Split into a + bi",
+    "Divide each part by 5.",
+    "\\frac{16}{5} - \\frac{2}{5}i"
+   ]
+  ],
+  "ans": "\\frac{16}{5} - \\frac{2}{5}i",
+  "phases": [
+   "Conjugate",
+   "Multiply",
+   "Use i² = −1",
+   "Standard form"
+  ]
+ },
+ "22": {
+  "k": "cx",
+  "eq": "\\frac{2-6i}{2i}",
+  "steps": [
+   [
+    0,
+    "Multiply top and bottom by i",
+    "The denominator is only imaginary (2i), so multiply by <b>i/i</b>.",
+    "\\frac{2-6i}{2i}\\cdot\\frac{\\color{#D98A14}{i}}{\\color{#D98A14}{i}} = \\frac{2i - 6i^2}{2i^2}"
+   ],
+   [
+    1,
+    "Replace i² with −1",
+    "Top: −6i² = +6. Bottom: 2i² = −2.",
+    "\\frac{6 + 2i}{-2}"
+   ],
+   [
+    2,
+    "Divide each term by −2",
+    "6 ÷ (−2) = −3 and 2i ÷ (−2) = −i.",
+    "-3 - i"
+   ]
+  ],
+  "ans": "-3 - i",
+  "phases": [
+   "Multiply by i",
+   "Use i² = −1",
+   "Simplify"
+  ]
+ },
+ "23": {
+  "k": "cts",
+  "eq": "x^2 - 2x - 9 = 0",
+  "steps": [
+   [
+    0,
+    "Check the x terms",
+    "The <i>x²</i> and <i>x</i> terms are already on the same side, so nothing needs to move.",
+    "x^2 - 2x - 9 = 0"
+   ],
+   [
+    1,
+    "Regroup the x terms inside parentheses",
+    "Put the <i>x²</i> and <i>x</i> terms together in parentheses. The constant stays outside.",
+    "(x^2 - 2x) - 9 = 0"
+   ],
+   [
+    2,
+    "Factor the leading coefficient",
+    "The coefficient of <i>x²</i> is 1, so there is nothing to factor out. Move on.",
+    "1\\,\\left(x^2 - 2x\\right) - 9 = 0"
+   ],
+   [
+    3,
+    "Find the number that completes the square",
+    "Half of −2 is −1. Square it.",
+    "\\left(\\frac{-2}{2}\\right)^2 = (-1)^2 = 1"
+   ],
+   [
+    3,
+    "Add it inside, subtract it outside",
+    "Add <b>1</b> inside the parentheses and subtract <b>1 · 1 = 1</b> outside, on the same side, to stay balanced.",
+    "\\left(x^2 - 2x + \\color{#D98A14}{1}\\right) - 9 - \\color{#D98A14}{1} = 0"
+   ],
+   [
+    4,
+    "Factor the perfect square trinomial",
+    "x² − 2x + 1 = (x − 1)². Combine the constants: −9 − 1 = −10.",
+    "(x-1)^2 - 10 = 0"
+   ],
+   [
+    5,
+    "Isolate the square",
+    "Add 10 to both sides.",
+    "(x-1)^2 = 10"
+   ],
+   [
+    5,
+    "Take the square root of both sides",
+    "Remember ±. 10 has no perfect square factor.",
+    "x - 1 = \\pm\\sqrt{10}"
+   ],
+   [
+    5,
+    "Solve for x",
+    "Add 1 to both sides.",
+    "x = 1 \\pm \\sqrt{10}"
+   ]
+  ],
+  "ans": "x = 1 \\pm \\sqrt{10}"
+ },
+ "24": {
+  "k": "cts",
+  "eq": "x^2 + 4x = 1",
+  "steps": [
+   [
+    0,
+    "Check the x terms",
+    "The <i>x²</i> and <i>x</i> terms are already on the same side. The 1 stays on the right.",
+    "x^2 + 4x = 1"
+   ],
+   [
+    1,
+    "Regroup the x terms inside parentheses",
+    "Put the <i>x²</i> and <i>x</i> terms together in parentheses.",
+    "(x^2 + 4x) = 1"
+   ],
+   [
+    2,
+    "Factor the leading coefficient",
+    "The coefficient of <i>x²</i> is 1, so there is nothing to factor out. Move on.",
+    "1\\,\\left(x^2 + 4x\\right) = 1"
+   ],
+   [
+    3,
+    "Find the number that completes the square",
+    "Half of 4 is 2. Square it.",
+    "\\left(\\frac{4}{2}\\right)^2 = 2^2 = 4"
+   ],
+   [
+    3,
+    "Add it inside, subtract it outside",
+    "Add <b>4</b> inside the parentheses and subtract <b>1 · 4 = 4</b> outside, on the same side, to stay balanced.",
+    "\\left(x^2 + 4x + \\color{#D98A14}{4}\\right) - \\color{#D98A14}{4} = 1"
+   ],
+   [
+    4,
+    "Factor the perfect square trinomial",
+    "x² + 4x + 4 = (x + 2)².",
+    "(x+2)^2 - 4 = 1"
+   ],
+   [
+    5,
+    "Isolate the square",
+    "Add 4 to both sides: 1 + 4 = 5.",
+    "(x+2)^2 = 5"
+   ],
+   [
+    5,
+    "Take the square root of both sides",
+    "Remember ±.",
+    "x + 2 = \\pm\\sqrt{5}"
+   ],
+   [
+    5,
+    "Solve for x",
+    "Subtract 2 from both sides.",
+    "x = -2 \\pm \\sqrt{5}"
+   ]
+  ],
+  "ans": "x = -2 \\pm \\sqrt{5}"
+ },
+ "25": {
+  "k": "cts",
+  "eq": "3x^2 + 36x = -42",
+  "steps": [
+   [
+    0,
+    "Check the x terms",
+    "The <i>x²</i> and <i>x</i> terms are already on the same side. The −42 stays on the right.",
+    "3x^2 + 36x = -42"
+   ],
+   [
+    1,
+    "Regroup the x terms inside parentheses",
+    "Put the <i>x²</i> and <i>x</i> terms together in parentheses.",
+    "(3x^2 + 36x) = -42"
+   ],
+   [
+    2,
+    "Factor 3 out of the parentheses",
+    "Divide each term inside by 3: 3x² → x², 36x → 12x.",
+    "3\\left(x^2 + 12x\\right) = -42"
+   ],
+   [
+    3,
+    "Find the number that completes the square",
+    "Half of 12 is 6. Square it.",
+    "\\left(\\frac{12}{2}\\right)^2 = 6^2 = 36"
+   ],
+   [
+    3,
+    "Add it inside, subtract it outside",
+    "Add <b>36</b> inside. It gets multiplied by 3, so subtract <b>3 · 36 = 108</b> outside, on the same side.",
+    "3\\left(x^2 + 12x + \\color{#D98A14}{36}\\right) - \\color{#D98A14}{3\\cdot 36} = -42"
+   ],
+   [
+    4,
+    "Factor the perfect square trinomial",
+    "x² + 12x + 36 = (x + 6)².",
+    "3(x+6)^2 - 108 = -42"
+   ],
+   [
+    5,
+    "Isolate the square",
+    "Add 108 to both sides: −42 + 108 = 66.",
+    "3(x+6)^2 = 66"
+   ],
+   [
+    5,
+    "Divide by 3",
+    "Divide both sides by 3 so the square is alone: 66 ÷ 3 = 22.",
+    "(x+6)^2 = 22"
+   ],
+   [
+    5,
+    "Take the square root of both sides",
+    "Remember ±. 22 = 2 · 11 has no perfect square factor.",
+    "x + 6 = \\pm\\sqrt{22}"
+   ],
+   [
+    5,
+    "Solve for x",
+    "Subtract 6 from both sides.",
+    "x = -6 \\pm \\sqrt{22}"
+   ]
+  ],
+  "ans": "x = -6 \\pm \\sqrt{22}"
+ },
+ "26": {
+  "k": "vtx",
+  "eq": "y = x^2 + 14x + 11",
+  "steps": [
+   [
+    0,
+    "Regroup the x terms",
+    "Put the <i>x²</i> and <i>x</i> terms in parentheses. The constant stays outside.",
+    "y = (x^2 + 14x) + 11"
+   ],
+   [
+    1,
+    "Factor the leading coefficient",
+    "a = 1, so there is nothing to factor out. Move on.",
+    "y = 1\\,(x^2 + 14x) + 11"
+   ],
+   [
+    2,
+    "Find the number that completes the square",
+    "Half of 14 is 7. Square it.",
+    "\\left(\\frac{14}{2}\\right)^2 = 7^2 = 49"
+   ],
+   [
+    2,
+    "Add it inside, subtract it outside",
+    "Add <b>49</b> inside and subtract <b>1 · 49 = 49</b> outside, so y does not change.",
+    "y = \\left(x^2 + 14x + \\color{#D98A14}{49}\\right) + 11 - \\color{#D98A14}{49}"
+   ],
+   [
+    3,
+    "Factor and combine",
+    "x² + 14x + 49 = (x + 7)². Combine the constants: 11 − 49 = −38.",
+    "y = (x+7)^2 - 38"
+   ],
+   [
+    4,
+    "Read the vertex",
+    "Vertex form is y = a(x − h)² + k with vertex (h, k). Since x + 7 = x − (−7), h = −7 and k = −38.",
+    "\\text{vertex } (h,k) = (-7,\\,-38)"
+   ],
+   [
+    4,
+    "Maximum or minimum?",
+    "a = 1 is <b>positive</b>, so the parabola opens up. The vertex is the lowest point: a <b>minimum</b>.",
+    "\\text{minimum value} = -38"
+   ]
+  ],
+  "ans": "\\begin{gathered}y = (x+7)^2 - 38\\\\[4pt] \\text{vertex } (-7,\\,-38)\\\\[4pt] \\text{minimum value} = -38\\end{gathered}"
+ },
+ "27": {
+  "k": "vtx",
+  "eq": "y = -2x^2 + 4x - 5",
+  "steps": [
+   [
+    0,
+    "Regroup the x terms",
+    "Put the <i>x²</i> and <i>x</i> terms in parentheses. The constant stays outside.",
+    "y = (-2x^2 + 4x) - 5"
+   ],
+   [
+    1,
+    "Factor −2 out of the parentheses",
+    "Divide each term inside by −2: −2x² → x², 4x → −2x.",
+    "y = -2\\left(x^2 - 2x\\right) - 5"
+   ],
+   [
+    2,
+    "Find the number that completes the square",
+    "Half of −2 is −1. Square it.",
+    "\\left(\\frac{-2}{2}\\right)^2 = (-1)^2 = 1"
+   ],
+   [
+    2,
+    "Add it inside, subtract it outside",
+    "Add <b>1</b> inside. It gets multiplied by −2, so subtract <b>(−2)(1) = −2</b> outside. Subtracting −2 means adding 2.",
+    "y = -2\\left(x^2 - 2x + \\color{#D98A14}{1}\\right) - 5 - \\color{#D98A14}{(-2)(1)}"
+   ],
+   [
+    3,
+    "Factor and combine",
+    "x² − 2x + 1 = (x − 1)². Combine the constants: −5 + 2 = −3.",
+    "y = -2(x-1)^2 - 3"
+   ],
+   [
+    4,
+    "Read the vertex",
+    "In y = a(x − h)² + k, h = 1 and k = −3.",
+    "\\text{vertex } (h,k) = (1,\\,-3)"
+   ],
+   [
+    4,
+    "Maximum or minimum?",
+    "a = −2 is <b>negative</b>, so the parabola opens down. The vertex is the highest point: a <b>maximum</b>.",
+    "\\text{maximum value} = -3"
+   ]
+  ],
+  "ans": "\\begin{gathered}y = -2(x-1)^2 - 3\\\\[4pt] \\text{vertex } (1,\\,-3)\\\\[4pt] \\text{maximum value} = -3\\end{gathered}"
+ },
+ "28": {
+  "k": "vtx",
+  "eq": "y = 3x^2 - 9x + 18",
+  "steps": [
+   [
+    0,
+    "Regroup the x terms",
+    "Put the <i>x²</i> and <i>x</i> terms in parentheses. The constant stays outside.",
+    "y = (3x^2 - 9x) + 18"
+   ],
+   [
+    1,
+    "Factor 3 out of the parentheses",
+    "Divide each term inside by 3: 3x² → x², −9x → −3x.",
+    "y = 3\\left(x^2 - 3x\\right) + 18"
+   ],
+   [
+    2,
+    "Find the number that completes the square",
+    "Half of −3 is −3/2. Square it.",
+    "\\left(\\frac{-3}{2}\\right)^2 = \\frac{9}{4}"
+   ],
+   [
+    2,
+    "Add it inside, subtract it outside",
+    "Add <b>9/4</b> inside. It gets multiplied by 3, so subtract <b>3 · 9/4 = 27/4</b> outside.",
+    "y = 3\\left(x^2 - 3x + \\color{#D98A14}{\\tfrac{9}{4}}\\right) + 18 - \\color{#D98A14}{3\\cdot\\tfrac{9}{4}}"
+   ],
+   [
+    3,
+    "Factor and combine",
+    "x² − 3x + 9/4 = (x − 3/2)². Combine the constants: 18 − 27/4 = 72/4 − 27/4 = 45/4.",
+    "y = 3\\left(x - \\frac{3}{2}\\right)^2 + \\frac{45}{4}"
+   ],
+   [
+    4,
+    "Read the vertex",
+    "In y = a(x − h)² + k, h = 3/2 and k = 45/4.",
+    "\\text{vertex } (h,k) = \\left(\\frac{3}{2},\\,\\frac{45}{4}\\right)"
+   ],
+   [
+    4,
+    "Maximum or minimum?",
+    "a = 3 is <b>positive</b>, so the parabola opens up. The vertex is the lowest point: a <b>minimum</b>. (45/4 = 11.25)",
+    "\\text{minimum value} = \\frac{45}{4}"
+   ]
+  ],
+  "ans": "\\begin{gathered}y = 3\\left(x - \\frac{3}{2}\\right)^2 + \\frac{45}{4}\\\\[4pt] \\text{vertex } \\left(\\frac{3}{2},\\,\\frac{45}{4}\\right)\\\\[4pt] \\text{minimum value} = \\frac{45}{4}\\end{gathered}"
+ },
+ "29": {
+  "k": "qf",
+  "eq": "x^2 - 2x - 24 = 0",
+  "steps": [
+   [
+    0,
+    "Check standard form",
+    "The equation is already in the form ax² + bx + c = 0.",
+    "x^2 - 2x - 24 = 0"
+   ],
+   [
+    1,
+    "Identify a, b, and c",
+    "Include the signs!",
+    "a = 1,\\quad b = -2,\\quad c = -24"
+   ],
+   [
+    2,
+    "Substitute into the formula",
+    "Put b = −2 in parentheses so the signs stay correct.",
+    "x = \\frac{-(-2) \\pm \\sqrt{(-2)^2 - 4(1)(-24)}}{2(1)}"
+   ],
+   [
+    3,
+    "Simplify the discriminant",
+    "(−2)² = 4 and −4(1)(−24) = +96. 4 + 96 = <b>100</b>.",
+    "x = \\frac{2 \\pm \\sqrt{\\color{#D98A14}{100}}}{2}"
+   ],
+   [
+    3,
+    "Take the square root",
+    "√100 = 10.",
+    "x = \\frac{2 \\pm 10}{2}"
+   ],
+   [
+    3,
+    "Work out each sign",
+    "(2 + 10)/2 = 6 and (2 − 10)/2 = −4.",
+    "x = \\frac{12}{2} = 6 \\quad\\text{or}\\quad x = \\frac{-8}{2} = -4"
+   ]
+  ],
+  "ans": "x = 6 \\quad\\text{or}\\quad x = -4"
+ },
+ "30": {
+  "k": "qf",
+  "eq": "-6x^2 + 3x + 2 = 0",
+  "steps": [
+   [
+    0,
+    "Check standard form",
+    "The equation is already in the form ax² + bx + c = 0.",
+    "-6x^2 + 3x + 2 = 0"
+   ],
+   [
+    1,
+    "Identify a, b, and c",
+    "Include the signs! a is negative.",
+    "a = -6,\\quad b = 3,\\quad c = 2"
+   ],
+   [
+    2,
+    "Substitute into the formula",
+    "Put a = −6 in parentheses.",
+    "x = \\frac{-3 \\pm \\sqrt{3^2 - 4(-6)(2)}}{2(-6)}"
+   ],
+   [
+    3,
+    "Simplify the discriminant",
+    "3² = 9 and −4(−6)(2) = +48. 9 + 48 = <b>57</b>. Bottom: 2(−6) = −12.",
+    "x = \\frac{-3 \\pm \\sqrt{\\color{#D98A14}{57}}}{-12}"
+   ],
+   [
+    3,
+    "Clean up the negative denominator",
+    "57 = 3 · 19 has no perfect square factor. Multiply the top and bottom by −1; ± stays ±.",
+    "x = \\frac{3 \\pm \\sqrt{57}}{12}"
+   ]
+  ],
+  "ans": "x = \\frac{3 \\pm \\sqrt{57}}{12}"
+ },
+ "31": {
+  "k": "qf",
+  "eq": "x^2 + 2x = 4x",
+  "steps": [
+   [
+    0,
+    "Write in standard form",
+    "Subtract 4x from both sides so one side is 0: 2x − 4x = −2x.",
+    "x^2 + 2x - 4x = 0 \\;\\Rightarrow\\; x^2 - 2x = 0"
+   ],
+   [
+    1,
+    "Identify a, b, and c",
+    "There is no constant term, so <b>c = 0</b>.",
+    "a = 1,\\quad b = -2,\\quad c = \\color{#D98A14}{0}"
+   ],
+   [
+    2,
+    "Substitute into the formula",
+    "Put b = −2 in parentheses.",
+    "x = \\frac{-(-2) \\pm \\sqrt{(-2)^2 - 4(1)(0)}}{2(1)}"
+   ],
+   [
+    3,
+    "Simplify the discriminant",
+    "(−2)² = 4 and 4(1)(0) = 0. √4 = 2.",
+    "x = \\frac{2 \\pm \\sqrt{4}}{2} = \\frac{2 \\pm 2}{2}"
+   ],
+   [
+    3,
+    "Work out each sign",
+    "(2 + 2)/2 = 2 and (2 − 2)/2 = 0.",
+    "x = \\frac{4}{2} = 2 \\quad\\text{or}\\quad x = \\frac{0}{2} = 0"
+   ]
+  ],
+  "ans": "x = 2 \\quad\\text{or}\\quad x = 0"
+ }
+};
+const IDS = Object.keys(P).map(Number).sort((a,b)=>a-b);
+const KINDS = {
+  rad:{label:"Simplify radicals", range:"1–9", intro:"Simplify the expression", phases:["Multiply","Find perfect squares","Simplify"], ansTitle:"Answer", ref:"Original expression"},
+  sqrt:{label:"Solve by square roots", range:"10–13", intro:"Solve by taking the square root of both sides", phases:["Isolate the square","Take the square root","Solve"], ansTitle:"Solution", ref:"Original equation"},
+  cx:{label:"Complex numbers", range:"14–22", intro:"Simplify. Write the answer as a + bi", phases:["Simplify"], ansTitle:"Answer", ref:"Original expression"},
+  cts:{label:"Solve by completing the square", range:"23–25", intro:"Solve by completing the square", phases:["Set up","Regroup","Factor out a","Complete the square","Factor the trinomial","Square root property"], ansTitle:"Solution", ref:"Original equation"},
+  vtx:{label:"Vertex form", range:"26–28", intro:"Write in vertex form by completing the square. Find the vertex and the max or min", phases:["Regroup","Factor out a","Complete the square","Vertex form","Vertex & max/min"], ansTitle:"Vertex form, vertex, and max/min", ref:"Original equation"},
+  qf:{label:"Quadratic formula", range:"29–31", intro:"Solve using the Quadratic Formula", phases:["Standard form","Find a, b, c","Substitute","Simplify"], ansTitle:"Solution", ref:"Original equation"}
+};
+
+let cur = IDS[0], step = 0; // step 0 = problem page, 1..n = steps, n+1 = answer
+let done = new Set();
+try{ const s = JSON.parse(localStorage.getItem("a2u5review-done")||"[]"); s.forEach(n=>done.add(n)); }catch(e){}
+function saveDone(){ try{ localStorage.setItem("a2u5review-done", JSON.stringify([...done])); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+const picker = $("picker"), phasesEl = $("phases");
+
+Object.entries(KINDS).forEach(([k,info])=>{
+  const g=document.createElement("div"); g.className="group";
+  g.innerHTML=`<span class="glbl">${info.label} <span class="grng">${info.range}</span></span>`;
+  const row=document.createElement("div"); row.className="chips";
+  IDS.filter(n=>P[n].k===k).forEach(n=>{
+    const b = document.createElement("button");
+    b.className="chip"; b.type="button"; b.id="chip-"+n;
+    b.addEventListener("click",()=>go(n,0));
+    row.appendChild(b);
+  });
+  g.appendChild(row); picker.appendChild(g);
+});
+
+let shownPh=null;
+function buildPhases(ph){
+  if(shownPh===ph) return; shownPh=ph;
+  phasesEl.innerHTML=""; phasesEl.style.setProperty("--cols", ph.length);
+  ph.forEach((p,i)=>{
+    const d=document.createElement("div"); d.className="phase"; d.id="ph"+i;
+    d.innerHTML=`<div class="bar"></div><span>${p}</span>`; phasesEl.appendChild(d);
+  });
+}
+
+function typeset(els){
+  if(window.MathJax && MathJax.typesetPromise){
+    MathJax.startup.promise.then(()=>{ MathJax.typesetClear(els); return MathJax.typesetPromise(els); }).catch(()=>{});
+  }
+}
+
+function render(){
+  const pr = P[cur], n = pr.steps.length, K = KINDS[pr.k], PH = pr.phases || K.phases;
+  buildPhases(PH);
+  IDS.forEach(k=>{
+    const b=$("chip-"+k);
+    b.setAttribute("aria-current", k===cur ? "true":"false");
+    b.innerHTML = k + (done.has(k) ? '<span class="tick" aria-label="done">✓</span>' : '');
+  });
+  const card=$("card"); card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
+  const math=$("math"), ref=$("ref");
+  math.className="math";
+  let phase=-1;
+
+  if(step===0){
+    $("eyebrowL").textContent=`Problem ${cur}`;
+    $("eyebrowR").textContent=`${n} steps`;
+    $("title").textContent=pr.intro || K.intro;
+    $("note").innerHTML=`Try the first step on paper, then press <b style="color:var(--accent)">Next</b> to check it.`;
+    math.classList.add("big");
+    math.innerHTML=`\\[${pr.eq}\\]`;
+    ref.innerHTML = pr.k==="qf" ? `Quadratic Formula: <span class="m">\\(x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\\)</span>` : "";
+  } else if(step<=n){
+    const [ph,t,note,tex]=pr.steps[step-1]; phase=ph;
+    $("eyebrowL").textContent=`Problem ${cur} · ${PH[ph]}`;
+    $("eyebrowR").textContent=`Step ${step} of ${n}`;
+    $("title").textContent=t;
+    $("note").innerHTML=note;
+    math.innerHTML=`\\[${tex}\\]`;
+    ref.innerHTML=`${K.ref}: <span class="m">\\(${pr.eq}\\)</span>`;
+  } else {
+    phase=PH.length;
+    $("eyebrowL").textContent=`Problem ${cur} · Done`;
+    $("eyebrowR").textContent=`Done`;
+    $("title").textContent=K.ansTitle;
+    const nextId = IDS[IDS.indexOf(cur)+1];
+    $("note").innerHTML = nextId ? `Nice work. Press <b style="color:var(--accent)">Next problem</b> to go on to problem ${nextId}, or pick any problem above.` : `That was the last problem. Pick any problem above to review it.`;
+    math.classList.add("big","answer");
+    math.innerHTML=`\\[${pr.ans}\\]`;
+    ref.innerHTML=`${K.ref}: <span class="m">\\(${pr.eq}\\)</span>`;
+    done.add(cur); saveDone();
+    $("chip-"+cur).innerHTML = cur + '<span class="tick" aria-label="done">✓</span>';
+  }
+  PH.forEach((_,i)=>{
+    const el=$("ph"+i); el.classList.toggle("now",i===phase); el.classList.toggle("past", phase>=0 && i<phase);
+  });
+
+  $("back").disabled = (step===0 && cur===IDS[0]);
+  const nb=$("next");
+  if(step<n) nb.textContent="Next →";
+  else if(step===n) nb.textContent="Show answer →";
+  else nb.textContent = IDS[IDS.indexOf(cur)+1] ? `Next problem →` : "Start over";
+  typeset([math,ref]);
+  try{ history.replaceState(null,"","#p"+cur); }catch(e){}
+}
+
+function go(n,s){ cur=n; step=s; render(); }
+function next(){
+  const n=P[cur].steps.length;
+  if(step<=n){ step++; render(); return; }
+  const i=IDS.indexOf(cur);
+  go(IDS[i+1] ?? IDS[0], 0);
+}
+function back(){
+  if(step>0){ step--; render(); return; }
+  const i=IDS.indexOf(cur);
+  if(i>0){ const p=IDS[i-1]; go(p, P[p].steps.length+1); }
+}
+$("next").addEventListener("click",next);
+$("back").addEventListener("click",back);
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"){ next(); } else if(e.key==="ArrowLeft"){ back(); }
+});
+
+const m = /^#p(\d+)$/.exec(location.hash);
+if(m && P[+m[1]]) cur=+m[1];
+render();
+if(window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(()=>typeset([$("math"),$("ref")]));
+</script>
+
+</body></html>
