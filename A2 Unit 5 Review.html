@@ -335,18 +335,24 @@ const P = {
    ],
    [
     2,
-    "Reduce the fraction",
-    "−6 and 14 share a factor of 2: −6/14 = −3/7.",
-    "\\frac{-3(5+\\sqrt{11})}{7}"
+    "Distribute in the numerator",
+    "Multiply −6 by each term: −6 · 5 = −30 and −6 · √11 = −6√11.",
+    "\\frac{-30-6\\sqrt{11}}{14}"
    ],
    [
     2,
-    "Distribute",
-    "−3 · 5 = −15 and −3 · √11 = −3√11.",
-    "\\frac{-15-3\\sqrt{11}}{7}"
+    "Split into two fractions",
+    "Both terms of the numerator are over the same denominator, 14.",
+    "\\frac{-30}{14} - \\frac{6\\sqrt{11}}{14}"
+   ],
+   [
+    2,
+    "Simplify each fraction",
+    "−30/14: divide the top and bottom by <b>2</b> → −15/7. 6/14: divide the top and bottom by <b>2</b> → 3/7.",
+    "-\\frac{15}{7} - \\frac{3\\sqrt{11}}{7}"
    ]
   ],
-  "ans": "\\frac{-15-3\\sqrt{11}}{7}",
+  "ans": "-\\frac{15}{7} - \\frac{3\\sqrt{11}}{7}",
   "phases": [
    "Find the conjugate",
    "Multiply",
@@ -377,12 +383,24 @@ const P = {
    ],
    [
     2,
-    "Distribute",
-    "3 · 4 = 12 and 3 · √5 = 3√5. 3 and 11 share no factor, so it does not reduce.",
+    "Distribute in the numerator",
+    "Multiply 3 by each term: 3 · 4 = 12 and 3 · √5 = 3√5.",
     "\\frac{12-3\\sqrt{5}}{11}"
+   ],
+   [
+    2,
+    "Split into two fractions",
+    "Both terms of the numerator are over the same denominator, 11.",
+    "\\frac{12}{11} - \\frac{3\\sqrt{5}}{11}"
+   ],
+   [
+    2,
+    "Simplify each fraction",
+    "12/11: 12 and 11 share no factor. 3/11: 3 and 11 share no factor. Both fractions are already in simplest form.",
+    "\\frac{12}{11} - \\frac{3\\sqrt{5}}{11}"
    ]
   ],
-  "ans": "\\frac{12-3\\sqrt{5}}{11}",
+  "ans": "\\frac{12}{11} - \\frac{3\\sqrt{5}}{11}",
   "phases": [
    "Find the conjugate",
    "Multiply",
@@ -438,8 +456,8 @@ const P = {
    [
     1,
     "Take the square root of both sides",
-    "Remember <b>±</b>. √49 = 7.",
-    "x = \\color{#D98A14}{\\pm}\\sqrt{49} = \\pm 7"
+    "Remember <b>±</b>. Break 49 into primes: 49 = 7 · 7 = <b>7²</b>, and √(7²) = 7.",
+    "x = \\pm\\sqrt{49} = \\pm\\sqrt{\\color{#D98A14}{7^2}} = \\pm 7"
    ],
    [
     2,
@@ -494,8 +512,8 @@ const P = {
    [
     1,
     "Take the square root of both sides",
-    "Remember <b>±</b>. √16 = 4.",
-    "x - 4 = \\color{#D98A14}{\\pm}4"
+    "Remember <b>±</b>. Break 16 into primes: 16 = 2 · 2 · 2 · 2 = <b>2² · 2²</b>, so √16 = 2 · 2 = 4.",
+    "x - 4 = \\pm\\sqrt{16} = \\pm\\sqrt{\\color{#D98A14}{2^2\\cdot 2^2}} = \\pm 2\\cdot 2 = \\pm 4"
    ],
    [
     2,
@@ -845,7 +863,13 @@ const P = {
    ],
    [
     2,
-    "Divide each term by −2",
+    "Split into two fractions",
+    "Both terms of the numerator are over the same denominator, −2.",
+    "\\frac{6}{-2} + \\frac{2i}{-2}"
+   ],
+   [
+    2,
+    "Simplify each fraction",
     "6 ÷ (−2) = −3 and 2i ÷ (−2) = −i.",
     "-3 - i"
    ]
@@ -1224,8 +1248,8 @@ const P = {
    [
     3,
     "Take the square root",
-    "√100 = 10.",
-    "x = \\frac{2 \\pm 10}{2}"
+    "Break 100 into primes: 100 = 2 · 2 · 5 · 5 = <b>2² · 5²</b>, so √100 = 2 · 5 = 10.",
+    "x = \\frac{2 \\pm \\sqrt{\\color{#D98A14}{2^2\\cdot 5^2}}}{2} = \\frac{2 \\pm 2\\cdot 5}{2} = \\frac{2 \\pm 10}{2}"
    ],
    [
     3,
@@ -1266,12 +1290,18 @@ const P = {
    ],
    [
     3,
-    "Clean up the negative denominator",
-    "57 = 3 · 19 has no perfect square factor. Multiply the top and bottom by −1; ± stays ±.",
-    "x = \\frac{3 \\pm \\sqrt{57}}{12}"
+    "Split into two fractions",
+    "Both terms of the numerator are over the same denominator, −12.",
+    "x = \\frac{-3}{-12} \\pm \\frac{\\sqrt{57}}{-12}"
+   ],
+   [
+    3,
+    "Simplify each fraction",
+    "−3/−12: divide the top and bottom by <b>−3</b> → 1/4. √57/(−12) = −√57/12, and ± with a minus sign is still ±. 57 = 3 · 19 has no prime squared, so √57 stays.",
+    "x = \\frac{1}{4} \\pm \\frac{\\sqrt{57}}{12}"
    ]
   ],
-  "ans": "x = \\frac{3 \\pm \\sqrt{57}}{12}"
+  "ans": "x = \\frac{1}{4} \\pm \\frac{\\sqrt{57}}{12}"
  },
  "31": {
   "k": "qf",
@@ -1298,8 +1328,8 @@ const P = {
    [
     3,
     "Simplify the discriminant",
-    "(−2)² = 4 and 4(1)(0) = 0. √4 = 2.",
-    "x = \\frac{2 \\pm \\sqrt{4}}{2} = \\frac{2 \\pm 2}{2}"
+    "(−2)² = 4 and 4(1)(0) = 0. Then 4 = 2 · 2 = <b>2²</b>, and √(2²) = 2.",
+    "x = \\frac{2 \\pm \\sqrt{4}}{2} = \\frac{2 \\pm \\sqrt{\\color{#D98A14}{2^2}}}{2} = \\frac{2 \\pm 2}{2}"
    ],
    [
     3,
@@ -1436,6 +1466,5 @@ if(m && P[+m[1]]) cur=+m[1];
 render();
 if(window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(()=>typeset([$("math"),$("ref")]));
 </script>
-<!-- Visit counter (GoatCounter). Replace YOURCODE with the code you picked when you signed up. -->
-<script data-goatcounter="https://fostermath.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+
 </body></html>
